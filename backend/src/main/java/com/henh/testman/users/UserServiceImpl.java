@@ -1,9 +1,11 @@
 package com.henh.testman.users;
 
+import com.henh.testman.errors.NotFoundException;
+import com.henh.testman.errors.UnauthorizedException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.henh.testman.errors.NotFoundException;
 
 import java.util.Optional;
 
@@ -16,6 +18,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    @Autowired
     public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
@@ -23,11 +26,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User login(Email email, String password) {
+    public Optional<User> login(String userId, String password) {
+        checkNotNull(userId, "userId must be provided");
         checkNotNull(password, "password must be provided");
-        User user = findByEmail(email)
-                .orElseThrow(() -> new NotFoundException("Could not found user for " + email));
-        return user;
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found user for " + userId));
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new UnauthorizedException("passwords do not match");
+        }
+
+        return Optional.of(user);
     }
 
     @Override

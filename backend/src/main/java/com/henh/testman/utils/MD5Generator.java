@@ -5,7 +5,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MD5Generator {
-    private String result;
+
+    private final String result;
 
     public MD5Generator(String input) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         MessageDigest mdMD5 = MessageDigest.getInstance("MD5");

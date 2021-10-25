@@ -1,8 +1,8 @@
 package com.henh.testman.config;
 
-import com.ssafy.api.service.user.UserService;
-import com.ssafy.common.auth.JwtAuthenticationFilter;
-import com.ssafy.common.auth.SsafyUserDetailService;
+import com.henh.testman.auth.JwtAuthenticationFilter;
+import com.henh.testman.auth.SsafyUserDetailService;
+import com.henh.testman.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,18 +16,20 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-/**
- * 인증(authentication) 와 인가(authorization) 처리를 위한 스프링 시큐리티 설정 정의.
- */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	@Autowired
-	private SsafyUserDetailService ssafyUserDetailService;
+
+	private final SsafyUserDetailService ssafyUserDetailService;
+
+	private final UserService userService;
 
 	@Autowired
-	private UserService userService;
+	public SecurityConfig(SsafyUserDetailService ssafyUserDetailService, UserService userService) {
+		this.ssafyUserDetailService = ssafyUserDetailService;
+		this.userService = userService;
+	}
 
 	// Password 인코딩 방식에 BCrypt 암호화 방식 사용
 	@Bean

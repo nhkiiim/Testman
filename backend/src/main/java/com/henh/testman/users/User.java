@@ -19,30 +19,30 @@ public class User {
 
     private final String userId;
 
+    private final String password;
+
     private final String name;
 
     private final Email email;
 
-    private final String password;
-
-    public User(String userId, String name, Email email, String password) {
-        this(null, userId, name, email, password);
+    public User(String userId, String password, String name, Email email) {
+        this(null, userId, password, name, email);
     }
 
-    public User(Long seq, String userId, String name, Email email, String password) {
+    public User(Long seq, String userId, String password, String name, Email email) {
         checkArgument(isNotEmpty(name), "name must be provided");
         checkArgument(
                 name.length() >= 1 && name.length() <= 10,
                 "name length must be between 1 and 10 characters"
         );
-        checkNotNull(email, "email must be provided");
         checkNotNull(password, "password must be provided");
+        checkNotNull(email, "email must be provided");
 
         this.seq = seq;
         this.userId = userId;
+        this.password = password;
         this.name = name;
         this.email = email;
-        this.password = password;
     }
 
     @Override

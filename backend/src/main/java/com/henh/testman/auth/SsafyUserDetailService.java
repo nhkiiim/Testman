@@ -1,6 +1,5 @@
 package com.henh.testman.auth;
 
-import com.henh.testman.users.User;
 import com.henh.testman.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,21 +8,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 
-/**
- * 현재 액세스 토큰으로 부터 인증된 유저의 상세정보(활성화 여부, 만료, 롤 등) 관련 서비스 정의.
- */
 @Component
-public class SsafyUserDetailService implements UserDetailsService{
-	@Autowired
+public class SsafyUserDetailService implements UserDetailsService {
+
 	UserService userService;
+
+	@Autowired
+	public SsafyUserDetailService(UserService userService) {
+		this.userService = userService;
+	}
 	
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-    		User user = userService.findById(userId);
-    		if(user != null) {
-    			SsafyUserDetails userDetails = new SsafyUserDetails(user);
-    			return userDetails;
-    		}
-    		return null;
+		return userService.findById(userId)
+			.map(SsafyUserDetails::new)
+			.get();
     }
 }

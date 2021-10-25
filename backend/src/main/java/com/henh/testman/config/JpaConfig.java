@@ -26,6 +26,7 @@ import java.time.format.DateTimeFormatter;
  */
 @Configuration
 public class JpaConfig {
+
     @PersistenceContext
     EntityManager entityManager;
 
@@ -33,7 +34,6 @@ public class JpaConfig {
     public JPAQueryFactory jpaQueryFactory() {
         return new JPAQueryFactory(entityManager);
     }
-
 
     @Bean
     @Primary

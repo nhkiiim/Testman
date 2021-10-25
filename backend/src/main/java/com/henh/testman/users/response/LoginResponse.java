@@ -15,14 +15,6 @@ public class LoginResponse {
         this.user = user;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public UserDto getUser() {
-        return user;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)

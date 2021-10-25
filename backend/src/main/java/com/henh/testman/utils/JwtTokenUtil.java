@@ -1,4 +1,4 @@
-package com.henh.testman.common.util;
+package com.henh.testman.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

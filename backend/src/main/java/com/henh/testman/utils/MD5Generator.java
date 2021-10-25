@@ -1,4 +1,4 @@
-package com.henh.testman.common.util;
+package com.henh.testman.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

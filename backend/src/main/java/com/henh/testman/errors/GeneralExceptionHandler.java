@@ -1,4 +1,4 @@
-package com.henh.testman.common.errors;
+package com.henh.testman.errors;
 
 import com.henh.testman.utils.ApiUtils;
 import org.slf4j.Logger;

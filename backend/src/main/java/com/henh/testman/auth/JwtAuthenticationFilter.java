@@ -1,11 +1,11 @@
-package com.henh.testman.common.auth;
+package com.henh.testman.auth;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.henh.testman.users.UserService;
-import com.henh.testman.common.util.JwtTokenUtil;
+import com.henh.testman.utils.JwtTokenUtil;
 import com.henh.testman.users.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

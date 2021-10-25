@@ -1,26 +1,15 @@
 package com.henh.testman.users;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.henh.testman.common.util.JwtTokenUtil;
+import com.henh.testman.utils.JwtTokenUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-
-import static com.henh.testman.utils.ApiUtils.ApiResult;
-import static com.henh.testman.utils.ApiUtils.success;
 
 @RestController
 @RequestMapping("api/users")

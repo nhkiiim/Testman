@@ -1,17 +1,18 @@
-package com.henh.testman.users;
+package com.henh.testman.users.response;
 
+import com.henh.testman.users.UserDto;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-public class LoginResult {
+public class LoginResponse {
 
     private final String token;
 
     private final UserDto user;
 
-    public LoginResult(String token, User user) {
+    public LoginResponse(String token, UserDto user) {
         this.token = token;
-        this.user = new UserDto(user);
+        this.user = user;
     }
 
     public String getToken() {

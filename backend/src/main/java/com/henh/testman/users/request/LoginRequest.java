@@ -1,4 +1,4 @@
-package com.henh.testman.users;
+package com.henh.testman.users.request;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

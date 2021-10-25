@@ -1,4 +1,4 @@
-package com.henh.testman.common.errors;
+package com.henh.testman.errors;
 
 public class UnauthorizedException extends RuntimeException {
 

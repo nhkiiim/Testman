@@ -1,4 +1,4 @@
-package com.henh.testman.common.auth;
+package com.henh.testman.auth;
 
 import com.henh.testman.users.User;
 import com.henh.testman.users.UserService;

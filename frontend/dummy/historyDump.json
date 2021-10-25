@@ -1,0 +1,18 @@
+[
+  {
+    "index":1,
+    "method":"POST",
+    "url":"https://google.com"
+  },
+  {
+    "index":2,
+    "method":"GET",
+    "url": "https://google.com"
+  },
+  {
+    "index":3,
+    "method":"GET",
+    "url": "https://kakao.com"
+  }
+]
+  

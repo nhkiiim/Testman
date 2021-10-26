@@ -11,7 +11,17 @@
   },
   {
     "index":3,
-    "method":"GET",
+    "method":"PATCH",
+    "url": "https://kakao.com"
+  },
+  {
+    "index":4,
+    "method":"PUT",
+    "url": "https://kakao.com"
+  },
+  {
+    "index":5,
+    "method":"DELETE",
     "url": "https://kakao.com"
   }
 ]

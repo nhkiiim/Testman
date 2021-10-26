@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from "react";
 
 const HistoryList = ({index, method, url}) => {
-    const [methodColor, setMethodColor] = useState('text-purple');
-    const changeColor = (method) => {
-        if (method == 'GET') {
-            setMethodColor('text-purle')
-        } else if (method == 'POST'){
-            setMethodColor('text-red')
-        }
-    }
-    useEffect(() => {
-        console.log(methodColor)
-    });
+    const getColor = { 
+        "GET": "text-green-600",
+        "POST": "text-purple-600",
+        "PATCH": "text-yellow-600",
+        "PUT":"text-blue-600",
+        "DELETE":"text-red-600"
+
+      }
 
     return (
         <div className="w-[372px] pt-3 h-10 ">
         <div className="text-1xl">
-            {changeColor({method})}
-            <span className={methodColor}>
+            <span className={getColor[method]}>
                 {method} 
             </span>
             <span className="px-[10px]">

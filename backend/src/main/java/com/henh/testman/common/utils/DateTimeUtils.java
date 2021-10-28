@@ -1,4 +1,4 @@
-package com.henh.testman.utils;
+package com.henh.testman.common.utils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

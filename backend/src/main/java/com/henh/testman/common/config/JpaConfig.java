@@ -1,4 +1,4 @@
-package com.henh.testman.config;
+package com.henh.testman.common.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

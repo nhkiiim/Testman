@@ -1,7 +1,7 @@
 package com.henh.testman.users;
 
-import com.henh.testman.errors.NotFoundException;
-import com.henh.testman.errors.UnauthorizedException;
+import com.henh.testman.common.errors.NotFoundException;
+import com.henh.testman.common.errors.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
-package com.henh.testman.config;
+package com.henh.testman.common.config;
 
-import com.henh.testman.auth.JwtAuthenticationFilter;
-import com.henh.testman.auth.SsafyUserDetailService;
+import com.henh.testman.common.auth.JwtAuthenticationFilter;
+import com.henh.testman.common.auth.SsafyUserDetailService;
 import com.henh.testman.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

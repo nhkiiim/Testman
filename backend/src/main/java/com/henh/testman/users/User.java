@@ -1,34 +1,23 @@
 package com.henh.testman.users;
 
-import com.henh.testman.utils.BaseEntity;
+import com.henh.testman.common.utils.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.Entity;
-import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
 public class User extends BaseEntity {
 
-    private Long seq;
-
     private String id;
 
     private String password;
 
     private String email;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(seq, user.seq);
-    }
 
     @Override
     public String toString() {
@@ -39,4 +28,5 @@ public class User extends BaseEntity {
                 .append("password", "[PROTECTED]")
                 .toString();
     }
+
 }

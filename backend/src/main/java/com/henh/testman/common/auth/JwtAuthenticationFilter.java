@@ -1,13 +1,13 @@
-package com.henh.testman.auth;
+package com.henh.testman.common.auth;
 
-import com.henh.testman.errors.NotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.henh.testman.users.UserService;
-import com.henh.testman.utils.JwtTokenUtil;
+import com.henh.testman.common.errors.NotFoundException;
+import com.henh.testman.common.utils.JwtTokenUtil;
 import com.henh.testman.users.User;
+import com.henh.testman.users.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 			throws ServletException, IOException {
 		// Read the Authorization header, where the JWT Token should be
         String header = request.getHeader(JwtTokenUtil.HEADER_STRING);
-       
+
         // If header does not contain BEARER or is null delegate to Spring impl and exit
         if (header == null || !header.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
             filterChain.doFilter(request, response);

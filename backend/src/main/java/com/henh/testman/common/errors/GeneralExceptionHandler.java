@@ -1,6 +1,6 @@
-package com.henh.testman.errors;
+package com.henh.testman.common.errors;
 
-import com.henh.testman.utils.ApiUtils;
+import com.henh.testman.common.utils.ApiUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolationException;
 
-import static com.henh.testman.utils.ApiUtils.error;
+import static com.henh.testman.common.utils.ApiUtils.error;
 
 @ControllerAdvice
 public class GeneralExceptionHandler {

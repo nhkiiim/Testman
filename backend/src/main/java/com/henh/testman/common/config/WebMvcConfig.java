@@ -1,6 +1,5 @@
-package com.henh.testman.config;
+package com.henh.testman.common.config;
 
-import com.henh.testman.utils.JwtTokenUtil;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

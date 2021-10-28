@@ -1,4 +1,4 @@
-package com.henh.testman.auth;
+package com.henh.testman.common.auth;
 
 import com.henh.testman.users.User;
 import org.springframework.security.core.GrantedAuthority;

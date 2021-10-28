@@ -6,14 +6,14 @@ import { PlusCircleIcon } from "@heroicons/react/solid";
 import { XCircleIcon } from "@heroicons/react/solid";
 
 // import { useSelector } from "react-redux";
-const MediumCard = ({ no, name, url, description }) => {
+const MediumCard = ({ no, name, url, description, img }) => {
   const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const [titleCategory, setTitleCategory] = useState(4);
 
   return (
     <>
-      <div className="mb-8 cursor-pointer hover:scale-105 transform transition duration-300 ease-out shadow-md rounded-lg sm:mx-2 md:mx-3">
+      <div className="mb-8 cursor-pointer hover:scale-105 transform transition duration-300 ease-out shadow-md rounded-lg sm:mx-2 md:mx-3 bg-white">
         {name === "" ? (
           <div
             className="w-[372px] pt-3 px-2 h-80 mx-auto "
@@ -21,17 +21,30 @@ const MediumCard = ({ no, name, url, description }) => {
               setShowModal(true);
             }}
           >
-            <div className="mx-36 my-28">
+            <div className="mx-36 my-44">
               <PlusCircleIcon className="w-12 text-purple-400" />
             </div>
           </div>
         ) : (
-          <div className="w-[372px] pt-3 px-2 h-80 mx-auto ">
+          <>
+            {/* <div className="w-[372px] pt-3 px-2 h-80 mx-auto ">
             <h3 className="text-1xl">No.{no}</h3>
             <h3 className="mt-3 text-1xl">Name : {name}</h3>
             <h3 className="mt-3 text-1xl">URL : {url}</h3>
             <h3 className="mt-3 text-1xl">설명 : {description}</h3>
-          </div>
+          </div> */}
+            <img className="w-full bg-gray-200" src={img} />
+            <div className="py-2 px-4 w-full flex justify-between bg-indigo-700">
+              <p className="text-sm text-white font-semibold tracking-wide">{name}</p>
+              <p className="text-sm text-white font-semibold tracking-wide">27TH Oct, 2021</p>
+            </div>
+            <div className="bg-white px-3  lg:px-6 py-4 rounded-bl-3xl rounded-br-3xl">
+              <h1 className="text-lg text-gray-900 font-semibold tracking-wider">{url}</h1>
+              <p className="text-gray-700 text-sm  lg:text-base  lg:leading-8 pr-4 tracking-wide mt-2">
+                {description}
+              </p>
+            </div>
+          </>
         )}
       </div>
 

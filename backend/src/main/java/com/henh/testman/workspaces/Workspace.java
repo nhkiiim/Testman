@@ -18,7 +18,7 @@ import java.time.LocalTime;
 @Setter
 public class Workspace extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade= CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
     private String title;

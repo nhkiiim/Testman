@@ -9,23 +9,19 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Setter
 public class UserDto {
 
-    private String userId;
+    private String id;
 
-    private String name;
-
-    private Email email;
+    private String email;
 
     public UserDto(User user) {
-        this.userId = user.getUserId();
-        this.name = user.getName();
+        this.id = user.getId();
         this.email = user.getEmail();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("userId", userId)
-                .append("name", name)
+                .append("id", id)
                 .append("email", email)
                 .toString();
     }

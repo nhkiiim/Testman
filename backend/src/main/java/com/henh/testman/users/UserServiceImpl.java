@@ -14,24 +14,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final PasswordEncoder passwordEncoder;
-
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository) {
-        this.passwordEncoder = passwordEncoder;
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
-    public Optional<User> login(String userId, String password) {
-        checkNotNull(userId, "userId must be provided");
+    public Optional<User> login(String id, String password) {
+        checkNotNull(id, "userId must be provided");
         checkNotNull(password, "password must be provided");
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("Could not found user for " + userId));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Could not found user for " + id));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new UnauthorizedException("passwords do not match");
@@ -42,18 +42,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<User> findById(String userId) {
-        checkNotNull(userId, "userId must be provided");
+    public Optional<User> selectUser(String id) {
+        checkNotNull(id, "userId must be provided");
 
-        return userRepository.findById(userId);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<User> findByEmail(Email email) {
-        checkNotNull(email, "email must be provided");
-
-        return userRepository.findByEmail(email);
+        return userRepository.findById(id);
     }
 
 }

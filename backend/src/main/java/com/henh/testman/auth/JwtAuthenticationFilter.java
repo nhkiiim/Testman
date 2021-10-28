@@ -64,17 +64,17 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             JWTVerifier verifier = JwtTokenUtil.getVerifier();
             JwtTokenUtil.handleError(token);
             DecodedJWT decodedJWT = verifier.verify(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
-            String userId = decodedJWT.getSubject();
+            String id = decodedJWT.getSubject();
             // Search in the DB if we find the user by token subject (username)
             // If so, then grab user details and create spring auth token using username, pass, authorities/roles
-            if (userId != null) {
-                // jwt 토큰에 포함된 계정 정보(userId) 통해 실제 디비에 해당 정보의 계정이 있는지 조회.
-                User user = userService.findById(userId)
-                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + userId));
+            if (id != null) {
+                // jwt 토큰에 포함된 계정 정보(id) 통해 실제 디비에 해당 정보의 계정이 있는지 조회.
+                User user = userService.selectUser(id)
+                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + id));
 
                 // 식별된 정상 유저인 경우, 요청 context 내에서 참조 가능한 인증 정보(jwtAuthentication) 생성.
                 SsafyUserDetails userDetails = new SsafyUserDetails(user);
-                UsernamePasswordAuthenticationToken jwtAuthentication = new UsernamePasswordAuthenticationToken(userId,
+                UsernamePasswordAuthenticationToken jwtAuthentication = new UsernamePasswordAuthenticationToken(id,
                         null, userDetails.getAuthorities());
                 jwtAuthentication.setDetails(userDetails);
                 return jwtAuthentication;

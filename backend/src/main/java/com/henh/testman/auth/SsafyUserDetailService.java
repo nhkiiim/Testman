@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SsafyUserDetailService implements UserDetailsService {
 
-	UserService userService;
+	private final UserService userService;
 
 	@Autowired
 	public SsafyUserDetailService(UserService userService) {
@@ -19,8 +19,8 @@ public class SsafyUserDetailService implements UserDetailsService {
 	}
 	
     @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-		return userService.findById(userId)
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+		return userService.selectUser(id)
 			.map(SsafyUserDetails::new)
 			.get();
     }

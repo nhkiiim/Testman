@@ -4,10 +4,8 @@ import java.util.Optional;
 
 public interface UserService {
 
-    Optional<User> login(String userId, String password);
+    Optional<User> login(String id, String password);
 
-    Optional<User> findById(String userId);
-
-    Optional<User> findByEmail(Email email);
+    Optional<User> selectUser(String id);
 
 }

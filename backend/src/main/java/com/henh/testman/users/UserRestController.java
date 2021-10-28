@@ -39,7 +39,7 @@ public class UserRestController {
     @GetMapping(path = "me")
     public ApiResult<UserDto> me(Authentication authentication) {
         return success(
-                userService.findById(authentication.getName())
+                userService.selectUser(authentication.getName())
                         .map(UserDto::new)
                         .orElseThrow(() -> new NotFoundException("Could nof found user for " + authentication.getName()))
         );

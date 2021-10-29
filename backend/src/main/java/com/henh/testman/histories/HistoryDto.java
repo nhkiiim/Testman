@@ -21,7 +21,7 @@ public class HistoryDto {
 
     private String httpMethod;
 
-    private int port;
+    private Integer port;
 
     private String params;
 

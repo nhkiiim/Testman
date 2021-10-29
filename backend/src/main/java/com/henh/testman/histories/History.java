@@ -26,7 +26,7 @@ public class History extends BaseEntity {
 
     private String httpMethod;
 
-    private int port;
+    private Integer port;
 
     private String params;
 

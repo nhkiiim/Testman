@@ -9,19 +9,19 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class SsafyUserDetailService implements UserDetailsService {
+public class TestmanUserDetailService implements UserDetailsService {
 
 	private final UserService userService;
 
 	@Autowired
-	public SsafyUserDetailService(UserService userService) {
+	public TestmanUserDetailService(UserService userService) {
 		this.userService = userService;
 	}
 	
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 		return userService.selectUser(id)
-			.map(SsafyUserDetails::new)
+			.map(TestmanUserDetails::new)
 			.get();
     }
 }

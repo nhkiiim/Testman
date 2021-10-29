@@ -1,5 +1,5 @@
 HELP.md
-ssafy-web.log
+ssafy-web.log*
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar

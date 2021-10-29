@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class WorkspaceServiceImpl implements WorkspaceService {
 
-    private final WorkspaceService workspaceService;
+    private final WorkspaceRepository workspaceRepository;
 
-    public WorkspaceServiceImpl(WorkspaceService workspaceService) {
-        this.workspaceService = workspaceService;
+    public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository) {
+        this.workspaceRepository = workspaceRepository;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.henh.testman.collections;
 
+import com.henh.testman.histories.History;
 import com.henh.testman.workspaces.Workspace;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;

@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class LoadResultRawRepositorySupport {
 
-    private JPAQueryFactory jpaQueryFactory;
+    private final JPAQueryFactory jpaQueryFactory;
 
-    private final QLoadReulstRaw qLoadReulstRaw = QLoadReulstRaw.loadReulstRaw;
+//    private final QLoadReulstRaw qLoadReulstRaw = QLoadReulstRaw.loadReulstRaw;
 
     public LoadResultRawRepositorySupport(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;

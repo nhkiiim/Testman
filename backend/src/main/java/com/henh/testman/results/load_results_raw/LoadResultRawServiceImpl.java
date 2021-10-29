@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoadResultRawServiceImpl implements LoadResultRawService {
 
-    private LoadResultRawRepository loadResultRawRepository;
+    private final LoadResultRawRepository loadResultRawRepository;
 
     @Autowired
     public LoadResultRawServiceImpl(LoadResultRawRepository loadResultRawRepository) {

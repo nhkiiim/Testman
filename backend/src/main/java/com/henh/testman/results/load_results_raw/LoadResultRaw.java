@@ -1,19 +1,22 @@
 package com.henh.testman.results.load_results_raw;
 
-import com.henh.testman.common.utils.BaseEntity;
 import com.henh.testman.results.load_results_summary.LoadResultSummary;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.time.LocalTime;
 
 @Getter
-@Setter
+@Builder
 @ToString
 @RedisHash(value = "loadResultRaw")
-public class LoadResultRaw extends BaseEntity {
+public class LoadResultRaw {
+
+    @Id
+    private Long seq;
 
     private LoadResultSummary loadResultSummary;
 

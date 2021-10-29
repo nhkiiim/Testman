@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "api/load-result-raw")
 public class LoadResultRawRestController {
 
-    private LoadResultRawService loadResultRawService;
+    private final LoadResultRawService loadResultRawService;
 
     @Autowired
     public LoadResultRawRestController(LoadResultRawService loadResultRawService) {

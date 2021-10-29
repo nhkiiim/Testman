@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ApiResultServiceImpl implements ApiResultService {
 
-    private ApiResultRepository apiResultRepository;
+    private final ApiResultRepository apiResultRepository;
 
     @Autowired
     public ApiResultServiceImpl(ApiResultRepository apiResultRepository) {

@@ -3,13 +3,13 @@ package com.henh.testman.results.api_results;
 import com.henh.testman.histories.History;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.ToString;
 
 import java.util.Map;
 
 @Getter
 @Setter
+@ToString
 public class ApiResultDto {
 
     private History history;
@@ -25,16 +25,6 @@ public class ApiResultDto {
         this.code = apiResult.getCode();
         this.body = apiResult.getBody();
         this.headers = apiResult.getHeaders();
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("history", history)
-                .append("code", code)
-                .append("body", body)
-                .append("headers", headers)
-                .toString();
     }
 
 }

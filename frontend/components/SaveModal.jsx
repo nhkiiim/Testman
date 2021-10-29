@@ -7,14 +7,9 @@ const SaveModal = (modal) => {
 
   const [btnDescription, setBtnDescription] = useState(false);
 
-  const clickDescription = () => {
-    if (btnDescription) {
-      setBtnDescription(true)
-    }
-  }
   useEffect(() => {
         console.log(btnDescription)
-      }, [showModal]); 
+      }); 
 
 
     return (
@@ -31,7 +26,7 @@ const SaveModal = (modal) => {
             <div className="relative p-6 flex-auto">
               <form className="flex flex-col w-[350px]" method="POST" action="#">
                 <div className="mb-6 pt-3 rounded">
-                  <label className="blocktext-sm font-bold mb-0 ml-3" for="requestName">
+                  <label className="block text-sm font-bold mb-0 ml-3" for="requestName">
                     Request Name
                   </label>
                   <input
@@ -40,13 +35,15 @@ const SaveModal = (modal) => {
                     className="bg-gray-200 rounded w-full focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
                   />
                 </div>
-                {btnDescription===false?
+                {!btnDescription ?
                 <div>
-                <button className="block text-gray-700 text-sm font-bold mb-3 ml-3 text-left underline" onClick={clickDescription}>Add description</button>
+                <button className="block text-gray-700 text-sm font-bold mb-3 ml-3 text-left underline" onClick={() => {
+                  setBtnDescription(true)
+                }}>Add description</button>
                 </div>
                 :
                 <div className="mb-6 pt-3 rounded">
-                  <label className="blocktext-sm font-bold mb-0 ml-3" for="description">
+                  <label className="block text-sm font-bold mb-0 ml-3" for="description">
                     Description
                   </label>
                   <textarea
@@ -58,15 +55,13 @@ const SaveModal = (modal) => {
                   
               }
 
-                <div className="mb-6 pt-3 rounded bg-gray-200">
-                  <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="URL">
-                    URL
+                <div className="mb-6 pt-3 rounded">
+                  <label className="block text-sm font-bold mb-0 ml-3" for="URL">
+                    Save to
                   </label>
-                  <input
-                    type="text"
-                    id="URL"
-                    className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
-                  />
+                  <button className="bg-white w-full mb-0 ml-3 text-left hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50">
+                    New Collection
+                  </button>
                 </div>
               </form>
             </div>

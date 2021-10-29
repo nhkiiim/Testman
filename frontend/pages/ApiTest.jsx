@@ -3,10 +3,12 @@ import Header from "../components/Header";
 import historyDump from "../dummy/historyDump.json";
 import HistoryList from "../components/HistoryList";
 import CollectionsList from "../components/CollectionsList";
+import SaveModal from "../components/SaveModal";
 
 const ApiTest = () => {
     const [btnIndex, setBtnIndex] = useState(0);
     const [headerBody, setHeaderBody] = useState('header');
+    const [showModal, setShowModal] = useState(false);
     const [payload, setPayload] = useState({
         method:'',
         baseUrl:'baseUrl',
@@ -42,15 +44,26 @@ const ApiTest = () => {
           console.log('add Tr')
         }
     }
+    
+    const clickSaveBtn = () => {
+        setShowModal(true)
+    }
 
-    // useEffect(() => {
-    //     console.log(payload)
-    //   });
+    useEffect(() => {
+        console.log(showModal + "apiTest")
+      });
 
     return (
         <div>
             <Header />
             {/* history, collections 부분 */}
+            {!showModal?
+                <div>
+                    <SaveModal modal={showModal}/>
+                </div>
+            :
+            null
+            }
             <div className="flex">
                 <div>
                     {btnIndex?
@@ -90,6 +103,12 @@ const ApiTest = () => {
                         <input type="text" placeholder="base url" onChange={handleChangePayload} name="baseUrl"/>
                     </div>
                     <div className="flex">
+                        <div className="mr-40">
+                            Untitled Request
+                        </div>
+                        <button className="border-2 border-purple-500" onClick={clickSaveBtn}>Save</button>
+                    </div>
+                    <div className="flex">
                         <select name="method" id="" onChange={handleChangePayload} className="mr-2"> 
                             <option value="" selected disabled>method</option>
                             <option value="GET">GET</option>
@@ -110,6 +129,7 @@ const ApiTest = () => {
                                 Body
                             </button>
                         </div>
+                        {/* header 입력 부분 */}
                         {headerBody=="header"?
                         <div>
                             header table
@@ -143,10 +163,17 @@ const ApiTest = () => {
                             </table>
                         </div>
                         :
+                        // body 부분
                         <div>
                             body table
                         </div>
                         }
+                    </div>
+                    <div>
+                        Response
+                        <div>
+                            Json file
+                        </div>
                     </div>
                 </div>
             </div>

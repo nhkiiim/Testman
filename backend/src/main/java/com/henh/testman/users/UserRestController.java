@@ -1,8 +1,11 @@
 package com.henh.testman.users;
 
+import com.henh.testman.errors.ExistException;
 import com.henh.testman.errors.NotFoundException;
 import com.henh.testman.users.request.LoginRequest;
+import com.henh.testman.users.request.UserRegistRequest;
 import com.henh.testman.users.response.LoginResponse;
+import com.henh.testman.users.response.UserRegistResponse;
 import com.henh.testman.utils.ApiUtils.ApiResult;
 import com.henh.testman.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +44,18 @@ public class UserRestController {
         return success(
                 userService.selectUser(authentication.getName())
                         .map(UserDto::new)
-                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + authentication.getName()))
+                        .orElseThrow(() -> new ExistException("Could nof found user for " + authentication.getName()))
+        );
+    }
+
+    @PostMapping(path = "regist")
+    public ApiResult<UserRegistResponse> registUser(@Valid @RequestBody UserRegistRequest userRegistRequest) {
+        return success(
+                new UserRegistResponse(
+                        userService.insertUser(userRegistRequest)
+                                .map(UserDto::new)
+                                .orElseThrow(() -> new NotFoundException("Exist user " + userRegistRequest.getUserId()))
+                )
         );
     }
 }

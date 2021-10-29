@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.validation.constraints.NotBlank;
 
@@ -13,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @ToString
 @AllArgsConstructor
-public class LoginRequest {
+public class UserRegistRequest {
 
     @NotBlank(message = "userId must be provided")
     private String userId;
@@ -21,6 +19,7 @@ public class LoginRequest {
     @NotBlank(message = "password must be provided")
     private String password;
 
-    protected LoginRequest() {/*empty*/}
+    @NotBlank(message = "email must be provided")
+    private String email;
 
 }

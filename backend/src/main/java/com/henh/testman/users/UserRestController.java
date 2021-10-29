@@ -25,13 +25,13 @@ public class UserRestController {
     }
 
     @PostMapping(path = "login")
-    public ApiResult<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+    public ApiResult<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         return success(
             new LoginResponse(
-                    JwtTokenUtil.getToken(request.getUserId()),
-                    userService.login(request.getUserId(), request.getPassword())
+                    JwtTokenUtil.getToken(loginRequest.getUserId()),
+                    userService.login(loginRequest)
                         .map(UserDto::new)
-                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + request.getUserId()))
+                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + loginRequest.getUserId()))
             )
         );
     }

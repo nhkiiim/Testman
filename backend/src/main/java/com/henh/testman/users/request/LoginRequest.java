@@ -1,5 +1,6 @@
 package com.henh.testman.users.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class LoginRequest {
 
     @NotBlank(message = "userId must be provided")
@@ -18,11 +20,6 @@ public class LoginRequest {
     private String password;
 
     protected LoginRequest() {/*empty*/}
-
-    public LoginRequest(String userId, String password) {
-        this.userId = userId;
-        this.password = password;
-    }
 
     @Override
     public String toString() {

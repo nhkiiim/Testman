@@ -1,19 +1,16 @@
 package com.henh.testman.users.response;
 
 import com.henh.testman.users.UserDto;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+@AllArgsConstructor
 public class LoginResponse {
 
     private final String token;
 
     private final UserDto user;
-
-    public LoginResponse(String token, UserDto user) {
-        this.token = token;
-        this.user = user;
-    }
 
     @Override
     public String toString() {

@@ -19,4 +19,5 @@ public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long seq;
+
 }

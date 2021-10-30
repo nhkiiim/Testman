@@ -45,6 +45,8 @@ dependencies {
 
     implementation 'mysql:mysql-connector-java:8.0.26'
 
+    implementation 'org.apache.jmeter:ApacheJMeter_java:5.4.1'
+    implementation 'org.apache.jmeter:ApacheJMeter_http:5.4.1'
 }
 
 test {

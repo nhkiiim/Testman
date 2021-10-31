@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 public class UserRegistRequest {
 
     @NotBlank(message = "userId must be provided")
-    private String userId;
+    private String id;
 
     @NotBlank(message = "password must be provided")
     private String password;

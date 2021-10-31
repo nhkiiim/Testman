@@ -5,6 +5,7 @@ import com.henh.testman.errors.NotFoundException;
 import com.henh.testman.users.request.LoginRequest;
 import com.henh.testman.users.request.UserRegistRequest;
 import com.henh.testman.users.response.LoginResponse;
+import com.henh.testman.users.response.UserDeleteResponse;
 import com.henh.testman.users.response.UserRegistResponse;
 import com.henh.testman.utils.ApiUtils.ApiResult;
 import com.henh.testman.utils.JwtTokenUtil;
@@ -31,10 +32,10 @@ public class UserRestController {
     public ApiResult<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         return success(
             new LoginResponse(
-                    JwtTokenUtil.getToken(loginRequest.getUserId()),
+                    JwtTokenUtil.getToken(loginRequest.getId()),
                     userService.login(loginRequest)
                         .map(UserDto::new)
-                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + loginRequest.getUserId()))
+                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + loginRequest.getId()))
             )
         );
     }
@@ -44,7 +45,7 @@ public class UserRestController {
         return success(
                 userService.selectUser(authentication.getName())
                         .map(UserDto::new)
-                        .orElseThrow(() -> new ExistException("Could nof found user for " + authentication.getName()))
+                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + authentication.getName()))
         );
     }
 
@@ -54,7 +55,16 @@ public class UserRestController {
                 new UserRegistResponse(
                         userService.insertUser(userRegistRequest)
                                 .map(UserDto::new)
-                                .orElseThrow(() -> new NotFoundException("Exist user " + userRegistRequest.getUserId()))
+                                .orElseThrow(() -> new ExistException("Exist user " + userRegistRequest.getId()))
+                )
+        );
+    }
+
+    @DeleteMapping
+    public ApiResult<UserDeleteResponse> deleteUser(Authentication authentication) {
+        return success(
+                new UserDeleteResponse(
+                        userService.deleteUser(authentication.getName())
                 )
         );
     }

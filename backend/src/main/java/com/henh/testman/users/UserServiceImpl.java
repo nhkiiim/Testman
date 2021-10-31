@@ -6,10 +6,12 @@ import com.henh.testman.errors.UnauthorizedException;
 import com.henh.testman.users.request.LoginRequest;
 import com.henh.testman.users.request.UserRegistRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -29,12 +31,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Optional<User> insertUser(UserRegistRequest userRegistRequest) {
-        Optional<User> check = selectUser(userRegistRequest.getUserId());
-        if(check.isPresent()) throw new ExistException("exist value");
+        Optional<User> checkUser = userRepository.findById(userRegistRequest.getId());
+        if(checkUser.isPresent()) throw new ExistException("exist value");
 
         User user = User.builder()
-                .id(userRegistRequest.getUserId())
+                .id(userRegistRequest.getId())
                 .password(passwordEncoder.encode(userRegistRequest.getPassword()))
                 .email(userRegistRequest.getEmail())
                 .build();
@@ -44,11 +47,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Optional<User> login(LoginRequest loginRequest) {
-
-        User user = userRepository.findById(loginRequest.getUserId())
-                .orElseThrow(() -> new NotFoundException("Could not found user for " + loginRequest.getUserId()));
+        User user = userRepository.findById(loginRequest.getId())
+                .orElseThrow(() -> new NotFoundException("Could not found user for " + loginRequest.getId()));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             throw new UnauthorizedException("passwords do not match");
@@ -62,6 +64,15 @@ public class UserServiceImpl implements UserService {
     public Optional<User> selectUser(String id) {
         checkNotNull(id, "userId must be provided");
         return userRepository.findById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String deleteUser(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Could not found user for " + id));
+        userRepository.delete(user);
+        return id;
     }
 
 }

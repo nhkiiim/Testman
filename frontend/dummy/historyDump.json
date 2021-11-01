@@ -1,0 +1,28 @@
+[
+  {
+    "index":1,
+    "method":"POST",
+    "url":"https://google.com"
+  },
+  {
+    "index":2,
+    "method":"GET",
+    "url": "https://google.com"
+  },
+  {
+    "index":3,
+    "method":"PATCH",
+    "url": "https://kakao.com"
+  },
+  {
+    "index":4,
+    "method":"PUT",
+    "url": "https://kakao.com"
+  },
+  {
+    "index":5,
+    "method":"DELETE",
+    "url": "https://kakao.com"
+  }
+]
+  

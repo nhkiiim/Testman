@@ -11,7 +11,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor
+@AllArgsConstructor
 public class User extends BaseEntity {
 
     private Long seq;

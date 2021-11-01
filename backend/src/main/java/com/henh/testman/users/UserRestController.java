@@ -65,6 +65,7 @@ public class UserRestController {
         return success(
                 new UserDeleteResponse(
                         userService.deleteUser(authentication.getName())
+                                .orElseThrow(() -> new NotFoundException("Could nof found user for " + authentication.getName()))
                 )
         );
     }

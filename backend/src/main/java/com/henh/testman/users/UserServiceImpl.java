@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
                 .password(passwordEncoder.encode(userRegistRequest.getPassword()))
                 .email(userRegistRequest.getEmail())
                 .build();
-        userRepository.save(user);
+        System.out.println(userRepository.save(user));
 
         return Optional.of(user);
     }
@@ -68,11 +68,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public String deleteUser(String id) {
+    public Optional<String> deleteUser(String id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Could not found user for " + id));
         userRepository.delete(user);
-        return id;
+        return Optional.of(user.getId());
     }
 
 }

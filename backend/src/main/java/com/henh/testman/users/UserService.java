@@ -14,6 +14,6 @@ public interface UserService {
 
     Optional<User> selectUser(String id);
 
-    String deleteUser(String id);
+    Optional<String> deleteUser(String id);
 
 }

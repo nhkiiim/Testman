@@ -1,10 +1,56 @@
 import { useRouter } from "next/dist/client/router";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import logo from "../img/logo.png";
 import Image from "next/image";
 
 const SignUp = () => {
   const router = useRouter();
+  const [authObj, setAuthObj] = useState({
+    id: "",
+    email: "",
+    password: "",
+    passwordCheck: "",
+  });
+
+  const [idCheck, setIdCheck] = useState(false);
+  const [checkError, setCheckError] = useState("");
+  const [error, setError] = useState("");
+
+  const changeHandler = useCallback(async (e) => {
+    const {
+      target: { id, value },
+    } = e;
+    setAuthObj((authObj) => ({
+      ...authObj,
+      [id]: value,
+    }));
+    // db 통신 후 아이디 중복 여부 판단
+    // if(id == "id"){
+    //   const idCheck = await
+    // }
+
+    if (id == "email") {
+    }
+  });
+  const regexCheck = () => {};
+  useEffect(() => {
+    console.log(idCheck);
+  }, [changeHandler, authObj]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      let data;
+
+      if (!idCheck) throw new Error("Id를 확인해주세요.");
+      else {
+        router.push("/Login");
+      }
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   return (
     <div>
       {/* <body className="body-bg min-h-screen pb-6 px-2 md:px-0"> */}
@@ -15,7 +61,6 @@ const SignUp = () => {
           <div className="relative h-16 mx-auto justify-center w-40">
             <Image src={logo} layout="fill" objectFit="contain" objectPosition="left" />
           </div>
-          {/* <p className="text-gray-600 pt-2">함께, 떠나볼까요 ?</p> */}
         </section>
 
         <section className="mt-6">
@@ -26,8 +71,27 @@ const SignUp = () => {
               </label>
               <input
                 type="text"
-                id="Id"
+                id="id"
+                className={
+                  idCheck
+                    ? "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4  border-green-400 transition duration-500 px-3 pb-3"
+                    : "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                }
+                onChange={changeHandler}
+              />
+            </div>
+            <div>
+              <span>{checkError}</span>
+            </div>
+            <div className="mb-6 pt-3 rounded bg-gray-200">
+              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="eMail">
+                E-Mail
+              </label>
+              <input
+                type="email"
+                id="email"
                 className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                onChange={changeHandler}
               />
             </div>
             <div className="mb-6 pt-3 rounded bg-gray-200">
@@ -38,6 +102,7 @@ const SignUp = () => {
                 type="password"
                 id="password"
                 className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                onChange={changeHandler}
               />
             </div>
             <div className="mb-6 pt-3 rounded bg-gray-200">
@@ -49,18 +114,9 @@ const SignUp = () => {
               </label>
               <input
                 type="password"
-                id="passwordValidation"
+                id="passwordCheck"
                 className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
-              />
-            </div>
-            <div className="mb-6 pt-3 rounded bg-gray-200">
-              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="eMail">
-                E-Mail
-              </label>
-              <input
-                type="email"
-                id="eMail"
-                className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                onChange={changeHandler}
               />
             </div>
             <div className="flex justify-end">
@@ -79,9 +135,11 @@ const SignUp = () => {
             <button
               className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
               type="submit"
+              onClick={submitHandler}
             >
               Sign Up
             </button>
+            <span id="error">{error}</span>
           </form>
         </section>
       </main>

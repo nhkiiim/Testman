@@ -1,7 +1,7 @@
 package com.henh.testman.common.config;
 
 import com.henh.testman.common.auth.JwtAuthenticationFilter;
-import com.henh.testman.common.auth.SsafyUserDetailService;
+import com.henh.testman.common.auth.TestmanUserDetailService;
 import com.henh.testman.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,13 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final SsafyUserDetailService ssafyUserDetailService;
+	private final TestmanUserDetailService testmanUserDetailService;
 
 	private final UserService userService;
 
 	@Autowired
-	public SecurityConfig(SsafyUserDetailService ssafyUserDetailService, UserService userService) {
-		this.ssafyUserDetailService = ssafyUserDetailService;
+	public SecurityConfig(TestmanUserDetailService testmanUserDetailService, UserService userService) {
+		this.testmanUserDetailService = testmanUserDetailService;
 		this.userService = userService;
 	}
 
@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 		daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
 		daoAuthenticationProvider
-				.setUserDetailsService(this.ssafyUserDetailService);
+				.setUserDetailsService(this.testmanUserDetailService);
 		return daoAuthenticationProvider;
 	}
 

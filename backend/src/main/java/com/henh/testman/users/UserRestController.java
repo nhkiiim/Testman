@@ -1,10 +1,16 @@
 package com.henh.testman.users;
 
+
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.JwtTokenUtil;
+import com.henh.testman.common.errors.ExistException;
 import com.henh.testman.users.request.LoginRequest;
+import com.henh.testman.users.request.UserRegistRequest;
 import com.henh.testman.users.response.LoginResponse;
+
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
+import com.henh.testman.users.response.UserDeleteResponse;
+import com.henh.testman.users.response.UserRegistResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +31,13 @@ public class UserRestController {
     }
 
     @PostMapping(path = "login")
-    public ApiResult<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+    public ApiResult<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         return success(
             new LoginResponse(
-                    JwtTokenUtil.getToken(request.getUserId()),
-                    userService.login(request.getUserId(), request.getPassword())
+                    JwtTokenUtil.getToken(loginRequest.getId()),
+                    userService.login(loginRequest)
                         .map(UserDto::new)
-                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + request.getUserId()))
+                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + loginRequest.getId()))
             )
         );
     }
@@ -42,6 +48,27 @@ public class UserRestController {
                 userService.selectUser(authentication.getName())
                         .map(UserDto::new)
                         .orElseThrow(() -> new NotFoundException("Could nof found user for " + authentication.getName()))
+        );
+    }
+
+    @PostMapping(path = "regist")
+    public ApiResult<UserRegistResponse> registUser(@Valid @RequestBody UserRegistRequest userRegistRequest) {
+        return success(
+                new UserRegistResponse(
+                        userService.insertUser(userRegistRequest)
+                                .map(UserDto::new)
+                                .orElseThrow(() -> new ExistException("Exist user " + userRegistRequest.getId()))
+                )
+        );
+    }
+
+    @DeleteMapping
+    public ApiResult<UserDeleteResponse> deleteUser(Authentication authentication) {
+        return success(
+                new UserDeleteResponse(
+                        userService.deleteUser(authentication.getName())
+                                .orElseThrow(() -> new NotFoundException("Could nof found user for " + authentication.getName()))
+                )
         );
     }
 }

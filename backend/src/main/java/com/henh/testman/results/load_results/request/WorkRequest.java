@@ -7,9 +7,13 @@ import lombok.*;
 @ToString
 public class WorkRequest {
 
+    private String userId;
+    
+    // 타임스탬프
+
     private String label;
 
-    private String path;
+    private String address;
 
     private String httpMethod;
 

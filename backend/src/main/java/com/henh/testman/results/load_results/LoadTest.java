@@ -18,7 +18,6 @@ import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
 
 import java.io.File;
-import java.util.Optional;
 
 public class LoadTest {
 
@@ -37,14 +36,15 @@ public class LoadTest {
         JMeterUtils.initLocale();
     }
 
-    private static HTTPSamplerProxy makeSampler(int port, String httpMethod, String label) {
+    private static HTTPSamplerProxy makeSampler(String address, int port, String httpMethod, String label) {
         HTTPSamplerProxy Sampler = new HTTPSamplerProxy();
 
+//        Sampler.setDomain(address);
         Sampler.setDomain("example.com");
         Sampler.setPort(port);
         Sampler.setPath("/");
         Sampler.setMethod(httpMethod);
-        Sampler.setName(label);
+//        Sampler.setName(label); 이거 없애보자 raw에서 제거
         Sampler.setProperty(TestElement.TEST_CLASS, HTTPSamplerProxy.class.getName());
         Sampler.setProperty(TestElement.GUI_CLASS, HttpTestSampleGui.class.getName());
 
@@ -66,7 +66,7 @@ public class LoadTest {
     private static ThreadGroup makeThreadGroup(LoopController loopController, int thread) {
         ThreadGroup threadGroup = new ThreadGroup();
 
-        threadGroup.setName("Example Thread Group");
+        threadGroup.setName("Thread Group");
         threadGroup.setNumThreads(thread);
         threadGroup.setRampUp(1);
         threadGroup.setSamplerController(loopController);
@@ -96,14 +96,10 @@ public class LoadTest {
         return testPlanTree;
     }
 
-    private static void makeCollector(HashTree testPlanTree) {
-        // add Summarizer output to get test progress in stdout like:
+    private static void makeCollector(HashTree testPlanTree, LoadResultRepository loadResultRepository, String userId, String label) {
         Summariser summer = new Summariser(summariserName);
+        MyResultCollector logger = new MyResultCollector(summer, loadResultRepository, userId, label);
 
-        // Store execution results into a .jtl file
-//        String logFile = jmeterHome + slash + "example.jtl";
-        MyResultCollector logger = new MyResultCollector(summer);
-//        logger.setFilename(logFile);
         testPlanTree.add(testPlanTree.getArray()[0], logger);
     }
 
@@ -113,22 +109,18 @@ public class LoadTest {
         jmeter.configure(testPlanTree);
         jmeter.run();
 
-
-        System.out.println("Test completed. See " + jmeterHome + slash + "example.jtl file for results");
-        System.out.println("JMeter .jmx script is available at " + jmeterHome + slash + "example.jmx");
+        System.out.println("Test completed.");
     }
 
-    public static Optional<LoadResult> work(WorkRequest workRequest) {
+    public static void work(WorkRequest workRequest, LoadResultRepository loadResultRepository) {
         initialization();
-        HTTPSamplerProxy sampler = makeSampler(workRequest.getPort(), workRequest.getHttpMethod(), workRequest.getLabel());
+        HTTPSamplerProxy sampler = makeSampler(workRequest.getAddress(), workRequest.getPort(), workRequest.getHttpMethod(), workRequest.getLabel());
         LoopController loopController = makeLoopController(workRequest.getLoop());
         ThreadGroup threadGroup = makeThreadGroup(loopController, workRequest.getThread());
         TestPlan testPlan = makeTestPlan();
         HashTree testPlanTree = makeTestPlanTree(testPlan, threadGroup, sampler);
-        makeCollector(testPlanTree);
+        makeCollector(testPlanTree, loadResultRepository, workRequest.getUserId(), workRequest.getLabel());
         run(testPlanTree);
-
-        return Optional.empty();
     }
 
 }

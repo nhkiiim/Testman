@@ -1,7 +1,5 @@
 package com.henh.testman.results.load_results;
 
-import com.henh.testman.results.load_results_raw.LoadResultRaw;
-import com.henh.testman.results.load_results_summary.LoadResultSummary;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,13 +11,16 @@ import java.util.List;
 @ToString
 public class LoadResultDto {
 
-    private LoadResultSummary loadResultSummary;
+    private String label;
 
-    private List<LoadResultRaw> loadResultRawList;
+    private ResultSummary resultSummary;
+
+    private List<ResultRaw> resultRawList;
 
     public LoadResultDto(LoadResult loadResult) {
-        this.loadResultSummary = loadResult.getLoadResultSummary();
-        this.loadResultRawList = loadResult.getLoadResultRawList();
+        this.label = loadResult.getLabel();
+        this.resultSummary = loadResult.getResultSummary();
+        this.resultRawList = loadResult.getResultRawList();
     }
 
 }

@@ -1,7 +1,6 @@
 package com.henh.testman.results.load_results;
 
-import com.henh.testman.results.load_results_raw.LoadResultRaw;
-import com.henh.testman.results.load_results_summary.LoadResultSummary;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -13,14 +12,21 @@ import java.util.List;
 @Getter
 @Builder
 @ToString
+@AllArgsConstructor
 @RedisHash(value = "loadResult")
 public class LoadResult {
 
     @Id
     private Long seq;
 
-    private LoadResultSummary loadResultSummary;
+    private String userId;
+    
+    // 타임스탬프
 
-    private List<LoadResultRaw> loadResultRawList;
+    private String label;
+
+    private List<ResultRaw> resultRawList;
+
+    private ResultSummary resultSummary;
 
 }

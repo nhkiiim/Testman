@@ -9,6 +9,7 @@ import {
   UserIcon,
 } from "@heroicons/react/solid";
 import logo from "../img/logo.png";
+import logoimg from "../img/logo_img.png";
 
 import { useRouter } from "next/dist/client/router";
 
@@ -29,7 +30,9 @@ const Header = ({ placeholder }) => {
       </div>
 
       {/* middle section */}
-      <div className="flex"></div>
+      <div className="flex items-center relative h-10">
+        {/* <Image src={logoimg} layout="fill" objectFit="contain" objectPosition="center" /> */}
+      </div>
 
       {/* right section */}
       <div className="flex items-center space-x-4 justify-end text-gray-500">

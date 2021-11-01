@@ -1,0 +1,16 @@
+@tailwind components;
+
+@layer components {
+  .mobileDefault {
+    @apply text-gray-700 ml-3 text-lg;
+  }
+  .mobileSelected {
+    @apply text-indigo-500 ml-3 text-lg;
+  }
+  .desktopDefault {
+    @apply cursor-pointer h-full flex items-center text-sm text-gray-800 mr-10 tracking-normal;
+  }
+  .desktopSelected {
+    @apply cursor-pointer h-full flex items-center text-sm text-indigo-700 tracking-normal border-b-2 border-indigo-700;
+  }
+}

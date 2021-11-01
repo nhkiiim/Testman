@@ -1,12 +1,7 @@
 package com.henh.testman.common.config;
 
-<<<<<<< HEAD:backend/src/main/java/com/henh/testman/config/SecurityConfig.java
-import com.henh.testman.auth.JwtAuthenticationFilter;
-import com.henh.testman.auth.TestmanUserDetailService;
-=======
 import com.henh.testman.common.auth.JwtAuthenticationFilter;
-import com.henh.testman.common.auth.SsafyUserDetailService;
->>>>>>> 07c6973acceb65965e63db7d939cb9c18293f590:backend/src/main/java/com/henh/testman/common/config/SecurityConfig.java
+import com.henh.testman.common.auth.TestmanUserDetailService;
 import com.henh.testman.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

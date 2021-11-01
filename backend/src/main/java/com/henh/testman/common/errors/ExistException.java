@@ -1,4 +1,4 @@
-package com.henh.testman.errors;
+package com.henh.testman.common.errors;
 
 public class ExistException extends RuntimeException {
 

@@ -19,9 +19,6 @@ public class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-<<<<<<< HEAD:backend/src/main/java/com/henh/testman/utils/BaseEntity.java
-    Long seq;
-=======
     protected Long seq;
 
     @Override
@@ -31,6 +28,5 @@ public class BaseEntity {
         BaseEntity baseEntity = (BaseEntity) o;
         return Objects.equals(seq, baseEntity.seq);
     }
->>>>>>> 07c6973acceb65965e63db7d939cb9c18293f590:backend/src/main/java/com/henh/testman/common/utils/BaseEntity.java
 
 }

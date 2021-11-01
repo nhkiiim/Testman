@@ -1,8 +1,10 @@
 package com.henh.testman.users;
 
+
+import com.henh.testman.common.errors.NotFoundException;
+import com.henh.testman.common.errors.UnauthorizedException;
+
 import com.henh.testman.errors.ExistException;
-import com.henh.testman.errors.NotFoundException;
-import com.henh.testman.errors.UnauthorizedException;
 import com.henh.testman.users.request.LoginRequest;
 import com.henh.testman.users.request.UserRegistRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;

@@ -20,4 +20,5 @@ public class LoadResultServiceImpl implements LoadResultService {
     public Optional<LoadResult> work(WorkRequest workRequest) {
         return LoadTest.work(workRequest);
     }
+
 }

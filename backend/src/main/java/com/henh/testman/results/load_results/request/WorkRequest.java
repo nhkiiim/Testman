@@ -5,9 +5,9 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class WorkRequest {
+
+    private String label;
 
     private String path;
 
@@ -20,5 +20,9 @@ public class WorkRequest {
     private String headers;
 
     private String authorization;
+
+    private Integer loop;
+
+    private Integer thread;
 
 }

@@ -6,7 +6,6 @@ import com.henh.testman.results.load_results.request.WorkRequest;
 import com.henh.testman.results.load_results.response.WorkResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +25,8 @@ public class LoadResultRestController {
     }
 
     @PostMapping(path = "work")
-    public ApiUtils.ApiResult<WorkResponse> work(@Valid @RequestBody WorkRequest workRequest) {
+    public ApiUtils.ApiResult<WorkResponse> work(@Valid WorkRequest workRequest) {
+        System.out.println(workRequest.toString());
         return success(
             new WorkResponse(
                 loadResultService.work(workRequest)

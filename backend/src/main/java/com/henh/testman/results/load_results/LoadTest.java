@@ -9,7 +9,6 @@ import org.apache.jmeter.control.gui.TestPlanGui;
 import org.apache.jmeter.engine.StandardJMeterEngine;
 import org.apache.jmeter.protocol.http.control.gui.HttpTestSampleGui;
 import org.apache.jmeter.protocol.http.sampler.HTTPSamplerProxy;
-import org.apache.jmeter.reporters.ResultCollector;
 import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jmeter.testelement.TestPlan;
@@ -27,9 +26,10 @@ public class LoadTest {
 
     private static final File jmeterHome = new File("C:/Users/multicampus/Downloads/apache-jmeter-5.4.1");
 
-    private static final File jmeterProperties  = new File(jmeterHome.getPath() + slash + "bin" + slash + "jmeter.properties");;
+    private static final File jmeterProperties  = new File(jmeterHome.getPath() + slash + "bin" + slash + "jmeter.properties");
 
     private static final String summariserName = JMeterUtils.getPropDefault("summariser.name", "summary");
+
 
     private static void initialization() {
         JMeterUtils.setJMeterHome(jmeterHome.getPath());
@@ -37,24 +37,24 @@ public class LoadTest {
         JMeterUtils.initLocale();
     }
 
-    private static HTTPSamplerProxy makeSampler() {
+    private static HTTPSamplerProxy makeSampler(int port, String httpMethod, String label) {
         HTTPSamplerProxy Sampler = new HTTPSamplerProxy();
 
         Sampler.setDomain("example.com");
-        Sampler.setPort(80);
+        Sampler.setPort(port);
         Sampler.setPath("/");
-        Sampler.setMethod("GET");
-        Sampler.setName("Open example.com");
+        Sampler.setMethod(httpMethod);
+        Sampler.setName(label);
         Sampler.setProperty(TestElement.TEST_CLASS, HTTPSamplerProxy.class.getName());
         Sampler.setProperty(TestElement.GUI_CLASS, HttpTestSampleGui.class.getName());
 
         return Sampler;
     }
 
-    private static LoopController makeLoopController() {
+    private static LoopController makeLoopController(int loop) {
         LoopController loopController = new LoopController();
 
-        loopController.setLoops(1);
+        loopController.setLoops(loop);
         loopController.setFirst(true);
         loopController.setProperty(TestElement.TEST_CLASS, LoopController.class.getName());
         loopController.setProperty(TestElement.GUI_CLASS, LoopControlPanel.class.getName());
@@ -63,11 +63,11 @@ public class LoadTest {
         return loopController;
     }
 
-    private static ThreadGroup makeThreadGroup(LoopController loopController) {
+    private static ThreadGroup makeThreadGroup(LoopController loopController, int thread) {
         ThreadGroup threadGroup = new ThreadGroup();
 
         threadGroup.setName("Example Thread Group");
-        threadGroup.setNumThreads(1);
+        threadGroup.setNumThreads(thread);
         threadGroup.setRampUp(1);
         threadGroup.setSamplerController(loopController);
         threadGroup.setProperty(TestElement.TEST_CLASS, ThreadGroup.class.getName());
@@ -96,11 +96,23 @@ public class LoadTest {
         return testPlanTree;
     }
 
+    private static void makeCollector(HashTree testPlanTree) {
+        // add Summarizer output to get test progress in stdout like:
+        Summariser summer = new Summariser(summariserName);
+
+        // Store execution results into a .jtl file
+//        String logFile = jmeterHome + slash + "example.jtl";
+        MyResultCollector logger = new MyResultCollector(summer);
+//        logger.setFilename(logFile);
+        testPlanTree.add(testPlanTree.getArray()[0], logger);
+    }
+
     private static void run(HashTree testPlanTree) {
         StandardJMeterEngine jmeter = new StandardJMeterEngine();
 
         jmeter.configure(testPlanTree);
         jmeter.run();
+
 
         System.out.println("Test completed. See " + jmeterHome + slash + "example.jtl file for results");
         System.out.println("JMeter .jmx script is available at " + jmeterHome + slash + "example.jmx");
@@ -108,21 +120,12 @@ public class LoadTest {
 
     public static Optional<LoadResult> work(WorkRequest workRequest) {
         initialization();
-        HTTPSamplerProxy sampler = makeSampler();
-        LoopController loopController = makeLoopController();
-        ThreadGroup threadGroup = makeThreadGroup(loopController);
+        HTTPSamplerProxy sampler = makeSampler(workRequest.getPort(), workRequest.getHttpMethod(), workRequest.getLabel());
+        LoopController loopController = makeLoopController(workRequest.getLoop());
+        ThreadGroup threadGroup = makeThreadGroup(loopController, workRequest.getThread());
         TestPlan testPlan = makeTestPlan();
         HashTree testPlanTree = makeTestPlanTree(testPlan, threadGroup, sampler);
-
-        // add Summarizer output to get test progress in stdout like:
-        Summariser summer = new Summariser(summariserName);
-
-        // Store execution results into a .jtl file
-        String logFile = jmeterHome + slash + "example.jtl";
-        ResultCollector logger = new ResultCollector(summer);
-        logger.setFilename(logFile);
-        testPlanTree.add(testPlanTree.getArray()[0], logger);
-
+        makeCollector(testPlanTree);
         run(testPlanTree);
 
         return Optional.empty();

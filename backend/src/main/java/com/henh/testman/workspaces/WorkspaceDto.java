@@ -12,8 +12,11 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 public class WorkspaceDto {
+
+    private Long seq;
+
+    private String id;
 
     private String title;
 
@@ -24,5 +27,15 @@ public class WorkspaceDto {
     private String img;
 
     private LocalTime createDate;
+
+    public WorkspaceDto(Workspace workspace) {
+        this.seq = workspace.getSeq();
+        this.id = workspace.getUser().getId();
+        this.title = workspace.getTitle();
+        this.url = workspace.getUrl();
+        this.description = workspace.getDescription();
+        this.img = workspace.getImg();
+        this.createDate = workspace.getCreateDate();
+    }
 
 }

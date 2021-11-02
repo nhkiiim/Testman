@@ -4,6 +4,8 @@ import historyDump from "../dummy/historyDump.json";
 import HistoryList from "../components/HistoryList";
 import CollectionsList from "../components/CollectionsList";
 import { PlusCircleIcon } from "@heroicons/react/solid";
+import AuthKey from "../components/AuthKey"
+import BodyOption from "../components/BodyOption";
 
 const ApiTest = () => {
     const [btnIndex, setBtnIndex] = useState(0);
@@ -61,9 +63,11 @@ const ApiTest = () => {
       paramsList.push(newParam)
       setParams(newParam)
     }
-
+    // 아직 미구현 부분
     const handleParam = index => (e) => {
       const {name, value} = e.target
+      const paramsList = [...params]
+      console.log(paramsList)
     }
 
     const [params, setParams] = useState([{
@@ -73,10 +77,17 @@ const ApiTest = () => {
       paramDescription:''
     }])
 
+    const [bodyOption, setBodyOption] = useState('none')
 
-    // useEffect(() => {
-    //     console.log(tableCnt)
-    //   });
+    const handleBodyOption = (e) => {
+      setBodyOption(e.target.value)
+
+    }
+
+
+    useEffect(() => {
+        console.log(bodyOption)
+      });
 
     return (
         <div>
@@ -235,51 +246,57 @@ const ApiTest = () => {
                             </button>
                         </div>
                         {/* header 입력 부분 */}
-                        {optionBtn=="params"?
-                        <div>
-                          Quary Params
-                          <table className="border-2">
-                            <thead>
-                              <tr>
-                                <th> 
-                                </th>
-                                <th>key</th>
-                                <th>value</th>
-                                <th>description</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {tableCnt && tableCnt.map((item, i) =>(
-                                <tr key={i} onChange={handleParam(i)}>
-                                  <th> 
-                                    <input type="checkbox" name="paramCheckbox"/>
-                                  </th>
-                                  <th>
-                                    <input type="text" name="paramKey"/>
-                                  </th>
-                                  <th>
-                                    <input type="text" name="paramValue"/>
-                                  </th>
-                                  <th>  
-                                    <input type="text" name="paramDescription"/>
-                                  </th>
-                                </tr>
-                              )) }
-                              <tr>
-                                <button onClick={clickPlusBtn}>
-                                  <PlusCircleIcon className="w-8 text-purple-400" />
-                                </button>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        :
-                        // body 부분
-                        <div>
-                            body table
-                        </div>
-                        }
-                    </div>
+                        {function(){
+                          switch (optionBtn){
+                            case "params":
+                              return <div>
+                              Quary Params
+                              <table className="border-2">
+                                <thead>
+                                  <tr>
+                                    <th> 
+                                    </th>
+                                    <th>key</th>
+                                    <th>value</th>
+                                    <th>description</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {tableCnt && tableCnt.map((item, i) =>(
+                                    <tr key={i} onChange={handleParam(i)}>
+                                      <th> 
+                                        <input type="checkbox" name="paramCheckbox"/>
+                                      </th>
+                                      <th>
+                                        <input type="text" name="paramKey"/>
+                                      </th>
+                                      <th>
+                                        <input type="text" name="paramValue"/>
+                                      </th>
+                                      <th>  
+                                        <input type="text" name="paramDescription"/>
+                                      </th>
+                                    </tr>
+                                  )) }
+                                  <tr>
+                                    <button onClick={clickPlusBtn}>
+                                      <PlusCircleIcon className="w-8 text-purple-400" />
+                                    </button>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          case "authorization":
+                            return <div>
+                            <AuthKey/>
+                          </div>
+                          case "body":
+                            return <div>
+                              <BodyOption/>
+                            </div>
+                          }
+                        }()
+                      }
                     <div>
                         Response
                         <div>
@@ -289,6 +306,7 @@ const ApiTest = () => {
                 </div>
             </div>
         </div>
+      </div>
     );
 };
 

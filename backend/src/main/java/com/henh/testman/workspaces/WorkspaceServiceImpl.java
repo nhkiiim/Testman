@@ -85,4 +85,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         return Optional.of(workspace);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Optional<String> deleteWorkspace(Long seq){
+        Workspace workspace = workspaceRepository.findBySeq(seq)
+                .orElseThrow(()-> new NotFoundException("Could not found workspace seq " + seq));
+        workspaceRepository.delete(workspace);
+        return Optional.of(workspace.getTitle());
+    }
+
 }

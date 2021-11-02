@@ -7,7 +7,9 @@ import com.henh.testman.users.UserService;
 import com.henh.testman.workspaces.request.WorkspaceRegistReq;
 import com.henh.testman.workspaces.request.WorkspaceUpdateReq;
 import com.henh.testman.workspaces.response.WorkspaceCountRes;
+import com.henh.testman.workspaces.response.WorkspaceDeleteRes;
 import com.henh.testman.workspaces.response.WorkspaceGetAllRes;
+import org.hibernate.hql.internal.classic.AbstractParameterInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -72,6 +74,16 @@ public class WorkspaceRestController {
                 workspaceService.updateWorkspace(workspaceUpdateReq)
                         .map(WorkspaceDto::new)
                         .orElseThrow(() -> new NotFoundException("Could not found workspace seq "+ workspaceUpdateReq.getSeq()))
+        );
+    }
+
+    @DeleteMapping("{seq}")
+    public ApiResult<WorkspaceDeleteRes> deleteUser(@PathVariable Long seq){
+        return success(
+            new WorkspaceDeleteRes(
+                workspaceService.deleteWorkspace(seq)
+                        .orElseThrow(() -> new NotFoundException("Could not found workspace seq "+ seq))
+            )
         );
     }
 }

@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Workspace extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     private String title;

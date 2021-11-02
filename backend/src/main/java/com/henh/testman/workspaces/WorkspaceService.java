@@ -18,4 +18,5 @@ public interface WorkspaceService {
 
     Optional<Workspace> updateWorkspace(WorkspaceUpdateReq workspaceUpdateReq);
 
+    Optional<String> deleteWorkspace(Long seq);
 }

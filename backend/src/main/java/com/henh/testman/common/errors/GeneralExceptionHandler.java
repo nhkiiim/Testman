@@ -48,6 +48,11 @@ public class GeneralExceptionHandler {
         return newResponse(e, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(ExistException.class)
+    public ResponseEntity<?> handleExistException(Exception e) {
+        return newResponse(e, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler({
             IllegalArgumentException.class,
             IllegalStateException.class,

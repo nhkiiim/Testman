@@ -7,7 +7,7 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -20,7 +20,7 @@ public class LoadResultRaw {
 
     private LoadResultSummary loadResultSummary;
 
-    private LocalTime timeStamp;
+    private LocalDateTime timeStamp;
 
     private Long elapsed;
 

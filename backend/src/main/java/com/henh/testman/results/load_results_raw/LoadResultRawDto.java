@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ public class LoadResultRawDto {
 
     private LoadResultSummary loadResultSummary;
 
-    private LocalTime timeStamp;
+    private LocalDateTime timeStamp;
 
     private Long elapsed;
 

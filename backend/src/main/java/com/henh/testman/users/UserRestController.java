@@ -30,7 +30,7 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    @PostMapping(path = "login")
+    @PostMapping("login")
     public ApiResult<UserLoginRes> login(@Valid @RequestBody UserLoginReq userLoginReq) {
         return success(
             new UserLoginRes(
@@ -42,7 +42,7 @@ public class UserRestController {
         );
     }
 
-    @GetMapping(path = "me")
+    @GetMapping("me")
     public ApiResult<UserDto> me(Authentication authentication) {
         return success(
                 userService.selectUser(authentication.getName())
@@ -51,7 +51,7 @@ public class UserRestController {
         );
     }
 
-    @PostMapping(path = "regist")
+    @PostMapping("regist")
     public ApiResult<UserRegistRes> registUser(@Valid @RequestBody UserRegistReq userRegistReq) {
         return success(
                 new UserRegistRes(

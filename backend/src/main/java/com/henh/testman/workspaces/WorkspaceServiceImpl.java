@@ -10,20 +10,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Service
 public class WorkspaceServiceImpl implements WorkspaceService {
 
-    private final WorkspaceRepository workspaceRepository;
-
-    private final UserRepository userRepository;
+    @Autowired
+    private WorkspaceRepository workspaceRepository;
 
     @Autowired
-    public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository, UserRepository userRepository) {
-        this.workspaceRepository = workspaceRepository;
-        this.userRepository = userRepository;
-    }
+    private WorkspaceRepositorySupport workspaceRepositorySupport;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -45,4 +47,21 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         workspaceRepository.save(workspace);
         return Optional.of(workspace);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Optional<Workspace> selectWorkspace(Long seq) {
+        checkNotNull(seq, "seq must be provided");
+        return workspaceRepository.findBySeq(seq);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<WorkspaceDto> selectWorkspaceById(String id) {
+        checkNotNull(id, "seq must be provided");
+        List<WorkspaceDto> workspaceDtoList = workspaceRepositorySupport.findByUserId(id);
+        if(workspaceDtoList.isEmpty()) throw new NotFoundException("Could not found workspace for "+ id);
+        return workspaceDtoList;
+    }
+
 }

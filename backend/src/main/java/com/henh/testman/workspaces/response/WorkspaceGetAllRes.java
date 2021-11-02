@@ -6,13 +6,14 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
 
 @Getter
 @Setter
 @ToString
 @AllArgsConstructor
-public class WorkspaceRegistRes {
+public class WorkspaceGetAllRes {
 
-    WorkspaceDto workspaceDto;
+    List<WorkspaceDto> workspaceDtos;
 
 }

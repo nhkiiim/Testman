@@ -38,4 +38,13 @@ public class WorkspaceDto {
         this.createDate = workspace.getCreateDate();
     }
 
+    public WorkspaceDto(Long seq, String id, String title, String url, String description, String img, LocalTime createDate) {
+        this.seq = seq;
+        this.id = id;
+        this.title = title;
+        this.url = url;
+        this.description = description;
+        this.img = img;
+        this.createDate = createDate;
+    }
 }

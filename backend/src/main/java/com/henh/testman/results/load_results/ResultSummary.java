@@ -1,12 +1,11 @@
 package com.henh.testman.results.load_results;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class ResultSummary {
 
     private Long numSamples;

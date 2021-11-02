@@ -16,11 +16,11 @@ public class RedisConfig {
     private String host;
 
     @Value("${spring.redis.port}")
-    private int port;
+    private String port;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(host, port);
+        return new LettuceConnectionFactory(host, Integer.parseInt(port));
     }
 
     @Bean

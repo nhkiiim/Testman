@@ -1,13 +1,12 @@
 package com.henh.testman.results.load_results;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.apache.jmeter.samplers.SampleResult;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class ResultRaw {
 
     private Long timeStamp;

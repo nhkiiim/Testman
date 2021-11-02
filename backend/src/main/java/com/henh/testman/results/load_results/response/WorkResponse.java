@@ -1,13 +1,15 @@
 package com.henh.testman.results.load_results.response;
 
 import com.henh.testman.results.load_results.LoadResultDto;
+import lombok.Getter;
 
+@Getter
 public class WorkResponse {
 
-    private final LoadResultDto loadResultDto;
+    private final LoadResultDto loadResult;
 
     public WorkResponse(LoadResultDto loadResultDto) {
-        this.loadResultDto = loadResultDto;
+        this.loadResult = loadResultDto;
     }
 
 }

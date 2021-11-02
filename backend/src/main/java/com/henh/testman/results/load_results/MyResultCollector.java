@@ -57,12 +57,12 @@ public class MyResultCollector extends ResultCollector {
 
         ResultSummary resultSummary = new ResultSummary(mySummariser);
 
-        for (ResultRaw raw : resultRawList) {
-            System.out.println(raw.toString());
-        }
-        System.out.println(resultSummary.toString());
+//        for (ResultRaw raw : resultRawList) {
+//            System.out.println(raw.toString());
+//        }
+//        System.out.println(resultSummary.toString());
 
-        LoadResult temp = loadResultRepository.save(
+        loadResultRepository.save(
                 LoadResult.builder()
                         .userId(userId)
                         .label(label)
@@ -71,8 +71,6 @@ public class MyResultCollector extends ResultCollector {
                         .createAt(creatAt)
                         .build()
         );
-
-        System.out.println(temp.toString());
     }
 
 }

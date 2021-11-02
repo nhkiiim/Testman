@@ -37,15 +37,16 @@ public class LoadTest {
         JMeterUtils.initLocale();
     }
 
-    private static HTTPSamplerProxy makeSampler(String address, int port, String httpMethod, String label) {
+    private static HTTPSamplerProxy makeSampler(String address, int port, String httpMethod) {
         HTTPSamplerProxy Sampler = new HTTPSamplerProxy();
 
-//        Sampler.setDomain(address);
-        Sampler.setDomain("example.com");
+        Sampler.setDomain(address);
         Sampler.setPort(port);
         Sampler.setPath("/");
         Sampler.setMethod(httpMethod);
-//        Sampler.setName(label); 이거 없애보자 raw에서 제거
+//        Sampler.setPostBodyRaw();
+//        Sampler.setHeaderManager();
+//        Sampler.setAuthManager();
         Sampler.setProperty(TestElement.TEST_CLASS, HTTPSamplerProxy.class.getName());
         Sampler.setProperty(TestElement.GUI_CLASS, HttpTestSampleGui.class.getName());
 
@@ -115,7 +116,7 @@ public class LoadTest {
 
     public static void work(WorkRequest workRequest, LoadResultRepository loadResultRepository) {
         initialization();
-        HTTPSamplerProxy sampler = makeSampler(workRequest.getAddress(), workRequest.getPort(), workRequest.getHttpMethod(), workRequest.getLabel());
+        HTTPSamplerProxy sampler = makeSampler(workRequest.getAddress(), workRequest.getPort(), workRequest.getHttpMethod());
         LoopController loopController = makeLoopController(workRequest.getLoop());
         ThreadGroup threadGroup = makeThreadGroup(loopController, workRequest.getThread());
         TestPlan testPlan = makeTestPlan();

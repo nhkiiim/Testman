@@ -1,0 +1,10 @@
+version: '3' 
+services: 
+    backend: 
+        build: ./backend 
+        image: testman:latest
+        ports: 
+            - "8080:8080"
+        # volumes:
+        #     - /home/ubuntu/images/profile:/static/image/profile
+        #     - /home/ubuntu/images/diary:/static/image/diary

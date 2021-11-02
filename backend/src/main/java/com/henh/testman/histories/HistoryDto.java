@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -29,7 +29,7 @@ public class HistoryDto {
 
     private String authorization;
 
-    private LocalTime creatDate;
+    private LocalDateTime creatDate;
 
     public HistoryDto(History history) {
         this.workspace = history.getWorkspace();

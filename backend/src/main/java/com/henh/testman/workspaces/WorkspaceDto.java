@@ -1,13 +1,10 @@
 package com.henh.testman.workspaces;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -26,7 +23,7 @@ public class WorkspaceDto {
 
     private String img;
 
-    private LocalTime createDate;
+    private LocalDateTime createDate;
 
     public WorkspaceDto(Workspace workspace) {
         this.seq = workspace.getSeq();
@@ -38,7 +35,7 @@ public class WorkspaceDto {
         this.createDate = workspace.getCreateDate();
     }
 
-    public WorkspaceDto(Long seq, String id, String title, String url, String description, String img, LocalTime createDate) {
+    public WorkspaceDto(Long seq, String id, String title, String url, String description, String img, LocalDateTime createDate) {
         this.seq = seq;
         this.id = id;
         this.title = title;

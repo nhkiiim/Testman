@@ -5,10 +5,11 @@ import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.users.UserService;
 import com.henh.testman.workspaces.request.WorkspaceRegistReq;
+import com.henh.testman.workspaces.request.WorkspaceUpdateReq;
+import com.henh.testman.workspaces.response.WorkspaceCountRes;
 import com.henh.testman.workspaces.response.WorkspaceGetAllRes;
-import com.henh.testman.workspaces.response.WorkspaceGetRes;
-import com.henh.testman.workspaces.response.WorkspaceRegistRes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,34 +31,47 @@ public class WorkspaceRestController {
     }
 
     @PostMapping("regist")
-    public ApiResult<WorkspaceRegistRes> registWorkspace(@Valid @RequestBody WorkspaceRegistReq workspaceRegistReq) {
+    public ApiResult<WorkspaceDto> registWorkspace(@Valid @RequestBody WorkspaceRegistReq workspaceRegistReq, Authentication authentication) {
         return success(
-                new WorkspaceRegistRes(
-                        workspaceService.insertWorkspace(workspaceRegistReq)
-                                .map(WorkspaceDto::new)
-                                .orElseThrow(() -> new ExistException("Exist title " + workspaceRegistReq.getTitle()))
-                )
+                workspaceService.insertWorkspace(workspaceRegistReq, authentication.getName())
+                        .map(WorkspaceDto::new)
+                        .orElseThrow(() -> new ExistException("Exist title " + workspaceRegistReq.getTitle()))
         );
     }
 
-    @GetMapping("regist/{seq}")
-    public ApiResult<WorkspaceGetRes> getWorkspace(Long seq) {
+    @GetMapping("{seq}")
+    public ApiResult<WorkspaceDto> getWorkspace(@PathVariable Long seq) {
         return success(
-                new WorkspaceGetRes(
-                        workspaceService.selectWorkspace(seq)
-                                .map(WorkspaceDto::new)
-                                .orElseThrow(() -> new NotFoundException("Could not found seq " + seq))
-                )
+                workspaceService.selectWorkspace(seq)
+                        .map(WorkspaceDto::new)
+                        .orElseThrow(() -> new NotFoundException("Could not found seq " + seq))
         );
     }
 
-    @GetMapping("regist/{id}")
-    public ApiResult<WorkspaceGetAllRes> getAllWorkspaceByUser(String id) {
+    @GetMapping
+    public ApiResult<WorkspaceGetAllRes> getAllWorkspaceByUser(Authentication authentication) {
         return success(
                 new WorkspaceGetAllRes(
-                        workspaceService.selectWorkspaceById(id)
+                        workspaceService.selectWorkspaceById(authentication.getName())
                 )
         );
     }
 
+    @GetMapping("count")
+    public ApiResult<WorkspaceCountRes> countWorkspaceByUser(Authentication authentication) {
+        return success(
+                new WorkspaceCountRes(
+                        workspaceService.countWorkspaceById(authentication.getName())
+                )
+        );
+    }
+
+    @PatchMapping
+    public ApiResult<WorkspaceDto> countWorkspaceByUser(@RequestBody WorkspaceUpdateReq workspaceUpdateReq) {
+        return success(
+                workspaceService.updateWorkspace(workspaceUpdateReq)
+                        .map(WorkspaceDto::new)
+                        .orElseThrow(() -> new NotFoundException("Could not found workspace seq "+ workspaceUpdateReq.getSeq()))
+        );
+    }
 }

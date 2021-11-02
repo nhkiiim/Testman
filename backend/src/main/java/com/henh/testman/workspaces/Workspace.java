@@ -10,7 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -32,6 +32,6 @@ public class Workspace extends BaseEntity {
 
     private String img;
 
-    private LocalTime createDate;
+    private LocalDateTime createDate;
 
 }

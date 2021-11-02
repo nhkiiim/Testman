@@ -24,6 +24,7 @@ public class WorkspaceRepositorySupport {
                 .select(Projections.constructor(WorkspaceDto.class,qWorkspace.seq, qWorkspace.user.id, qWorkspace.title,
                         qWorkspace.url, qWorkspace.description, qWorkspace.img, qWorkspace.createDate))
                 .from(qWorkspace)
+                .where(qWorkspace.user.id.eq(id))
                 .fetch();
         return workspaceDtoList;
     }

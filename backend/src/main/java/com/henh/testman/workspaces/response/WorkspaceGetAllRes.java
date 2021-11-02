@@ -14,6 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class WorkspaceGetAllRes {
 
-    List<WorkspaceDto> workspaceDtos;
+    List<WorkspaceDto> workspaceDtoList;
 
 }

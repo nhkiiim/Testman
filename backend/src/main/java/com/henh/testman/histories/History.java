@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -34,7 +34,7 @@ public class History extends BaseEntity {
 
     private String authorization;
 
-    private LocalTime creatDate;
+    private LocalDateTime creatDate;
 
     @Override
     public String toString() {

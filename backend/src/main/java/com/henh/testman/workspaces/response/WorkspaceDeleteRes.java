@@ -1,6 +1,5 @@
-package com.henh.testman.users.response;
+package com.henh.testman.workspaces.response;
 
-import com.henh.testman.users.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,8 +9,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-public class UserRegistResponse {
+public class WorkspaceDeleteRes {
 
-    private final UserDto user;
+    String title;
 
 }

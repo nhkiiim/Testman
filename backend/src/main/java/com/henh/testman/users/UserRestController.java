@@ -4,13 +4,13 @@ package com.henh.testman.users;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.JwtTokenUtil;
 import com.henh.testman.common.errors.ExistException;
-import com.henh.testman.users.request.LoginRequest;
-import com.henh.testman.users.request.UserRegistRequest;
-import com.henh.testman.users.response.LoginResponse;
+import com.henh.testman.users.request.UserLoginReq;
+import com.henh.testman.users.request.UserRegistReq;
+import com.henh.testman.users.response.UserLoginRes;
 
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
-import com.henh.testman.users.response.UserDeleteResponse;
-import com.henh.testman.users.response.UserRegistResponse;
+import com.henh.testman.users.response.UserDeleteRes;
+import com.henh.testman.users.response.UserRegistRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -30,19 +30,19 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    @PostMapping(path = "login")
-    public ApiResult<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
+    @PostMapping("login")
+    public ApiResult<UserLoginRes> login(@Valid @RequestBody UserLoginReq userLoginReq) {
         return success(
-            new LoginResponse(
-                    JwtTokenUtil.getToken(loginRequest.getId()),
-                    userService.login(loginRequest)
+            new UserLoginRes(
+                    JwtTokenUtil.getToken(userLoginReq.getId()),
+                    userService.login(userLoginReq)
                         .map(UserDto::new)
-                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + loginRequest.getId()))
+                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + userLoginReq.getId()))
             )
         );
     }
 
-    @GetMapping(path = "me")
+    @GetMapping("me")
     public ApiResult<UserDto> me(Authentication authentication) {
         return success(
                 userService.selectUser(authentication.getName())
@@ -51,21 +51,21 @@ public class UserRestController {
         );
     }
 
-    @PostMapping(path = "regist")
-    public ApiResult<UserRegistResponse> registUser(@Valid @RequestBody UserRegistRequest userRegistRequest) {
+    @PostMapping("regist")
+    public ApiResult<UserRegistRes> registUser(@Valid @RequestBody UserRegistReq userRegistReq) {
         return success(
-                new UserRegistResponse(
-                        userService.insertUser(userRegistRequest)
+                new UserRegistRes(
+                        userService.insertUser(userRegistReq)
                                 .map(UserDto::new)
-                                .orElseThrow(() -> new ExistException("Exist user " + userRegistRequest.getId()))
+                                .orElseThrow(() -> new ExistException("Exist user " + userRegistReq.getId()))
                 )
         );
     }
 
     @DeleteMapping
-    public ApiResult<UserDeleteResponse> deleteUser(Authentication authentication) {
+    public ApiResult<UserDeleteRes> deleteUser(Authentication authentication) {
         return success(
-                new UserDeleteResponse(
+                new UserDeleteRes(
                         userService.deleteUser(authentication.getName())
                                 .orElseThrow(() -> new NotFoundException("Could nof found user for " + authentication.getName()))
                 )

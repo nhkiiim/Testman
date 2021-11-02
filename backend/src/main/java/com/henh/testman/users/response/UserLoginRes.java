@@ -1,5 +1,6 @@
-package com.henh.testman.users;
+package com.henh.testman.users.response;
 
+import com.henh.testman.users.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,15 +11,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Getter
 @Setter
 @ToString
-public class UserDto {
+@AllArgsConstructor
+public class UserLoginRes {
 
-    private String id;
+    private final String token;
 
-    private String email;
-
-    public UserDto(User user) {
-        this.id = user.getId();
-        this.email = user.getEmail();
-    }
+    private final UserDto user;
 
 }

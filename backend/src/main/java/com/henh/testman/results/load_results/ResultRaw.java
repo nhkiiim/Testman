@@ -21,7 +21,7 @@ public class ResultRaw {
 
     private String dataType;
 
-    private boolean success;
+    private Boolean success;
 
     private String failureMessage;
 

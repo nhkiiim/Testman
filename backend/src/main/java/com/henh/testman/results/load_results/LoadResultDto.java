@@ -12,15 +12,15 @@ import java.util.List;
 @ToString
 public class LoadResultDto {
 
-    private String userId;
+    private final String userId;
 
-    private String label;
+    private final String label;
 
-    private ResultSummary resultSummary;
+    private final ResultSummary resultSummary;
 
-    private List<ResultRaw> resultRawList;
+    private final List<ResultRaw> resultRawList;
 
-    private LocalDateTime createAt;
+    private final LocalDateTime createAt;
 
     public LoadResultDto(LoadResult loadResult) {
         this.userId = loadResult.getUserId();

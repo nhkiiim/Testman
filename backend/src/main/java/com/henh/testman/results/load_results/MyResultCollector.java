@@ -19,12 +19,14 @@ public class MyResultCollector extends ResultCollector {
 
     private final LocalDateTime creatAt;
 
-    private final List<ResultRaw> resultRawList = new ArrayList<>();
+    private final List<ResultRaw> resultRawList;
 
-    private final MySummariser mySummariser = new MySummariser();
+    private final MySummariser mySummariser;
 
     public MyResultCollector(Summariser summariser, LoadResultRepository loadResultRepository, String userId, String label, LocalDateTime createAt) {
         super(summariser);
+        resultRawList = new ArrayList<>();
+        mySummariser = new MySummariser();
         this.loadResultRepository = loadResultRepository;
         this.userId = userId;
         this.label = label;
@@ -56,11 +58,6 @@ public class MyResultCollector extends ResultCollector {
         mySummariser.setEndTime();
 
         ResultSummary resultSummary = new ResultSummary(mySummariser);
-
-//        for (ResultRaw raw : resultRawList) {
-//            System.out.println(raw.toString());
-//        }
-//        System.out.println(resultSummary.toString());
 
         loadResultRepository.save(
                 LoadResult.builder()

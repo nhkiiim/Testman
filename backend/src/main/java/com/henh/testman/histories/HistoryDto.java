@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -14,8 +15,6 @@ import java.time.LocalTime;
 public class HistoryDto {
 
     private Workspace workspace;
-
-    private Collection collection;
 
     private String path;
 
@@ -29,11 +28,10 @@ public class HistoryDto {
 
     private String authorization;
 
-    private LocalTime creatDate;
+    private LocalDateTime creatDate;
 
     public HistoryDto(History history) {
         this.workspace = history.getWorkspace();
-        this.collection = history.getCollection();
         this.path = history.getPath();
         this.httpMethod = history.getHttpMethod();
         this.port = history.getPort();
@@ -47,7 +45,6 @@ public class HistoryDto {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("workspace", workspace)
-                .append("collection", collection)
                 .append("path", path)
                 .append("httpMethod", httpMethod)
                 .append("port", port)

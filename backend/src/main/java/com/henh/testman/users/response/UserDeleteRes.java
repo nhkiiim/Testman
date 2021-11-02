@@ -9,7 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-public class UserDeleteResponse {
+public class UserDeleteRes {
 
     private String id;
 

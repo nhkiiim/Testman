@@ -5,8 +5,8 @@ import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.errors.UnauthorizedException;
 
 import com.henh.testman.common.errors.ExistException;
-import com.henh.testman.users.request.LoginRequest;
-import com.henh.testman.users.request.UserRegistRequest;
+import com.henh.testman.users.request.UserLoginReq;
+import com.henh.testman.users.request.UserRegistReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,27 +32,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Optional<User> insertUser(UserRegistRequest userRegistRequest) {
-        Optional<User> checkUser = userRepository.findById(userRegistRequest.getId());
-        if(checkUser.isPresent()) throw new ExistException("exist value");
+    public Optional<User> insertUser(UserRegistReq userRegistReq) {
+        Optional<User> checkUser = userRepository.findById(userRegistReq.getId());
+        if(checkUser.isPresent()) throw new ExistException("Exist id");
 
         User user = User.builder()
-                .id(userRegistRequest.getId())
-                .password(passwordEncoder.encode(userRegistRequest.getPassword()))
-                .email(userRegistRequest.getEmail())
+                .id(userRegistReq.getId())
+                .password(passwordEncoder.encode(userRegistReq.getPassword()))
+                .email(userRegistReq.getEmail())
                 .build();
-        System.out.println(userRepository.save(user));
-
+        userRepository.save(user);
         return Optional.of(user);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Optional<User> login(LoginRequest loginRequest) {
-        User user = userRepository.findById(loginRequest.getId())
-                .orElseThrow(() -> new NotFoundException("Could not found user for " + loginRequest.getId()));
+    public Optional<User> login(UserLoginReq userLoginReq) {
+        User user = userRepository.findById(userLoginReq.getId())
+                .orElseThrow(() -> new NotFoundException("Could not found user for " + userLoginReq.getId()));
 
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(userLoginReq.getPassword(), user.getPassword())) {
             throw new UnauthorizedException("passwords do not match");
         }
 

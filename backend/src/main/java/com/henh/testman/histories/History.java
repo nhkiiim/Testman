@@ -19,9 +19,6 @@ public class History extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Workspace workspace;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Collection collection;
-
     private String path;
 
     private String httpMethod;
@@ -41,7 +38,6 @@ public class History extends BaseEntity {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("seq", seq)
                 .append("workspace", workspace)
-                .append("collection", collection)
                 .append("path", path)
                 .append("httpMethod", httpMethod)
                 .append("port", port)

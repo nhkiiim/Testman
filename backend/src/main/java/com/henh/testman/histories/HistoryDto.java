@@ -16,8 +16,6 @@ public class HistoryDto {
 
     private Workspace workspace;
 
-    private Collection collection;
-
     private String path;
 
     private String httpMethod;
@@ -34,7 +32,6 @@ public class HistoryDto {
 
     public HistoryDto(History history) {
         this.workspace = history.getWorkspace();
-        this.collection = history.getCollection();
         this.path = history.getPath();
         this.httpMethod = history.getHttpMethod();
         this.port = history.getPort();
@@ -48,7 +45,6 @@ public class HistoryDto {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("workspace", workspace)
-                .append("collection", collection)
                 .append("path", path)
                 .append("httpMethod", httpMethod)
                 .append("port", port)

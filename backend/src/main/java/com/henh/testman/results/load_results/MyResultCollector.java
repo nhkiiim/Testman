@@ -5,6 +5,7 @@ import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.samplers.SampleEvent;
 import org.apache.jmeter.samplers.SampleResult;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,15 +17,18 @@ public class MyResultCollector extends ResultCollector {
 
     private final String label;
 
+    private final LocalDateTime creatAt;
+
     private final List<ResultRaw> resultRawList = new ArrayList<>();
 
     private final MySummariser mySummariser = new MySummariser();
 
-    public MyResultCollector(Summariser summariser, LoadResultRepository loadResultRepository, String userId, String label) {
+    public MyResultCollector(Summariser summariser, LoadResultRepository loadResultRepository, String userId, String label, LocalDateTime createAt) {
         super(summariser);
         this.loadResultRepository = loadResultRepository;
         this.userId = userId;
         this.label = label;
+        this.creatAt = createAt;
     }
 
     @Override
@@ -58,14 +62,17 @@ public class MyResultCollector extends ResultCollector {
         }
         System.out.println(resultSummary.toString());
 
-        loadResultRepository.save(
+        LoadResult temp = loadResultRepository.save(
                 LoadResult.builder()
                         .userId(userId)
                         .label(label)
                         .resultRawList(resultRawList)
                         .resultSummary(resultSummary)
+                        .createAt(creatAt)
                         .build()
         );
+
+        System.out.println(temp.toString());
     }
 
 }

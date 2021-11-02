@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -17,16 +18,16 @@ import java.util.List;
 public class LoadResult {
 
     @Id
-    private Long seq;
+    private final Long seq;
 
-    private String userId;
-    
-    // 타임스탬프
+    private final String userId;
 
-    private String label;
+    private final String label;
 
-    private List<ResultRaw> resultRawList;
+    private final List<ResultRaw> resultRawList;
 
-    private ResultSummary resultSummary;
+    private final ResultSummary resultSummary;
+
+    private final LocalDateTime createAt;
 
 }

@@ -18,6 +18,7 @@ import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
 
 import java.io.File;
+import java.time.LocalDateTime;
 
 public class LoadTest {
 
@@ -96,9 +97,9 @@ public class LoadTest {
         return testPlanTree;
     }
 
-    private static void makeCollector(HashTree testPlanTree, LoadResultRepository loadResultRepository, String userId, String label) {
+    private static void makeCollector(HashTree testPlanTree, LoadResultRepository loadResultRepository, String userId, String label, LocalDateTime createAt) {
         Summariser summer = new Summariser(summariserName);
-        MyResultCollector logger = new MyResultCollector(summer, loadResultRepository, userId, label);
+        MyResultCollector logger = new MyResultCollector(summer, loadResultRepository, userId, label, createAt);
 
         testPlanTree.add(testPlanTree.getArray()[0], logger);
     }
@@ -119,7 +120,7 @@ public class LoadTest {
         ThreadGroup threadGroup = makeThreadGroup(loopController, workRequest.getThread());
         TestPlan testPlan = makeTestPlan();
         HashTree testPlanTree = makeTestPlanTree(testPlan, threadGroup, sampler);
-        makeCollector(testPlanTree, loadResultRepository, workRequest.getUserId(), workRequest.getLabel());
+        makeCollector(testPlanTree, loadResultRepository, workRequest.getUserId(), workRequest.getLabel(), workRequest.getCreateAt());
         run(testPlanTree);
     }
 

@@ -19,8 +19,7 @@ public class LoadResultServiceImpl implements LoadResultService {
     @Override
     public Optional<LoadResult> work(WorkRequest workRequest) {
         LoadTest.work(workRequest, loadResultRepository);
-        // 유저아이디 + 타임스탬프로 조회
-        return loadResultRepository.findById(1l);
+        return loadResultRepository.findByUserIdAndCreateAt(workRequest.getUserId(), workRequest.getCreateAt());
     }
 
 }

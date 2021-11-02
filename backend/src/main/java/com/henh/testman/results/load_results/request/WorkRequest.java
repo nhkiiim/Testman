@@ -1,6 +1,10 @@
 package com.henh.testman.results.load_results.request;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -9,8 +13,6 @@ public class WorkRequest {
 
     private String userId;
     
-    // 타임스탬프
-
     private String label;
 
     private String address;
@@ -28,5 +30,7 @@ public class WorkRequest {
     private Integer loop;
 
     private Integer thread;
+
+    private final LocalDateTime createAt = LocalDateTime.now();
 
 }

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class WorkRequest {
+public class WorkReq {
 
     private String userId;
     

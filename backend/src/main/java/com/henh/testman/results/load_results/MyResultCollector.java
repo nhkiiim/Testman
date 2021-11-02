@@ -25,8 +25,8 @@ public class MyResultCollector extends ResultCollector {
 
     public MyResultCollector(Summariser summariser, LoadResultRepository loadResultRepository, String userId, String label, LocalDateTime createAt) {
         super(summariser);
-        resultRawList = new ArrayList<>();
-        mySummariser = new MySummariser();
+        this.resultRawList = new ArrayList<>();
+        this.mySummariser = new MySummariser();
         this.loadResultRepository = loadResultRepository;
         this.userId = userId;
         this.label = label;

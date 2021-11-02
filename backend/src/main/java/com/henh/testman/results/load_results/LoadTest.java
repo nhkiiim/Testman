@@ -1,6 +1,6 @@
 package com.henh.testman.results.load_results;
 
-import com.henh.testman.results.load_results.request.WorkRequest;
+import com.henh.testman.results.load_results.request.WorkReq;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.control.LoopController;
@@ -29,7 +29,6 @@ public class LoadTest {
     private static final File jmeterProperties  = new File(jmeterHome.getPath() + slash + "bin" + slash + "jmeter.properties");
 
     private static final String summariserName = JMeterUtils.getPropDefault("summariser.name", "summary");
-
 
     private static void initialization() {
         JMeterUtils.setJMeterHome(jmeterHome.getPath());
@@ -114,14 +113,14 @@ public class LoadTest {
         System.out.println("Test completed.");
     }
 
-    public static void work(WorkRequest workRequest, LoadResultRepository loadResultRepository) {
+    public static void work(WorkReq workReq, LoadResultRepository loadResultRepository) {
         initialization();
-        HTTPSamplerProxy sampler = makeSampler(workRequest.getAddress(), workRequest.getPort(), workRequest.getHttpMethod());
-        LoopController loopController = makeLoopController(workRequest.getLoop());
-        ThreadGroup threadGroup = makeThreadGroup(loopController, workRequest.getThread());
+        HTTPSamplerProxy sampler = makeSampler(workReq.getAddress(), workReq.getPort(), workReq.getHttpMethod());
+        LoopController loopController = makeLoopController(workReq.getLoop());
+        ThreadGroup threadGroup = makeThreadGroup(loopController, workReq.getThread());
         TestPlan testPlan = makeTestPlan();
         HashTree testPlanTree = makeTestPlanTree(testPlan, threadGroup, sampler);
-        makeCollector(testPlanTree, loadResultRepository, workRequest.getUserId(), workRequest.getLabel(), workRequest.getCreateAt());
+        makeCollector(testPlanTree, loadResultRepository, workReq.getUserId(), workReq.getLabel(), workReq.getCreateAt());
         run(testPlanTree);
     }
 

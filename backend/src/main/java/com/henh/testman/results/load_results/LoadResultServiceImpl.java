@@ -1,6 +1,6 @@
 package com.henh.testman.results.load_results;
 
-import com.henh.testman.results.load_results.request.WorkRequest;
+import com.henh.testman.results.load_results.request.WorkReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +17,9 @@ public class LoadResultServiceImpl implements LoadResultService {
     }
 
     @Override
-    public Optional<LoadResult> work(WorkRequest workRequest) {
-        LoadTest.work(workRequest, loadResultRepository);
-        return loadResultRepository.findByUserIdAndCreateAt(workRequest.getUserId(), workRequest.getCreateAt());
+    public Optional<LoadResult> work(WorkReq workReq) {
+        LoadTest.work(workReq, loadResultRepository);
+        return loadResultRepository.findByUserIdAndCreateAt(workReq.getUserId(), workReq.getCreateAt());
     }
 
 }

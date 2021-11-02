@@ -2,8 +2,8 @@ package com.henh.testman.results.load_results;
 
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils;
-import com.henh.testman.results.load_results.request.WorkRequest;
-import com.henh.testman.results.load_results.response.WorkResponse;
+import com.henh.testman.results.load_results.request.WorkReq;
+import com.henh.testman.results.load_results.response.WorkRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +25,11 @@ public class LoadResultRestController {
     }
 
     @PostMapping(path = "work")
-    public ApiUtils.ApiResult<WorkResponse> work(@Valid WorkRequest workRequest) {
-        System.out.println(workRequest.toString());
+    public ApiUtils.ApiResult<WorkRes> work(@Valid WorkReq workReq) {
+        System.out.println(workReq.toString());
         return success(
-            new WorkResponse(
-                loadResultService.work(workRequest)
+            new WorkRes(
+                loadResultService.work(workReq)
                     .map(LoadResultDto::new)
                     .orElseThrow(() -> new NotFoundException("fail work"))
             )

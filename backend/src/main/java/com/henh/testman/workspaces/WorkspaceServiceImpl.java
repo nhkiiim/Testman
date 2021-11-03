@@ -19,14 +19,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Service
 public class WorkspaceServiceImpl implements WorkspaceService {
 
-    @Autowired
-    private WorkspaceRepository workspaceRepository;
+    private final WorkspaceRepository workspaceRepository;
+
+    private final WorkspaceRepositorySupport workspaceRepositorySupport;
+
+    private final UserRepository userRepository;
 
     @Autowired
-    private WorkspaceRepositorySupport workspaceRepositorySupport;
-
-    @Autowired
-    private UserRepository userRepository;
+    public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository,
+                                WorkspaceRepositorySupport workspaceRepositorySupport, UserRepository userRepository){
+        this.workspaceRepository=workspaceRepository;
+        this.workspaceRepositorySupport=workspaceRepositorySupport;
+        this.userRepository=userRepository;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

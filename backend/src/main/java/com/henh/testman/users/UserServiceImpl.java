@@ -7,6 +7,7 @@ import com.henh.testman.common.errors.UnauthorizedException;
 import com.henh.testman.common.errors.ExistException;
 import com.henh.testman.users.request.UserLoginReq;
 import com.henh.testman.users.request.UserRegistReq;
+import com.henh.testman.users.request.UserUpdateReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -72,6 +73,17 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException("Could not found user for " + userId));
         userRepository.delete(user);
         return Optional.of(user.getUserId());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Optional<User> updateUser(UserUpdateReq userUpdateReq, String userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found user for " + userId));
+        user.setEmail(userUpdateReq.getEmail());
+        user.setPassword(passwordEncoder.encode(userUpdateReq.getPassword()));
+        userRepository.save(user);
+        return Optional.of(user);
     }
 
 }

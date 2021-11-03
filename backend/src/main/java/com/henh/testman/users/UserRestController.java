@@ -6,11 +6,11 @@ import com.henh.testman.common.utils.JwtTokenUtil;
 import com.henh.testman.common.errors.ExistException;
 import com.henh.testman.users.request.UserLoginReq;
 import com.henh.testman.users.request.UserRegistReq;
+import com.henh.testman.users.request.UserUpdateReq;
 import com.henh.testman.users.response.UserLoginRes;
 
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.users.response.UserDeleteRes;
-import com.henh.testman.users.response.UserRegistRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -52,13 +52,12 @@ public class UserRestController {
     }
 
     @PostMapping("regist")
-    public ApiResult<UserRegistRes> registUser(@Valid @RequestBody UserRegistReq userRegistReq) {
+    public ApiResult<UserDto> registUser(@Valid @RequestBody UserRegistReq userRegistReq) {
         return success(
-                new UserRegistRes(
-                        userService.insertUser(userRegistReq)
-                                .map(UserDto::new)
-                                .orElseThrow(() -> new ExistException("Exist user " + userRegistReq.getUserId()))
-                )
+                userService.insertUser(userRegistReq)
+                        .map(UserDto::new)
+                        .orElseThrow(() -> new ExistException("Exist user " + userRegistReq.getUserId()))
+
         );
     }
 
@@ -69,6 +68,15 @@ public class UserRestController {
                         userService.deleteUser(authentication.getName())
                                 .orElseThrow(() -> new NotFoundException("Could nof found user for " + authentication.getName()))
                 )
+        );
+    }
+
+    @PatchMapping
+    public ApiResult<UserDto> updateUser(@RequestBody UserUpdateReq updateReq, Authentication authentication){
+        return success(
+                userService.updateUser(updateReq, authentication.getName())
+                        .map(UserDto::new)
+                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + authentication.getName()))
         );
     }
 }

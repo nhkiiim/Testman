@@ -2,13 +2,13 @@ FROM java:8
 
 LABEL maintainer="lsyeup1206@naver.com"
 
-VOLUME /tmp
+COPY . .
 
 EXPOSE 8080
 
-ARG JAR_FILE=./build/libs/testman-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=build/libs/testman-0.0.1-SNAPSHOT.jar
 
-COPY ${JAR_FILE} testman.jar
+ADD ${JAR_FILE} testman.jar
 
 ENTRYPOINT [ "java", "-jar", "testman.jar" ]
 

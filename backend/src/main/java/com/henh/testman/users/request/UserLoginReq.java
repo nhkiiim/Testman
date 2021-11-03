@@ -15,8 +15,8 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class UserLoginReq {
 
-    @NotBlank(message = "id must be provided")
-    private String id;
+    @NotBlank(message = "Id must be provided")
+    private String userId;
 
     @NotBlank(message = "password must be provided")
     private String password;

@@ -21,10 +21,10 @@ public class WorkspaceRepositorySupport {
 
     List<WorkspaceDto> findByUserId(String id){
         List<WorkspaceDto> workspaceDtoList = jpaQueryFactory
-                .select(Projections.constructor(WorkspaceDto.class, qWorkspace.seq, qWorkspace.user.id, qWorkspace.title,
+                .select(Projections.constructor(WorkspaceDto.class,qWorkspace.seq, qWorkspace.user.userId, qWorkspace.title,
                         qWorkspace.url, qWorkspace.description, qWorkspace.img, qWorkspace.createDate))
                 .from(qWorkspace)
-                .where(qWorkspace.user.id.eq(id))
+                .where(qWorkspace.user.userId.eq(id))
                 .fetch();
         return workspaceDtoList;
     }

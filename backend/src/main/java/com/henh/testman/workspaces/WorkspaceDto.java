@@ -13,7 +13,7 @@ public class WorkspaceDto {
 
     private Long seq;
 
-    private String id;
+    private String userId;
 
     private String title;
 
@@ -27,7 +27,7 @@ public class WorkspaceDto {
 
     public WorkspaceDto(Workspace workspace) {
         this.seq = workspace.getSeq();
-        this.id = workspace.getUser().getId();
+        this.userId = workspace.getUser().getUserId();
         this.title = workspace.getTitle();
         this.url = workspace.getUrl();
         this.description = workspace.getDescription();
@@ -37,7 +37,7 @@ public class WorkspaceDto {
 
     public WorkspaceDto(Long seq, String id, String title, String url, String description, String img, LocalDateTime createDate) {
         this.seq = seq;
-        this.id = id;
+        this.userId = id;
         this.title = title;
         this.url = url;
         this.description = description;

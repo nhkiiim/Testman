@@ -11,8 +11,8 @@ public interface UserService {
 
     Optional<User> login(UserLoginReq userLoginReq);
 
-    Optional<User> selectUser(String id);
+    Optional<User> selectUser(String UserId);
 
-    Optional<String> deleteUser(String id);
+    Optional<String> deleteUser(String UserId);
 
 }

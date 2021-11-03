@@ -34,10 +34,10 @@ public class UserRestController {
     public ApiResult<UserLoginRes> login(@Valid @RequestBody UserLoginReq userLoginReq) {
         return success(
             new UserLoginRes(
-                    JwtTokenUtil.getToken(userLoginReq.getId()),
+                    JwtTokenUtil.getToken(userLoginReq.getUserId()),
                     userService.login(userLoginReq)
                         .map(UserDto::new)
-                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + userLoginReq.getId()))
+                        .orElseThrow(() -> new NotFoundException("Could nof found user for " + userLoginReq.getUserId()))
             )
         );
     }
@@ -57,7 +57,7 @@ public class UserRestController {
                 new UserRegistRes(
                         userService.insertUser(userRegistReq)
                                 .map(UserDto::new)
-                                .orElseThrow(() -> new ExistException("Exist user " + userRegistReq.getId()))
+                                .orElseThrow(() -> new ExistException("Exist user " + userRegistReq.getUserId()))
                 )
         );
     }

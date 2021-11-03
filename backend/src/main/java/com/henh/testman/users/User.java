@@ -16,7 +16,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 public class User extends BaseEntity {
 
-    private String id;
+    private String userId;
 
     private String password;
 

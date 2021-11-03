@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -18,12 +19,16 @@ public class HistoryServiceImpl implements HistoryService {
 
     private final HistoryRepository historyRepository;
 
+    private final HistoryRepositorySupport historyRepositorySupport;
+
     private final WorkspaceRepository workspaceRepository;
 
     @Autowired
-    public HistoryServiceImpl(HistoryRepository historyRepository, WorkspaceRepository workspaceRepository) {
+    public HistoryServiceImpl(HistoryRepository historyRepository,
+                              WorkspaceRepository workspaceRepository, HistoryRepositorySupport historyRepositorySupport) {
         this.historyRepository = historyRepository;
         this.workspaceRepository = workspaceRepository;
+        this.historyRepositorySupport = historyRepositorySupport;
     }
 
     @Override
@@ -55,9 +60,11 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<History> selectHistoryByUserId(Long seq) {
-        checkNotNull(seq, "seq must be provided");
-        return historyRepository.findbySeq(seq);
+    public List<HistoryDto> selectHistoryByUserId(String userId) {
+        checkNotNull(userId, "userId must be provided");
+        List<HistoryDto> historyDtoList = historyRepositorySupport.findByUserId(userId);
+        if(historyDtoList.isEmpty()) throw new NotFoundException("Could not found history for "+ userId);
+        return historyDtoList;
     }
 
 }

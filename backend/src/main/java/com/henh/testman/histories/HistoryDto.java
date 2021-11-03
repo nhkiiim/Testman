@@ -16,6 +16,8 @@ import java.time.LocalTime;
 @ToString
 public class HistoryDto {
 
+    private Long seq;
+
     private Long workspace_seq;
 
     private String path;
@@ -33,6 +35,7 @@ public class HistoryDto {
     private LocalDateTime creatDate;
 
     public HistoryDto(History history) {
+        this.seq = history.getSeq();
         this.workspace_seq = history.getWorkspace().getSeq();
         this.path = history.getPath();
         this.httpMethod = history.getHttpMethod();
@@ -41,6 +44,18 @@ public class HistoryDto {
         this.headers = history.getHeaders();
         this.authorization = history.getAuthorization();
         this.creatDate = history.getCreatDate();
+    }
+
+    public HistoryDto(Long seq, Long workspace_seq, String path, String httpMethod, Integer port, String params, String headers, String authorization, LocalDateTime creatDate) {
+        this.seq = seq;
+        this.workspace_seq = workspace_seq;
+        this.path = path;
+        this.httpMethod = httpMethod;
+        this.port = port;
+        this.params = params;
+        this.headers = headers;
+        this.authorization = authorization;
+        this.creatDate = creatDate;
     }
 
 }

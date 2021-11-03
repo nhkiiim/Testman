@@ -3,6 +3,7 @@ package com.henh.testman.histories;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.histories.request.HistoryRegistReq;
+import com.henh.testman.histories.response.HistoryGetAllRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +40,12 @@ public class HistoryRestController {
     }
 
     @GetMapping
-    public ApiResult<HistoryDto> getAllHistoryByUser(Authentication authentication){
-
+    public ApiResult<HistoryGetAllRes> getAllHistoryByUser(Authentication authentication){
+        return success(
+                new HistoryGetAllRes(
+                        historyService.selectHistoryByUserId(authentication.getName())
+                )
+        );
     }
 
 }

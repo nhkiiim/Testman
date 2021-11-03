@@ -21,7 +21,7 @@ const MediumCard = ({ no, name, url, description, img }) => {
               setShowModal(true);
             }}
           >
-            <div className="mx-36 my-44">
+            <div className="mx-1/2 my-1/2">
               <PlusCircleIcon className="w-12 text-purple-400" />
             </div>
           </div>

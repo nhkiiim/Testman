@@ -18,7 +18,7 @@ const Login = () => {
         <section className="mt-6">
           <form className="flex flex-col" method="POST" action="#">
             <div className="mb-6 pt-3 rounded bg-gray-200">
-              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="Id">
+              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" htmlFor="Id">
                 ID
               </label>
               <input
@@ -28,7 +28,7 @@ const Login = () => {
               />
             </div>
             <div className="mb-6 pt-3 rounded bg-gray-200">
-              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="password">
+              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" htmlFor="password">
                 Password
               </label>
               <input

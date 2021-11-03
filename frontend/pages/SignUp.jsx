@@ -13,8 +13,73 @@ const SignUp = () => {
   });
 
   const [idCheck, setIdCheck] = useState(false);
-  const [checkError, setCheckError] = useState("");
-  const [error, setError] = useState("");
+  const [pwCheck, setPwCheck] = useState(false);
+  const [emailCheck, setEmailCheck] = useState(false);
+  const [pwValidation, setPwValidation] = useState(false);
+  const [idError, setIdError] = useState("");
+  const [pwError, setPwError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [pwvError, setPwvError] = useState("");
+
+  const isId = () => {
+    const idRegex = /^[0-9a-z]{5,12}$/;
+    if (idRegex.test(authObj.id)) {
+      setIdCheck(true);
+    } else {
+      setIdCheck(false);
+    }
+    try {
+      if (!idCheck) throw new Error("Id를 확인해주세요. (아이디는 5~12길이의 영문 소문자입니다.)");
+    } catch (error) {
+      setIdError(error.message);
+    }
+  };
+
+  const isPw = () => {
+    // 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+    const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
+    if (pwRegex.test(authObj.password)) {
+      setPwCheck(true);
+    } else setPwCheck(false);
+
+    try {
+      if (!pwCheck)
+        throw new Error(
+          "최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자가 포함되어야 합니다"
+        );
+      else setPwError("");
+    } catch (error) {
+      setPwError(error.message);
+    }
+  };
+
+  const isEmail = () => {
+    const emailRegex =
+      /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+
+    if (emailRegex.test(authObj.email)) {
+      setEmailCheck(true);
+    } else setEmailCheck(false);
+
+    try {
+      if (!emailCheck) throw new Error("Email 형식을 확인해주세요.");
+      else setEmailError("");
+    } catch (error) {
+      setEmailError(error.message);
+    }
+  };
+
+  const pwVali = () => {
+    if (authObj.password === authObj.passwordCheck) setPwValidation(true);
+    else setPwValidation(false);
+
+    try {
+      if (!pwValidation) throw new Error("비밀번호가 일치하지 않습니다.");
+      else setPwvError("");
+    } catch (error) {
+      setPwvError(error.message);
+    }
+  };
 
   const changeHandler = useCallback(async (e) => {
     const {
@@ -28,27 +93,13 @@ const SignUp = () => {
     // if(id == "id"){
     //   const idCheck = await
     // }
-
-    if (id == "email") {
-    }
   });
-  const regexCheck = () => {};
-  useEffect(() => {
-    console.log(idCheck);
-  }, [changeHandler, authObj]);
+
+  useEffect(() => {}, [authObj]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    try {
-      let data;
-
-      if (!idCheck) throw new Error("Id를 확인해주세요.");
-      else {
-        router.push("/Login");
-      }
-    } catch (error) {
-      setError(error.message);
-    }
+    router.push("/Login");
   };
 
   return (
@@ -65,7 +116,7 @@ const SignUp = () => {
 
         <section className="mt-6">
           <form className="flex flex-col" method="POST" action="#">
-            <div className="mb-6 pt-3 rounded bg-gray-200">
+            <div className="mb-5 pt-3 rounded bg-gray-200">
               <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="Id">
                 ID
               </label>
@@ -78,11 +129,14 @@ const SignUp = () => {
                     : "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
                 }
                 onChange={changeHandler}
+                onKeyUp={isId}
               />
             </div>
-            <div>
-              <span>{checkError}</span>
-            </div>
+            {!idCheck && authObj.id.length > 0 ? (
+              <span className=" px-2 pb-3 mt-[-8px] text-xs text-red-400">{idError}</span>
+            ) : (
+              ""
+            )}
             <div className="mb-6 pt-3 rounded bg-gray-200">
               <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="eMail">
                 E-Mail
@@ -90,10 +144,21 @@ const SignUp = () => {
               <input
                 type="email"
                 id="email"
-                className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                className={
+                  emailCheck
+                    ? "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4  border-green-400 transition duration-500 px-3 pb-3"
+                    : "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                }
                 onChange={changeHandler}
+                onKeyUp={isEmail}
               />
             </div>
+            {!emailCheck && authObj.email.length > 0 ? (
+              <span className=" px-2 pb-3 mt-[-8px] text-xs text-red-400">{emailError}</span>
+            ) : (
+              ""
+            )}
+
             <div className="mb-6 pt-3 rounded bg-gray-200">
               <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="password">
                 Password
@@ -101,10 +166,20 @@ const SignUp = () => {
               <input
                 type="password"
                 id="password"
-                className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                className={
+                  pwCheck
+                    ? "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4  border-green-400 transition duration-500 px-3 pb-3"
+                    : "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                }
                 onChange={changeHandler}
+                onKeyUp={isPw}
               />
             </div>
+            {!pwCheck && authObj.password.length > 0 ? (
+              <span className=" px-2 pb-3 mt-[-8px] text-xs text-red-400">{pwError}</span>
+            ) : (
+              ""
+            )}
             <div className="mb-6 pt-3 rounded bg-gray-200">
               <label
                 className="block text-gray-700 text-sm font-bold mb-0 ml-3"
@@ -115,10 +190,23 @@ const SignUp = () => {
               <input
                 type="password"
                 id="passwordCheck"
-                className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                className={
+                  pwValidation
+                    ? "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4  border-green-400 transition duration-500 px-3 pb-3"
+                    : "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                }
                 onChange={changeHandler}
+                onKeyUp={pwVali}
               />
             </div>
+            {!pwValidation &&
+            authObj.passwordCheck.length > 0 &&
+            !pwCheck &&
+            authObj.password.length === 0 ? (
+              <span className=" px-2 pb-3 mt-[-8px] text-xs text-red-400">{pwvError}</span>
+            ) : (
+              ""
+            )}
             <div className="flex justify-end">
               <p className="text-sm text-purple-600  mb-6">
                 이미 계정이 있으신가요 ?{" "}
@@ -133,13 +221,18 @@ const SignUp = () => {
               </p>
             </div>
             <button
-              className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
+              className={
+                idCheck && pwCheck && emailCheck && pwValidation
+                  ? "bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
+                  : "bg-purple-300  text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200 disabled:opacity-50 cursor-default"
+              }
+              // className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
               type="submit"
               onClick={submitHandler}
+              disabled={idCheck && pwCheck && emailCheck && pwValidation ? false : true}
             >
               Sign Up
             </button>
-            <span id="error">{error}</span>
           </form>
         </section>
       </main>

@@ -4,8 +4,11 @@ import historyDump from "../dummy/historyDump.json";
 import HistoryList from "../components/HistoryList";
 import CollectionsList from "../components/CollectionsList";
 import { PlusCircleIcon } from "@heroicons/react/solid";
-import AuthKey from "../components/AuthKey"
+import AuthKey from "../components/AuthKey";
+import HeadersOption from "../components/HeadersOption";
 import BodyOption from "../components/BodyOption";
+import SettingsOption from "../components/SettingsOption";
+import responseDump from "../dummy/responseDump.json";
 
 const ApiTest = () => {
     const [btnIndex, setBtnIndex] = useState(0);
@@ -53,21 +56,28 @@ const ApiTest = () => {
       const counter = cntList.slice(-1)[0] + 1
       cntList.push(counter)
       setTableCnt(cntList)
-      const paramsList = [...params]
-      const newParam = {
-        paramCheckbox:false,
-        paramKey:'',
-        paramValue:'',
-        paramDescription:''
-      }
-      paramsList.push(newParam)
-      setParams(newParam)
+      setParams(() => {
+        return [...params, {
+          paramCheckbox:false,
+          paramKey:'',
+          paramValue:'',
+          paramDescription:''
+        }]
+      })
     }
     // 아직 미구현 부분
     const handleParam = index => (e) => {
-      const {name, value} = e.target
-      const paramsList = [...params]
-      console.log(paramsList)
+      const { value, name } = e.target
+      const copied = params.slice()
+      setParams(() => {
+        return [...params.slice(0, index),
+        {
+          ...copied[index],
+          [name]:value
+        },
+        ...params.slice(index + 1)
+      ]
+      })
     }
 
     const [params, setParams] = useState([{
@@ -85,9 +95,9 @@ const ApiTest = () => {
     }
 
 
-    useEffect(() => {
-        console.log(bodyOption)
-      });
+    // useEffect(() => {
+    //     console.log(params)
+    //   });
 
     return (
         <div>
@@ -290,17 +300,23 @@ const ApiTest = () => {
                             return <div>
                             <AuthKey/>
                           </div>
+                          case "headers":
+                            return <div>
+                              <HeadersOption/>
+                            </div>
                           case "body":
                             return <div>
                               <BodyOption/>
                             </div>
+                          case "settings":
+                            return <SettingsOption/>
                           }
                         }()
                       }
                     <div>
                         Response
                         <div>
-                            Json file
+                            {responseDump.data.description}
                         </div>
                     </div>
                 </div>

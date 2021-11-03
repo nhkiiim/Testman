@@ -23,19 +23,27 @@ const BodyOption = () => {
     const counter = cntList.slice(-1)[0] + 1
     cntList.push(counter)
     setTableCnt(cntList)
-    const paramsList = [...params]
-    const newParam = {
-      paramCheckbox:false,
-      paramKey:'',
-      paramValue:'',
-      paramDescription:''
-    }
-    paramsList.push(newParam)
-    setParams(newParam)
+    setParams(() => {
+      return [...params, {
+        paramCheckbox:false,
+        paramKey:'',
+        paramValue:'',
+        paramDescription:''
+      }]
+    })
   }
 
   const handleParam = index => (e) => {
-    const {name, value} = e.target
+    const { value, name } = e.target
+    const copied = params.slice()
+    setParams(() => {
+      return [...params.slice(0, index), {
+        ...copied[index],
+        [name]:value
+      },
+      ...params.slice(index + 1)
+    ]
+    })
   }
 
   const [uploadFile, setUploadFile] = useState('')

@@ -2,15 +2,11 @@ FROM java:8
 
 LABEL maintainer="lsyeup1206@naver.com"
 
-COPY . .
-
 EXPOSE 8080
 
-ARG JAR_FILE=build/libs/testman-0.0.1-SNAPSHOT.jar
+COPY . .
 
-ADD ${JAR_FILE} testman.jar
-
-ENTRYPOINT [ "java", "-jar", "testman.jar" ]
+CMD [ "java", "-jar", "build/libs/testman-0.0.1-SNAPSHOT.jar" ]
 
 
 # This file is a template, and might need editing before it works on your project.

@@ -1,7 +1,10 @@
 import { useRouter } from "next/dist/client/router";
+import { useDispatch, useSelector } from "react-redux";
 import React, { useCallback, useEffect, useState } from "react";
 import logo from "../img/logo.png";
 import Image from "next/image";
+import { rootReducer } from "../store/configureStore";
+import axios from "axios";
 
 const SignUp = () => {
   const router = useRouter();
@@ -97,10 +100,15 @@ const SignUp = () => {
 
   useEffect(() => {}, [authObj]);
 
-  const submitHandler = async (e) => {
+  const submitHandler = useCallback(async (e) => {
     e.preventDefault();
+    axios({
+      method: "post",
+      url: "http://testsman.com:8080/",
+      data: {},
+    }).then((res) => {});
     router.push("/Login");
-  };
+  });
 
   return (
     <div>
@@ -115,9 +123,9 @@ const SignUp = () => {
         </section>
 
         <section className="mt-6">
-          <form className="flex flex-col" method="POST" action="#">
+          <form className="flex flex-col">
             <div className="mb-5 pt-3 rounded bg-gray-200">
-              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="Id">
+              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" htmlFor="Id">
                 ID
               </label>
               <input
@@ -138,7 +146,7 @@ const SignUp = () => {
               ""
             )}
             <div className="mb-6 pt-3 rounded bg-gray-200">
-              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="eMail">
+              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" htmlFor="eMail">
                 E-Mail
               </label>
               <input
@@ -160,7 +168,7 @@ const SignUp = () => {
             )}
 
             <div className="mb-6 pt-3 rounded bg-gray-200">
-              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="password">
+              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" htmlFor="password">
                 Password
               </label>
               <input
@@ -183,7 +191,7 @@ const SignUp = () => {
             <div className="mb-6 pt-3 rounded bg-gray-200">
               <label
                 className="block text-gray-700 text-sm font-bold mb-0 ml-3"
-                for="passwordValidation"
+                htmlFor="passwordValidation"
               >
                 Confirm Password
               </label>

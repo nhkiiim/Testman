@@ -1,7 +1,11 @@
 import "tailwindcss/tailwind.css";
 import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
-import { wrapper } from "../store";
+import { wrapper } from "../store/configureStore";
+import axios from "axios";
+
+axios.defaults.baseURL = "http://testsman.com:8080";
+axios.defaults.withCredentials = true;
 const progress = new ProgressBar({
   size: 4,
   color: "#5e00a3",

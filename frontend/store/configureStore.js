@@ -1,8 +1,8 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import logger from "redux-logger";
 
-import rootReducer from "../slices";
+import rootReducer from "./modules";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -15,8 +15,6 @@ const createStore = () => {
   return store;
 };
 
-const wrapper = createWrapper(createStore, {
+export const wrapper = createWrapper(createStore, {
   debug: isDev,
 });
-
-export default wrapper;

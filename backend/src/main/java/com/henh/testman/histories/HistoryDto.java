@@ -4,6 +4,7 @@ import com.henh.testman.collections.Collection;
 import com.henh.testman.workspaces.Workspace;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -12,9 +13,10 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
+@ToString
 public class HistoryDto {
 
-    private Workspace workspace;
+    private Long workspace_seq;
 
     private String path;
 
@@ -31,7 +33,7 @@ public class HistoryDto {
     private LocalDateTime creatDate;
 
     public HistoryDto(History history) {
-        this.workspace = history.getWorkspace();
+        this.workspace_seq = history.getWorkspace().getSeq();
         this.path = history.getPath();
         this.httpMethod = history.getHttpMethod();
         this.port = history.getPort();
@@ -39,20 +41,6 @@ public class HistoryDto {
         this.headers = history.getHeaders();
         this.authorization = history.getAuthorization();
         this.creatDate = history.getCreatDate();
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("workspace", workspace)
-                .append("path", path)
-                .append("httpMethod", httpMethod)
-                .append("port", port)
-                .append("params", params)
-                .append("headers", headers)
-                .append("authorization", authorization)
-                .append("creatDate", creatDate)
-                .toString();
     }
 
 }

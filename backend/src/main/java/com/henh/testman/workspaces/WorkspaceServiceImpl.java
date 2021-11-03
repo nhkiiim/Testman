@@ -39,7 +39,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         Optional<Workspace> checkWorkspace = workspaceRepository.findByTitle(workspaceRegistReq.getTitle());
         if(checkWorkspace.isPresent()) throw new ExistException("Exist title");
 
-        User user = userRepository.findById(id)
+        User user = userRepository.findByUserId(id)
                 .orElseThrow(()-> new NotFoundException("Could not found user for " + id));
 
         Workspace workspace = Workspace.builder()
@@ -74,7 +74,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     @Transactional(readOnly = true)
     public int countWorkspaceById(String id) {
         checkNotNull(id, "id must be provided");
-        return workspaceRepository.countByUserId(id);
+        return workspaceRepository.countByUserUserId(id);
     }
 
     @Override

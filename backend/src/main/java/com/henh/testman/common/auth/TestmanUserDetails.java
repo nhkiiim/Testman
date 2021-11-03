@@ -41,7 +41,7 @@ public class TestmanUserDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return this.user.getId();
+		return this.user.getUserId();
 	}
 
 	@Override

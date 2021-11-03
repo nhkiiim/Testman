@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,8 +17,8 @@ public class WorkReq {
     @NotBlank(message = "userId must be provided")
     private String userId;
 
-    @NotBlank(message = "label must be provided")
-    private String label;
+    @NotNull(message = "historySeq must be provided")
+    private Long historySeq;
 
     @NotBlank(message = "address must be provided")
     private String address;
@@ -24,13 +26,16 @@ public class WorkReq {
     @NotBlank(message = "httpMethod must be provided")
     private String httpMethod;
 
-    @NotBlank(message = "port must be provided")
+    @Positive
+    @NotNull(message = "port must be provided")
     private Integer port;
 
-    @NotBlank(message = "loop must be provided")
+    @Positive
+    @NotNull(message = "loop must be provided")
     private Integer loop;
 
-    @NotBlank(message = "thread must be provided")
+    @Positive
+    @NotNull(message = "thread must be provided")
     private Integer thread;
 
     private String params;

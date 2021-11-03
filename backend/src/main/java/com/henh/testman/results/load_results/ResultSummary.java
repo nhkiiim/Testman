@@ -26,16 +26,16 @@ public class ResultSummary {
 
     private String sentPerSec;
 
-    public ResultSummary(MySummariser summariser) {
-        this.numSamples = summariser.getNumSamples();
-        this.avgElapsed = summariser.getAverage();
-        this.min = summariser.getMin();
-        this.max = summariser.getMax();
-        this.errorCount = summariser.getErrorCount();
-        this.errorRate = summariser.getErrorPercentageString();
-        this.throughput = summariser.getRate();
-        this.receivedPerSec = summariser.getReceivePerSec();
-        this.sentPerSec = summariser.getSentPerSec();
+    public ResultSummary(MySummariser mySummariser) {
+        this.numSamples = mySummariser.getNumSamples();
+        this.avgElapsed = mySummariser.getAverage();
+        this.min = mySummariser.getMin();
+        this.max = mySummariser.getMax();
+        this.errorCount = mySummariser.getErrorCount();
+        this.errorRate = mySummariser.getErrorPercentageString();
+        this.throughput = mySummariser.getRate();
+        this.receivedPerSec = mySummariser.getReceivePerSec();
+        this.sentPerSec = mySummariser.getSentPerSec();
     }
 
 }

@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -11,6 +12,6 @@ public interface LoadResultRepository extends CrudRepository<LoadResult, Long> {
 
     Optional<LoadResult> findByUserIdAndCreateAt(String userId, LocalDateTime creatAt);
 
-    Optional<LoadResult> findByUserId(String userId);
+    List<LoadResult> findAllByUserIdAndHistorySeq(String userId, Long historySeq);
 
 }

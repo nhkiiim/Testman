@@ -12,12 +12,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @ToString
 public class UserDto {
 
-    private String id;
+    private String userId;
 
     private String email;
 
     public UserDto(User user) {
-        this.id = user.getId();
+        this.userId = user.getUserId();
         this.email = user.getEmail();
     }
 

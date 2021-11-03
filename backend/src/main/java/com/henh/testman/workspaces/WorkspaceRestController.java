@@ -54,7 +54,7 @@ public class WorkspaceRestController {
     public ApiResult<WorkspaceGetAllRes> getAllWorkspaceByUser(Authentication authentication) {
         return success(
                 new WorkspaceGetAllRes(
-                        workspaceService.selectWorkspaceById(authentication.getName())
+                        workspaceService.selectWorkspaceByUserId(authentication.getName())
                 )
         );
     }
@@ -63,7 +63,7 @@ public class WorkspaceRestController {
     public ApiResult<WorkspaceCountRes> countWorkspaceByUser(Authentication authentication) {
         return success(
                 new WorkspaceCountRes(
-                        workspaceService.countWorkspaceById(authentication.getName())
+                        workspaceService.countWorkspaceByUserId(authentication.getName())
                 )
         );
     }

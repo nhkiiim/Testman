@@ -4,6 +4,7 @@ import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.histories.request.HistoryRegistReq;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import static com.henh.testman.common.utils.ApiUtils.success;
@@ -29,12 +30,17 @@ public class HistoryRestController {
     }
 
     @GetMapping("{seq}")
-    public ApiResult<HistoryDto> selectHistory(@PathVariable Long seq){
+    public ApiResult<HistoryDto> getHistory(@PathVariable Long seq){
         return success(
                 historyService.selectHistory(seq)
                         .map(HistoryDto::new)
                         .orElseThrow(() -> new NotFoundException("Could not found history seq" + seq))
         );
+    }
+
+    @GetMapping
+    public ApiResult<HistoryDto> getAllHistoryByUser(Authentication authentication){
+
     }
 
 }

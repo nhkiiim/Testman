@@ -53,5 +53,11 @@ public class HistoryServiceImpl implements HistoryService {
         return historyRepository.findbySeq(seq);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<History> selectHistoryByUserId(Long seq) {
+        checkNotNull(seq, "seq must be provided");
+        return historyRepository.findbySeq(seq);
+    }
 
 }

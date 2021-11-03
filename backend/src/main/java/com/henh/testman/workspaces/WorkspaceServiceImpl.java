@@ -63,7 +63,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<WorkspaceDto> selectWorkspaceById(String id) {
+    public List<WorkspaceDto> selectWorkspaceByUserId(String id) {
         checkNotNull(id, "id must be provided");
         List<WorkspaceDto> workspaceDtoList = workspaceRepositorySupport.findByUserId(id);
         if(workspaceDtoList.isEmpty()) throw new NotFoundException("Could not found workspace for "+ id);
@@ -72,7 +72,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     @Transactional(readOnly = true)
-    public int countWorkspaceById(String id) {
+    public int countWorkspaceByUserId(String id) {
         checkNotNull(id, "id must be provided");
         return workspaceRepository.countByUserUserId(id);
     }

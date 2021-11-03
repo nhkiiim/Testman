@@ -83,9 +83,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         Workspace workspace = workspaceRepository.findBySeq(workspaceUpdateReq.getSeq())
                 .orElseThrow(()-> new NotFoundException("Could not found workspace seq "+ workspaceUpdateReq.getSeq()));
 
-        workspace.setUrl(workspaceUpdateReq.getUrl());
-        workspace.setTitle(workspaceUpdateReq.getTitle());
-        workspace.setDescription(workspaceUpdateReq.getDescription());
+        if(workspaceUpdateReq.getUrl()!=null) workspace.setUrl(workspaceUpdateReq.getUrl());
+        if(workspaceUpdateReq.getTitle()!=null) workspace.setTitle(workspaceUpdateReq.getTitle());
+        if(workspaceUpdateReq.getDescription()!=null) workspace.setDescription(workspaceUpdateReq.getDescription());
         workspaceRepository.save(workspace);
         return Optional.of(workspace);
     }

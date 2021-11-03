@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Service
 public class HistoryServiceImpl implements HistoryService {
 
@@ -43,4 +45,13 @@ public class HistoryServiceImpl implements HistoryService {
         historyRepository.save(history);
         return Optional.of(history);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<History> selectHistory(Long seq) {
+        checkNotNull(seq, "seq must be provided");
+        return historyRepository.findbySeq(seq);
+    }
+
+
 }

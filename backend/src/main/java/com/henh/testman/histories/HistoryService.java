@@ -8,4 +8,6 @@ public interface HistoryService {
 
     Optional<History> insertHistory(HistoryRegistReq historyRegistReq);
 
+    Optional<History> selectHistory(Long seq);
+
 }

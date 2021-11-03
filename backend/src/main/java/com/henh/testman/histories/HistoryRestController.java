@@ -1,12 +1,10 @@
 package com.henh.testman.histories;
 
+import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.histories.request.HistoryRegistReq;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.henh.testman.common.utils.ApiUtils.success;
 
@@ -29,4 +27,14 @@ public class HistoryRestController {
                         .orElseThrow(() -> new IllegalArgumentException("Could not regist history"))
         );
     }
+
+    @GetMapping("{seq}")
+    public ApiResult<HistoryDto> selectHistory(@PathVariable Long seq){
+        return success(
+                historyService.selectHistory(seq)
+                        .map(HistoryDto::new)
+                        .orElseThrow(() -> new NotFoundException("Could not found history seq" + seq))
+        );
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.henh.testman.users.response;
+package com.henh.testman.workspaces.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-public class UserDeleteResponse {
+public class WorkspaceDeleteRes {
 
-    private String id;
+    String title;
 
 }

@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 @Setter
 @ToString
 @AllArgsConstructor
-public class LoginResponse {
+public class UserLoginRes {
 
     private final String token;
 

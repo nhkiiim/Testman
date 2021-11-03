@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,9 +18,6 @@ public class History extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Workspace workspace;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Collection collection;
 
     private String path;
 
@@ -34,14 +31,13 @@ public class History extends BaseEntity {
 
     private String authorization;
 
-    private LocalTime creatDate;
+    private LocalDateTime creatDate;
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("seq", seq)
                 .append("workspace", workspace)
-                .append("collection", collection)
                 .append("path", path)
                 .append("httpMethod", httpMethod)
                 .append("port", port)

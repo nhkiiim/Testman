@@ -11,15 +11,10 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @ToString
 @AllArgsConstructor
-public class UserRegistReq {
+public class UserUpdateReq {
 
-    @NotBlank(message = "userId must be provided")
-    private String userId;
-
-    @NotBlank(message = "password must be provided")
     private String password;
 
-    @NotBlank(message = "email must be provided")
     private String email;
 
 }

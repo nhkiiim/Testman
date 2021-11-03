@@ -5,8 +5,9 @@ import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.errors.UnauthorizedException;
 
 import com.henh.testman.common.errors.ExistException;
-import com.henh.testman.users.request.LoginRequest;
-import com.henh.testman.users.request.UserRegistRequest;
+import com.henh.testman.users.request.UserLoginReq;
+import com.henh.testman.users.request.UserRegistReq;
+import com.henh.testman.users.request.UserUpdateReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,27 +33,26 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Optional<User> insertUser(UserRegistRequest userRegistRequest) {
-        Optional<User> checkUser = userRepository.findById(userRegistRequest.getId());
-        if(checkUser.isPresent()) throw new ExistException("exist value");
+    public Optional<User> insertUser(UserRegistReq userRegistReq) {
+        Optional<User> checkUser = userRepository.findByUserId(userRegistReq.getUserId());
+        if(checkUser.isPresent()) throw new ExistException("Exist userId");
 
         User user = User.builder()
-                .id(userRegistRequest.getId())
-                .password(passwordEncoder.encode(userRegistRequest.getPassword()))
-                .email(userRegistRequest.getEmail())
+                .userId(userRegistReq.getUserId())
+                .password(passwordEncoder.encode(userRegistReq.getPassword()))
+                .email(userRegistReq.getEmail())
                 .build();
-        System.out.println(userRepository.save(user));
-
+        userRepository.save(user);
         return Optional.of(user);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Optional<User> login(LoginRequest loginRequest) {
-        User user = userRepository.findById(loginRequest.getId())
-                .orElseThrow(() -> new NotFoundException("Could not found user for " + loginRequest.getId()));
+    public Optional<User> login(UserLoginReq userLoginReq) {
+        User user = userRepository.findByUserId(userLoginReq.getUserId())
+                .orElseThrow(() -> new NotFoundException("Could not found user for " + userLoginReq.getUserId()));
 
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(userLoginReq.getPassword(), user.getPassword())) {
             throw new UnauthorizedException("passwords do not match");
         }
 
@@ -61,18 +61,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<User> selectUser(String id) {
-        checkNotNull(id, "userId must be provided");
-        return userRepository.findById(id);
+    public Optional<User> selectUser(String userId) {
+        checkNotNull(userId, "userId must be provided");
+        return userRepository.findByUserId(userId);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Optional<String> deleteUser(String id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Could not found user for " + id));
+    public Optional<String> deleteUser(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found user for " + userId));
         userRepository.delete(user);
-        return Optional.of(user.getId());
+        return Optional.of(user.getUserId());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Optional<User> updateUser(UserUpdateReq userUpdateReq, String userId){
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException("Could not found user for " + userId));
+        if(userUpdateReq.getEmail()!=null) user.setEmail(userUpdateReq.getEmail());
+        if(userUpdateReq.getPassword()!=null) user.setPassword(passwordEncoder.encode(userUpdateReq.getPassword()));
+        userRepository.save(user);
+        return Optional.of(user);
     }
 
 }

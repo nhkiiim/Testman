@@ -1,19 +1,21 @@
 package com.henh.testman.users;
 
-import com.henh.testman.users.request.LoginRequest;
-import com.henh.testman.users.request.UserRegistRequest;
-import org.springframework.security.core.Authentication;
+import com.henh.testman.users.request.UserLoginReq;
+import com.henh.testman.users.request.UserRegistReq;
+import com.henh.testman.users.request.UserUpdateReq;
 
 import java.util.Optional;
 
 public interface UserService {
 
-    Optional<User> insertUser(UserRegistRequest userRegistRequest);
+    Optional<User> insertUser(UserRegistReq userRegistReq);
 
-    Optional<User> login(LoginRequest loginRequest);
+    Optional<User> login(UserLoginReq userLoginReq);
 
-    Optional<User> selectUser(String id);
+    Optional<User> selectUser(String UserId);
 
-    Optional<String> deleteUser(String id);
+    Optional<String> deleteUser(String UserId);
+
+    Optional<User> updateUser(UserUpdateReq userUpdateReq, String userId);
 
 }

@@ -8,7 +8,7 @@ EXPOSE 8080
 
 ARG JAR_FILE=build/libs/testman-0.0.1-SNAPSHOT.jar
 
-ADD ${JAR_FILE} testman.jar
+COPY ${JAR_FILE} testman.jar
 
 ENTRYPOINT [ "java", "-jar", "testman.jar" ]
 

@@ -7,9 +7,9 @@ EXPOSE 8080
 
 ARG JAR_FILE=build/libs/*.jar
 
-COPY ${JAR_FILE} app.jar
+COPY ${JAR_FILE} testman.jar
 
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","/testman.jar"]
 
 # This file is a template, and might need editing before it works on your project.
 # FROM maven:3.5-jdk-11 as BUILD

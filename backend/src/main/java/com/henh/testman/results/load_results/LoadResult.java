@@ -24,7 +24,8 @@ public class LoadResult {
     @Indexed
     private final String userId;
 
-    private final String label;
+    @Indexed
+    private final Long historySeq;
 
     private final List<ResultRaw> resultRawList;
 

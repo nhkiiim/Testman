@@ -14,7 +14,7 @@ public class LoadResultDto {
 
     private final String userId;
 
-    private final String label;
+    private final Long historySeq;
 
     private final ResultSummary resultSummary;
 
@@ -24,7 +24,7 @@ public class LoadResultDto {
 
     public LoadResultDto(LoadResult loadResult) {
         this.userId = loadResult.getUserId();
-        this.label = loadResult.getLabel();
+        this.historySeq = loadResult.getHistorySeq();
         this.resultSummary = loadResult.getResultSummary();
         this.resultRawList = loadResult.getResultRawList();
         this.createAt = loadResult.getCreateAt();

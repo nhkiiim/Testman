@@ -16,4 +16,6 @@ public interface UriInfoService {
 
     Optional<UriInfo> updateUriInfo(UriInfoUpdateReq uriInfoUpdateReq);
 
+    Optional<Long> deleteUriInfo(Long seq);
+
 }

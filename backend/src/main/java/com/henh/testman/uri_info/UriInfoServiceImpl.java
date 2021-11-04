@@ -84,4 +84,13 @@ public class UriInfoServiceImpl implements UriInfoService {
         );
     }
 
+    @Override
+    public Optional<Long> deleteUriInfo(Long seq) {
+        UriInfo uriInfo = uriInfoRepository.findBySeq(seq)
+                .orElseThrow(() -> new NotFoundException("Could not find uri info by " + seq));
+
+        uriInfoRepository.delete(uriInfo);
+        return Optional.of(uriInfo.getSeq());
+    }
+
 }

@@ -4,6 +4,7 @@ import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.uri_info.request.UriInfoInsertReq;
 import com.henh.testman.uri_info.request.UriInfoUpdateReq;
+import com.henh.testman.uri_info.response.UriInfoDeleteRes;
 import com.henh.testman.uri_info.response.UriInfoSelectAllRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -57,6 +58,14 @@ public class UriInfoRestController {
                         .map(UriInfoDto::new)
                         .orElseThrow(() -> new NotFoundException("Could not found uri info " +uriInfoUpdateReq.getSeq()))
 
+        );
+    }
+
+    @DeleteMapping("{seq}")
+    public ApiResult<Long> deleteUriInfo(@PathVariable Long seq){
+        return success(
+                uriInfoService.deleteUriInfo(seq)
+                        .orElseThrow(() -> new NotFoundException("Could not found uri info " + seq))
         );
     }
 

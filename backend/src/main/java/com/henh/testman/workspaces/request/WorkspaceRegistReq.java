@@ -16,13 +16,13 @@ import java.time.LocalTime;
 public class WorkspaceRegistReq {
 
     @NotBlank(message = "title must be provided")
-    private String title;
+    private final String title;
 
     @NotBlank(message = "url must be provided")
-    private String url;
+    private final String url;
 
-    private String description;
+    private final String description;
 
-    private String img;
+    private final String img;
 
 }

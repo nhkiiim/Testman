@@ -13,12 +13,12 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class WorkspaceUpdateReq {
 
-    private Long seq;
+    private final Long seq;
 
-    private String title;
+    private final String title;
 
-    private String url;
+    private final String url;
 
-    private String description;
+    private final String description;
 
 }

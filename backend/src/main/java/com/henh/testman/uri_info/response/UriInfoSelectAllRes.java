@@ -14,6 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 public class UriInfoSelectAllRes {
 
-    List<UriInfoDto> UriInfoDtoList;
+    private final List<UriInfoDto> UriInfoDtoList;
 
 }

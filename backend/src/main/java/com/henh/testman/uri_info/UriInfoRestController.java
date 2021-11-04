@@ -3,6 +3,7 @@ package com.henh.testman.uri_info;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.uri_info.request.UriInfoInsertReq;
+import com.henh.testman.uri_info.request.UriInfoUpdateReq;
 import com.henh.testman.uri_info.response.UriInfoSelectAllRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -44,6 +45,15 @@ public class UriInfoRestController {
             Authentication authentication, @PathVariable Long collection_seq){
         return success(
                 new UriInfoSelectAllRes(
+                        uriInfoService.selectUriInfoByUserAndCollection(authentication.getName(),collection_seq)
+                )
+        );
+    }
+
+    @PatchMapping
+    public ApiResult<UriInfoDto> updateUriInfo(@RequestBody UriInfoUpdateReq uriInfoUpdateReq){
+        return success(
+                new UriInfoDto(
                         uriInfoService.selectUriInfoByUserAndCollection(authentication.getName(),collection_seq)
                 )
         );

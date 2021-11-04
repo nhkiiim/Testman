@@ -2,6 +2,7 @@ package com.henh.testman.uri_info;
 
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.uri_info.request.UriInfoInsertReq;
+import com.henh.testman.uri_info.request.UriInfoUpdateReq;
 import com.henh.testman.workspaces.Workspace;
 import com.henh.testman.workspaces.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,21 @@ public class UriInfoServiceImpl implements UriInfoService {
         List<UriInfoDto> uriInfoDtoList = uriInfoRepositorySupport.findByUserAndCollection(userId, collection_seq);
         if(uriInfoDtoList.isEmpty()) throw new NotFoundException("Could not found history for "+ userId);
         return uriInfoDtoList;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Optional<UriInfo> updateUriInfo(UriInfoUpdateReq uriInfoUpdateReq) {
+        UriInfo uriInfo = uriInfoRepository.findBySeq(uriInfoUpdateReq.getSeq())
+                .orElseThrow(() -> new NotFoundException("Could not find uri info by " + uriInfoUpdateReq.getSeq()));
+
+        if(uriInfoUpdateReq.getPath()!=null) uriInfo.setPath(uriInfoUpdateReq.getPath());
+        if(uriInfoUpdateReq.getParams()!=null) uriInfo.setPath(uri);
+        return Optional.of(
+                uriInfoRepository.save(
+
+                )
+        );
     }
 
 }

@@ -9,10 +9,10 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @ToString
 @AllArgsConstructor
-public class UriInfoInsertReq {
+public class UriInfoUpdateReq {
 
-    @NotBlank(message = "workspace_seq must be provided")
-    private final Long workspace_seq;
+    @NotBlank(message = "seq must be provided")
+    private final Long seq;
 
     private final Long collection_seq;
 

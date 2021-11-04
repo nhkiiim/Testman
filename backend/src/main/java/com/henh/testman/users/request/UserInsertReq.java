@@ -14,12 +14,12 @@ import javax.validation.constraints.NotBlank;
 public class UserInsertReq {
 
     @NotBlank(message = "userId must be provided")
-    private String userId;
+    private final String userId;
 
     @NotBlank(message = "password must be provided")
-    private String password;
+    private final String password;
 
     @NotBlank(message = "email must be provided")
-    private String email;
+    private final String email;
 
 }

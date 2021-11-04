@@ -1,7 +1,8 @@
 package com.henh.testman.uri_info;
 
 import com.henh.testman.common.errors.NotFoundException;
-import com.henh.testman.uri_info.request.UriInfoRegistReq;
+import com.henh.testman.uri_info.request.UriInfoInsertReq;
+import com.henh.testman.uri_info.request.UriInfoUpdateReq;
 import com.henh.testman.workspaces.Workspace;
 import com.henh.testman.workspaces.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +34,25 @@ public class UriInfoServiceImpl implements UriInfoService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Optional<UriInfo> insertUriInfo(UriInfoRegistReq uriInfoRegistReq) {
-        Workspace workspace = workspaceRepository.findBySeq(uriInfoRegistReq.getWorkspace_seq())
-                .orElseThrow(() -> new NotFoundException("Could not found workspace seq" + uriInfoRegistReq.getWorkspace_seq()));
+    public Optional<UriInfo> insertUriInfo(UriInfoInsertReq uriInfoInsertReq) {
+        Workspace workspace = workspaceRepository.findBySeq(uriInfoInsertReq.getWorkspace_seq())
+                .orElseThrow(() -> new NotFoundException("Could not found workspace seq" + uriInfoInsertReq.getWorkspace_seq()));
 
-        UriInfo uriInfo = UriInfo.builder()
-                .workspace(workspace)
-                .collection_seq(uriInfoRegistReq.getCollection_seq())
-                .httpMethod(uriInfoRegistReq.getHttpMethod())
-                .path(uriInfoRegistReq.getPath())
-                .port(uriInfoRegistReq.getPort())
-                .headers(uriInfoRegistReq.getHeaders())
-                .params(uriInfoRegistReq.getParams())
-                .authorization(uriInfoRegistReq.getAuthorization())
-                .creatDate(LocalDateTime.now())
-                .build();
-        uriInfoRepository.save(uriInfo);
-        return Optional.of(uriInfo);
+        return Optional.of(
+                uriInfoRepository.save(
+                        UriInfo.builder()
+                        .workspace(workspace)
+                        .collection_seq(uriInfoInsertReq.getCollection_seq())
+                        .httpMethod(uriInfoInsertReq.getHttpMethod())
+                        .path(uriInfoInsertReq.getPath())
+                        .port(uriInfoInsertReq.getPort())
+                        .headers(uriInfoInsertReq.getHeaders())
+                        .params(uriInfoInsertReq.getParams())
+                        .authorization(uriInfoInsertReq.getAuthorization())
+                        .creatDate(LocalDateTime.now())
+                        .build()
+                )
+        );
     }
 
     @Override
@@ -61,11 +64,33 @@ public class UriInfoServiceImpl implements UriInfoService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UriInfoDto> selectUriInfoByUserId(String userId) {
+    public List<UriInfoDto> selectUriInfoByUserAndCollection(String userId, Long collection_seq) {
         checkNotNull(userId, "userId must be provided");
-        List<UriInfoDto> uriInfoDtoList = uriInfoRepositorySupport.findByUserId(userId);
+        List<UriInfoDto> uriInfoDtoList = uriInfoRepositorySupport.findByUserAndCollection(userId, collection_seq);
         if(uriInfoDtoList.isEmpty()) throw new NotFoundException("Could not found history for "+ userId);
         return uriInfoDtoList;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Optional<UriInfo> updateUriInfo(UriInfoUpdateReq uriInfoUpdateReq) {
+        UriInfo uriInfo = uriInfoRepository.findBySeq(uriInfoUpdateReq.getSeq())
+                .orElseThrow(() -> new NotFoundException("Could not find uri info by " + uriInfoUpdateReq.getSeq()));
+
+        uriInfo.update(uriInfoUpdateReq.getCollection_seq(), uriInfoUpdateReq.getPath(), uriInfoUpdateReq.getHttpMethod(),
+                uriInfoUpdateReq.getPort(), uriInfoUpdateReq.getParams(), uriInfoUpdateReq.getHeaders(), uriInfoUpdateReq.getAuthorization());
+        return Optional.of(
+                uriInfoRepository.save(uriInfo)
+        );
+    }
+
+    @Override
+    public Optional<Long> deleteUriInfo(Long seq) {
+        UriInfo uriInfo = uriInfoRepository.findBySeq(seq)
+                .orElseThrow(() -> new NotFoundException("Could not find uri info by " + seq));
+
+        uriInfoRepository.delete(uriInfo);
+        return Optional.of(uriInfo.getSeq());
     }
 
 }

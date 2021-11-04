@@ -12,9 +12,9 @@ public interface UserService {
 
     Optional<User> login(UserLoginReq userLoginReq);
 
-    Optional<User> selectUser(String UserId);
+    Optional<User> selectUser(String userId);
 
-    Optional<String> deleteUser(String UserId);
+    Optional<String> deleteUser(String userId);
 
     Optional<User> updateUser(UserUpdateReq userUpdateReq, String userId);
 

@@ -2,7 +2,9 @@ package com.henh.testman.uri_info;
 
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
-import com.henh.testman.uri_info.request.UriInfoRegistReq;
+import com.henh.testman.uri_info.request.UriInfoInsertReq;
+import com.henh.testman.uri_info.request.UriInfoUpdateReq;
+import com.henh.testman.uri_info.response.UriInfoDeleteRes;
 import com.henh.testman.uri_info.response.UriInfoSelectAllRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -22,9 +24,9 @@ public class UriInfoRestController {
     }
 
     @PostMapping
-    public ApiResult<UriInfoDto> insertUriInfo(@RequestBody UriInfoRegistReq uriInfoRegistReq){
+    public ApiResult<UriInfoDto> insertUriInfo(@RequestBody UriInfoInsertReq uriInfoInsertReq){
         return success(
-                uriInfoService.insertUriInfo(uriInfoRegistReq)
+                uriInfoService.insertUriInfo(uriInfoInsertReq)
                         .map(UriInfoDto::new)
                         .orElseThrow(() -> new IllegalArgumentException("Could not regist history"))
         );
@@ -39,11 +41,32 @@ public class UriInfoRestController {
         );
     }
 
-    @GetMapping
-    public ApiResult<UriInfoSelectAllRes> selectUriInfoByUser(Authentication authentication){
+    @GetMapping("collection/{collection_seq}")
+    public ApiResult<UriInfoSelectAllRes> selectUriInfoByUserAndCollection(
+            Authentication authentication, @PathVariable Long collection_seq){
         return success(
                 new UriInfoSelectAllRes(
-                        uriInfoService.selectUriInfoByUserId(authentication.getName())
+                        uriInfoService.selectUriInfoByUserAndCollection(authentication.getName(),collection_seq)
+                )
+        );
+    }
+
+    @PatchMapping
+    public ApiResult<UriInfoDto> updateUriInfo(@RequestBody UriInfoUpdateReq uriInfoUpdateReq){
+        return success(
+                uriInfoService.updateUriInfo(uriInfoUpdateReq)
+                        .map(UriInfoDto::new)
+                        .orElseThrow(() -> new NotFoundException("Could not found uri info " +uriInfoUpdateReq.getSeq()))
+
+        );
+    }
+
+    @DeleteMapping("{seq}")
+    public ApiResult<UriInfoDeleteRes> deleteUriInfo(@PathVariable Long seq){
+        return success(
+                new UriInfoDeleteRes(
+                        uriInfoService.deleteUriInfo(seq)
+                                .orElseThrow(() -> new NotFoundException("Could not found uri info " + seq))
                 )
         );
     }

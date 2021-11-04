@@ -62,10 +62,12 @@ public class UriInfoRestController {
     }
 
     @DeleteMapping("{seq}")
-    public ApiResult<Long> deleteUriInfo(@PathVariable Long seq){
+    public ApiResult<UriInfoDeleteRes> deleteUriInfo(@PathVariable Long seq){
         return success(
-                uriInfoService.deleteUriInfo(seq)
-                        .orElseThrow(() -> new NotFoundException("Could not found uri info " + seq))
+                new UriInfoDeleteRes(
+                        uriInfoService.deleteUriInfo(seq)
+                                .orElseThrow(() -> new NotFoundException("Could not found uri info " + seq))
+                )
         );
     }
 

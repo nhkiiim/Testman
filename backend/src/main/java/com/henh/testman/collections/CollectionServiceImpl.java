@@ -1,8 +1,6 @@
 package com.henh.testman.collections;
 
-import com.henh.testman.collections.request.CollectionDeleteReq;
 import com.henh.testman.collections.request.CollectionInsertReq;
-import com.henh.testman.collections.request.CollectionSelectReq;
 import com.henh.testman.collections.request.CollectionUpdateReq;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.workspaces.Workspace;
@@ -28,8 +26,8 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
-    public List<CollectionDto> selectCollection(CollectionSelectReq collectionSelectReq) {
-        List<Collection> collections = collectionRepository.findByWorkspaceSeq(collectionSelectReq.getWorkspaceSeq());
+    public List<CollectionDto> selectCollection(Long workspaceSeq) {
+        List<Collection> collections = collectionRepository.findByWorkspaceSeq(workspaceSeq);
         return collections.stream().map(CollectionDto::new).collect(Collectors.toList());
     }
 
@@ -59,8 +57,8 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
-    public Optional<String> deleteCollection(CollectionDeleteReq collectionDeleteReq) {
-        Collection collection = collectionRepository.findById(collectionDeleteReq.getSeq())
+    public Optional<String> deleteCollection(Long seq) {
+        Collection collection = collectionRepository.findById(seq)
                 .orElseThrow(() -> new NotFoundException("could not found collection"));
 
         collectionRepository.delete(collection);

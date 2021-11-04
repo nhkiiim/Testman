@@ -36,7 +36,11 @@ const ApiTest = () => {
     }
 
     const clickSendBtn = () => {
-        console.log({payload})
+        setRequest({
+          ...request,
+          "payload":[payload],
+          "params":[params], 
+        })
     }
 
     const clickOptionBtn = (e) => {
@@ -87,17 +91,13 @@ const ApiTest = () => {
       paramDescription:''
     }])
 
-    const [bodyOption, setBodyOption] = useState('none')
-
-    const handleBodyOption = (e) => {
-      setBodyOption(e.target.value)
-
-    }
+    const [request, setRequest] = useState({})
 
 
-    // useEffect(() => {
-    //     console.log(params)
-    //   });
+
+    useEffect(() => {
+        console.log(request)
+      });
 
     return (
         <div>

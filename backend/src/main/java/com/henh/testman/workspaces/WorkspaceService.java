@@ -12,9 +12,9 @@ public interface WorkspaceService {
 
     Optional<Workspace> selectWorkspace(Long seq);
 
-    List<WorkspaceDto> selectWorkspaceById(String id);
+    List<WorkspaceDto> selectWorkspaceByUserId(String id);
 
-    int countWorkspaceById(String id);
+    int countWorkspaceByUserId(String id);
 
     Optional<Workspace> updateWorkspace(WorkspaceUpdateReq workspaceUpdateReq);
 

@@ -1,7 +1,7 @@
 package com.henh.testman.collections;
 
 import com.henh.testman.common.utils.BaseEntity;
-import com.henh.testman.histories.History;
+import com.henh.testman.uri_info.UriInfo;
 import com.henh.testman.workspaces.Workspace;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,14 +19,14 @@ public class Collection extends BaseEntity {
     private Workspace workspace;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private History history;
+    private UriInfo URIInfo;
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("seq", seq)
                 .append("workspace", workspace)
-                .append("history", history)
+                .append("history", URIInfo)
                 .toString();
     }
 

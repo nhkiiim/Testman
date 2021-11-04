@@ -1,7 +1,7 @@
 package com.henh.testman.results.load_results;
 
 import com.henh.testman.common.errors.NotFoundException;
-import com.henh.testman.common.utils.ApiUtils;
+import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.results.load_results.request.LoadDeleteReq;
 import com.henh.testman.results.load_results.request.LoadGetReq;
 import com.henh.testman.results.load_results.request.WorkReq;
@@ -27,7 +27,7 @@ public class LoadResultRestController {
     }
 
     @PostMapping
-    public ApiUtils.ApiResult<WorkRes> work(@Valid WorkReq workReq) {
+    public ApiResult<WorkRes> work(@Valid WorkReq workReq) {
         return success(
             new WorkRes(
                 loadResultService.work(workReq)
@@ -38,7 +38,7 @@ public class LoadResultRestController {
     }
 
     @GetMapping
-    public ApiUtils.ApiResult<LoadGetRes> getLoadResult(@Valid LoadGetReq loadGetReq) {
+    public ApiResult<LoadGetRes> getLoadResult(@Valid LoadGetReq loadGetReq) {
         return success(
                 new LoadGetRes(
                         loadResultService.selectLoadResult(loadGetReq)
@@ -47,7 +47,7 @@ public class LoadResultRestController {
     }
 
     @DeleteMapping
-    public ApiUtils.ApiResult<LoadDeleteRes> deleteLoadResult(@Valid LoadDeleteReq loadDeleteReq) {
+    public ApiResult<LoadDeleteRes> deleteLoadResult(@Valid LoadDeleteReq loadDeleteReq) {
         return success(
                 new LoadDeleteRes(
                         loadResultService.deleteLoadResult(loadDeleteReq)

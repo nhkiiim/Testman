@@ -4,7 +4,12 @@ import historyDump from "../dummy/historyDump.json";
 import HistoryList from "../components/HistoryList";
 import CollectionsList from "../components/CollectionsList";
 import { PlusCircleIcon } from "@heroicons/react/solid";
-
+import AuthKey from "../components/AuthKey";
+import HeadersOption from "../components/HeadersOption";
+import BodyOption from "../components/BodyOption";
+import SettingsOption from "../components/SettingsOption";
+import responseDump from "../dummy/responseDump.json";
+ 
 const ApiTest = () => {
     const [btnIndex, setBtnIndex] = useState(0);
     const [optionBtn, setOptionBtn] = useState('params');
@@ -51,19 +56,28 @@ const ApiTest = () => {
       const counter = cntList.slice(-1)[0] + 1
       cntList.push(counter)
       setTableCnt(cntList)
-      const paramsList = [...params]
-      const newParam = {
-        paramCheckbox:false,
-        paramKey:'',
-        paramValue:'',
-        paramDescription:''
-      }
-      paramsList.push(newParam)
-      setParams(newParam)
+      setParams(() => {
+        return [...params, {
+          paramCheckbox:false,
+          paramKey:'',
+          paramValue:'',
+          paramDescription:''
+        }]
+      })
     }
-
+    // 아직 미구현 부분
     const handleParam = index => (e) => {
-      const {name, value} = e.target
+      const { value, name } = e.target
+      const copied = params.slice()
+      setParams(() => {
+        return [...params.slice(0, index),
+        {
+          ...copied[index],
+          [name]:value
+        },
+        ...params.slice(index + 1)
+      ]
+      })
     }
 
     const [params, setParams] = useState([{
@@ -73,9 +87,16 @@ const ApiTest = () => {
       paramDescription:''
     }])
 
+    const [bodyOption, setBodyOption] = useState('none')
+
+    const handleBodyOption = (e) => {
+      setBodyOption(e.target.value)
+
+    }
+
 
     // useEffect(() => {
-    //     console.log(tableCnt)
+    //     console.log(params)
     //   });
 
     return (
@@ -235,60 +256,73 @@ const ApiTest = () => {
                             </button>
                         </div>
                         {/* header 입력 부분 */}
-                        {optionBtn=="params"?
-                        <div>
-                          Quary Params
-                          <table className="border-2">
-                            <thead>
-                              <tr>
-                                <th> 
-                                </th>
-                                <th>key</th>
-                                <th>value</th>
-                                <th>description</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {tableCnt && tableCnt.map((item, i) =>(
-                                <tr key={i} onChange={handleParam(i)}>
-                                  <th> 
-                                    <input type="checkbox" name="paramCheckbox"/>
-                                  </th>
-                                  <th>
-                                    <input type="text" name="paramKey"/>
-                                  </th>
-                                  <th>
-                                    <input type="text" name="paramValue"/>
-                                  </th>
-                                  <th>  
-                                    <input type="text" name="paramDescription"/>
-                                  </th>
-                                </tr>
-                              )) }
-                              <tr>
-                                <button onClick={clickPlusBtn}>
-                                  <PlusCircleIcon className="w-8 text-purple-400" />
-                                </button>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        :
-                        // body 부분
-                        <div>
-                            body table
-                        </div>
-                        }
-                    </div>
+                        {function(){
+                          switch (optionBtn){
+                            case "params":
+                              return <div>
+                              Quary Params
+                              <table className="border-2">
+                                <thead>
+                                  <tr>
+                                    <th> 
+                                    </th>
+                                    <th>key</th>
+                                    <th>value</th>
+                                    <th>description</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {tableCnt && tableCnt.map((item, i) =>(
+                                    <tr key={i} onChange={handleParam(i)}>
+                                      <th> 
+                                        <input type="checkbox" name="paramCheckbox"/>
+                                      </th>
+                                      <th>
+                                        <input type="text" name="paramKey"/>
+                                      </th>
+                                      <th>
+                                        <input type="text" name="paramValue"/>
+                                      </th>
+                                      <th>  
+                                        <input type="text" name="paramDescription"/>
+                                      </th>
+                                    </tr>
+                                  )) }
+                                  <tr>
+                                    <button onClick={clickPlusBtn}>
+                                      <PlusCircleIcon className="w-8 text-purple-400" />
+                                    </button>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          case "authorization":
+                            return <div>
+                            <AuthKey/>
+                          </div>
+                          case "headers":
+                            return <div>
+                              <HeadersOption/>
+                            </div>
+                          case "body":
+                            return <div>
+                              <BodyOption/>
+                            </div>
+                          case "settings":
+                            return <SettingsOption/>
+                          }
+                        }()
+                      }
                     <div>
                         Response
                         <div>
-                            Json file
+                            {responseDump.data.description}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+      </div>
     );
 };
 

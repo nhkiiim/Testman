@@ -82,7 +82,9 @@ public class UserServiceImpl implements UserService {
     public Optional<User> updateUser(UserUpdateReq userUpdateReq, String userId){
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found user for " + userId));
-        user.update(userUpdateReq.getPassword(), userUpdateReq.getEmail());
+
+        String password = passwordEncoder.encode(userUpdateReq.getPassword());
+        user.update(password, userUpdateReq.getEmail());
 
         return Optional.of(
                 userRepository.save(user)

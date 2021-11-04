@@ -39,22 +39,22 @@ public class UriInfo extends BaseEntity {
         if(collection_seq!=null){
             this.collection_seq = collection_seq;
         }
-        if(collection_seq!=null){
+        if(path!=null){
             this.path = path;
         }
-        if(collection_seq!=null){
+        if(httpMethod!=null){
             this.httpMethod = httpMethod;
         }
-        if(collection_seq!=null){
+        if(port!=null){
             this.port = port;
         }
-        if(collection_seq!=null){
+        if(params!=null){
             this.params = params;
         }
-        if(collection_seq!=null){
+        if(headers!=null){
             this.headers = headers;
         }
-        if(collection_seq!=null){
+        if(authorization!=null){
             this.authorization = authorization;
         }
     }

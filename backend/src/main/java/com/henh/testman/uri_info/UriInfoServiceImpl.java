@@ -77,8 +77,8 @@ public class UriInfoServiceImpl implements UriInfoService {
         UriInfo uriInfo = uriInfoRepository.findBySeq(uriInfoUpdateReq.getSeq())
                 .orElseThrow(() -> new NotFoundException("Could not find uri info by " + uriInfoUpdateReq.getSeq()));
 
-        uriInfo.update(uriInfo.getCollection_seq(), uriInfo.getPath(), uriInfo.getHttpMethod(),
-                uriInfo.getPort(), uriInfo.getParams(), uriInfo.getHeaders(), uriInfo.getAuthorization());
+        uriInfo.update(uriInfoUpdateReq.getCollection_seq(), uriInfoUpdateReq.getPath(), uriInfoUpdateReq.getHttpMethod(),
+                uriInfoUpdateReq.getPort(), uriInfoUpdateReq.getParams(), uriInfoUpdateReq.getHeaders(), uriInfoUpdateReq.getAuthorization());
         return Optional.of(
                 uriInfoRepository.save(uriInfo)
         );

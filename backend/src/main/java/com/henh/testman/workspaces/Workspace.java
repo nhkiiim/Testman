@@ -38,10 +38,10 @@ public class Workspace extends BaseEntity {
         if(title!=null){
             this.title = title;
         }
-        if(title!=null){
+        if(url!=null){
             this.url = url;
         }
-        if(title!=null){
+        if(description!=null){
             this.description = description;
         }
     }

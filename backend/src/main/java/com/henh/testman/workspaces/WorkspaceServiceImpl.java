@@ -63,18 +63,18 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<WorkspaceDto> selectWorkspaceById(String id) {
-        checkNotNull(id, "id must be provided");
-        List<WorkspaceDto> workspaceDtoList = workspaceRepositorySupport.findByUserId(id);
-        if(workspaceDtoList.isEmpty()) throw new NotFoundException("Could not found workspace for "+ id);
+    public List<WorkspaceDto> selectWorkspaceByUserId(String userId) {
+        checkNotNull(userId, "userId must be provided");
+        List<WorkspaceDto> workspaceDtoList = workspaceRepositorySupport.findByUserId(userId);
+        if(workspaceDtoList.isEmpty()) throw new NotFoundException("Could not found workspace for "+ userId);
         return workspaceDtoList;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public int countWorkspaceById(String id) {
-        checkNotNull(id, "id must be provided");
-        return workspaceRepository.countByUserUserId(id);
+    public int countWorkspaceByUserId(String userId) {
+        checkNotNull(userId, "userId must be provided");
+        return workspaceRepository.countByUserUserId(userId);
     }
 
     @Override
@@ -83,9 +83,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         Workspace workspace = workspaceRepository.findBySeq(workspaceUpdateReq.getSeq())
                 .orElseThrow(()-> new NotFoundException("Could not found workspace seq "+ workspaceUpdateReq.getSeq()));
 
-        workspace.setUrl(workspaceUpdateReq.getUrl());
-        workspace.setTitle(workspaceUpdateReq.getTitle());
-        workspace.setDescription(workspaceUpdateReq.getDescription());
+        if(workspaceUpdateReq.getUrl()!=null) workspace.setUrl(workspaceUpdateReq.getUrl());
+        if(workspaceUpdateReq.getTitle()!=null) workspace.setTitle(workspaceUpdateReq.getTitle());
+        if(workspaceUpdateReq.getDescription()!=null) workspace.setDescription(workspaceUpdateReq.getDescription());
         workspaceRepository.save(workspace);
         return Optional.of(workspace);
     }

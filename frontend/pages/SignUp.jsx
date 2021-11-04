@@ -9,11 +9,12 @@ import axios from "axios";
 const SignUp = () => {
   const router = useRouter();
   const [authObj, setAuthObj] = useState({
-    id: "",
+    userId: "",
     email: "",
     password: "",
     passwordCheck: "",
   });
+  const { userId, email, password, passwordCheck } = authObj;
 
   const [idCheck, setIdCheck] = useState(false);
   const [pwCheck, setPwCheck] = useState(false);
@@ -26,7 +27,7 @@ const SignUp = () => {
 
   const isId = () => {
     const idRegex = /^[0-9a-z]{5,12}$/;
-    if (idRegex.test(authObj.id)) {
+    if (idRegex.test(authObj.userId)) {
       setIdCheck(true);
     } else {
       setIdCheck(false);
@@ -102,11 +103,19 @@ const SignUp = () => {
 
   const submitHandler = useCallback(async (e) => {
     e.preventDefault();
-    axios({
-      method: "post",
-      url: "http://testsman.com:8080/",
-      data: {},
-    }).then((res) => {});
+    const data = {
+      userId,
+      password,
+      email,
+    };
+    axios
+      .post("/api/users/regist", data)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     router.push("/Login");
   });
 
@@ -130,7 +139,7 @@ const SignUp = () => {
               </label>
               <input
                 type="text"
-                id="id"
+                id="userId"
                 className={
                   idCheck
                     ? "bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4  border-green-400 transition duration-500 px-3 pb-3"
@@ -140,7 +149,7 @@ const SignUp = () => {
                 onKeyUp={isId}
               />
             </div>
-            {!idCheck && authObj.id.length > 0 ? (
+            {!idCheck && authObj.userId.length > 0 ? (
               <span className=" px-2 pb-3 mt-[-8px] text-xs text-red-400">{idError}</span>
             ) : (
               ""

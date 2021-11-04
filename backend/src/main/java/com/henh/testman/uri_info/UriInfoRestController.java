@@ -53,9 +53,10 @@ public class UriInfoRestController {
     @PatchMapping
     public ApiResult<UriInfoDto> updateUriInfo(@RequestBody UriInfoUpdateReq uriInfoUpdateReq){
         return success(
-                new UriInfoDto(
-                        uriInfoService.selectUriInfoByUserAndCollection(authentication.getName(),collection_seq)
-                )
+                uriInfoService.updateUriInfo(uriInfoUpdateReq)
+                        .map(UriInfoDto::new)
+                        .orElseThrow(() -> new NotFoundException("Could not found uri info " +uriInfoUpdateReq.getSeq()))
+
         );
     }
 

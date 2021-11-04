@@ -37,13 +37,15 @@ public class UserServiceImpl implements UserService {
         Optional<User> checkUser = userRepository.findByUserId(userInsertReq.getUserId());
         if(checkUser.isPresent()) throw new ExistException("Exist userId");
 
-        User user = User.builder()
-                .userId(userInsertReq.getUserId())
-                .password(passwordEncoder.encode(userInsertReq.getPassword()))
-                .email(userInsertReq.getEmail())
-                .build();
-        userRepository.save(user);
-        return Optional.of(user);
+        return Optional.of(
+                userRepository.save(
+                        User.builder()
+                        .userId(userInsertReq.getUserId())
+                        .password(passwordEncoder.encode(userInsertReq.getPassword()))
+                        .email(userInsertReq.getEmail())
+                        .build()
+                )
+        );
     }
 
     @Override
@@ -80,10 +82,11 @@ public class UserServiceImpl implements UserService {
     public Optional<User> updateUser(UserUpdateReq userUpdateReq, String userId){
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found user for " + userId));
-        if(userUpdateReq.getEmail()!=null) user.setEmail(userUpdateReq.getEmail());
-        if(userUpdateReq.getPassword()!=null) user.setPassword(passwordEncoder.encode(userUpdateReq.getPassword()));
-        userRepository.save(user);
-        return Optional.of(user);
+        user.update(userUpdateReq.getPassword(), userUpdateReq.getEmail());
+
+        return Optional.of(
+                userRepository.save(user)
+        );
     }
 
 }

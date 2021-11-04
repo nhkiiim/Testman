@@ -42,16 +42,18 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         User user = userRepository.findByUserId(id)
                 .orElseThrow(()-> new NotFoundException("Could not found user for " + id));
 
-        Workspace workspace = Workspace.builder()
-                .user(user)
-                .url(workspaceRegistReq.getUrl())
-                .title(workspaceRegistReq.getTitle())
-                .description(workspaceRegistReq.getDescription())
-                .createDate(LocalDateTime.now())
-                .img(workspaceRegistReq.getImg())
-                .build();
-        workspaceRepository.save(workspace);
-        return Optional.of(workspace);
+        return Optional.of(
+                workspaceRepository.save(
+                        Workspace.builder()
+                        .user(user)
+                        .url(workspaceRegistReq.getUrl())
+                        .title(workspaceRegistReq.getTitle())
+                        .description(workspaceRegistReq.getDescription())
+                        .createDate(LocalDateTime.now())
+                        .img(workspaceRegistReq.getImg())
+                        .build()
+                )
+        );
     }
 
     @Override
@@ -83,11 +85,10 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         Workspace workspace = workspaceRepository.findBySeq(workspaceUpdateReq.getSeq())
                 .orElseThrow(()-> new NotFoundException("Could not found workspace seq "+ workspaceUpdateReq.getSeq()));
 
-        if(workspaceUpdateReq.getUrl()!=null) workspace.setUrl(workspaceUpdateReq.getUrl());
-        if(workspaceUpdateReq.getTitle()!=null) workspace.setTitle(workspaceUpdateReq.getTitle());
-        if(workspaceUpdateReq.getDescription()!=null) workspace.setDescription(workspaceUpdateReq.getDescription());
-        workspaceRepository.save(workspace);
-        return Optional.of(workspace);
+        workspace.update(workspaceUpdateReq.getTitle(), workspaceUpdateReq.getUrl(), workspaceUpdateReq.getDescription());
+        return Optional.of(
+                workspaceRepository.save(workspace)
+        );
     }
 
     @Override

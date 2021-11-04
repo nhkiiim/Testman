@@ -9,7 +9,6 @@ import com.henh.testman.workspaces.request.WorkspaceUpdateReq;
 import com.henh.testman.workspaces.response.WorkspaceCountRes;
 import com.henh.testman.workspaces.response.WorkspaceDeleteRes;
 import com.henh.testman.workspaces.response.WorkspaceGetAllRes;
-import org.hibernate.hql.internal.classic.AbstractParameterInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +53,7 @@ public class WorkspaceRestController {
     public ApiResult<WorkspaceGetAllRes> getAllWorkspaceByUser(Authentication authentication) {
         return success(
                 new WorkspaceGetAllRes(
-                        workspaceService.selectWorkspaceById(authentication.getName())
+                        workspaceService.selectWorkspaceByUserId(authentication.getName())
                 )
         );
     }
@@ -63,7 +62,7 @@ public class WorkspaceRestController {
     public ApiResult<WorkspaceCountRes> countWorkspaceByUser(Authentication authentication) {
         return success(
                 new WorkspaceCountRes(
-                        workspaceService.countWorkspaceById(authentication.getName())
+                        workspaceService.countWorkspaceByUserId(authentication.getName())
                 )
         );
     }

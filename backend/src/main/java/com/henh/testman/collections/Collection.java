@@ -4,8 +4,6 @@ import com.henh.testman.common.utils.BaseEntity;
 import lombok.*;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 
 @Entity
 @Getter

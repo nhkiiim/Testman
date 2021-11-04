@@ -1,10 +1,34 @@
 import { useRouter } from "next/dist/client/router";
-import React from "react";
+import React, { useState } from "react";
 import logo from "../img/logo.png";
 import Image from "next/image";
+import axios from "axios";
 
 const Login = () => {
+  const [inputObj, setInputObj] = useState({
+    id: "",
+    password: "",
+  });
+
+  const { id, password } = inputObj;
+
+  const changeHandler = (e) => {
+    const {
+      target: { id, value },
+    } = e;
+    setInputObj((inputObj) => ({
+      ...inputObj,
+      [id]: value,
+    }));
+  };
   const router = useRouter();
+  const loginHandler = () => {
+    const data = {
+      id,
+      password,
+    };
+    axios.post("/uri", data);
+  };
   return (
     <div>
       {/* <body className="body-bg min-h-screen pb-6 px-2 md:px-0"> */}
@@ -16,22 +40,24 @@ const Login = () => {
         </section>
 
         <section className="mt-6">
-          <form className="flex flex-col" method="POST" action="#">
+          <form className="flex flex-col">
             <div className="mb-6 pt-3 rounded bg-gray-200">
-              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="Id">
+              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" htmlFor="Id">
                 ID
               </label>
               <input
+                onChange={changeHandler}
                 type="text"
                 id="Id"
                 className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
               />
             </div>
             <div className="mb-6 pt-3 rounded bg-gray-200">
-              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="password">
+              <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" htmlFor="password">
                 Password
               </label>
               <input
+                onChange={changeHandler}
                 type="password"
                 id="password"
                 className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
@@ -53,6 +79,7 @@ const Login = () => {
             <button
               className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
               type="submit"
+              onClick={loginHandler}
             >
               Sign In
             </button>

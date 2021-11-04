@@ -28,11 +28,11 @@ public class CollectionRestController {
         this.collectionService = collectionService;
     }
 
-    @GetMapping
-    public ApiResult<CollectionSelectRes> selectCollection(Authentication authentication, CollectionSelectReq collectionSelectReq) {
+    @GetMapping("{workspaceSeq}")
+    public ApiResult<CollectionSelectRes> selectCollection(Authentication authentication, @PathVariable Long workspaceSeq) {
         return success(
                 new CollectionSelectRes (
-                        collectionService.selectCollection(collectionSelectReq)
+                        collectionService.selectCollection(workspaceSeq)
                 )
         );
     }
@@ -59,11 +59,11 @@ public class CollectionRestController {
         );
     }
 
-    @DeleteMapping
-    public ApiResult<CollectionDeleteRes> deleteCollection(Authentication authentication, CollectionDeleteReq collectionDeleteReq) {
+    @DeleteMapping("{seq}")
+    public ApiResult<CollectionDeleteRes> deleteCollection(Authentication authentication, @PathVariable Long seq) {
         return success(
                 new CollectionDeleteRes (
-                        collectionService.deleteCollection(collectionDeleteReq)
+                        collectionService.deleteCollection(seq)
                                 .orElseThrow(() -> new NotFoundException("Could not found collection"))
                 )
         );

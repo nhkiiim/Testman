@@ -9,25 +9,25 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @ToString
 @AllArgsConstructor
-public class UriInfoRegistReq {
+public class UriInfoInsertReq {
 
     @NotBlank(message = "workspace_seq must be provided")
-    private Long workspace_seq;
+    private final Long workspace_seq;
 
-    private Long collection_seq;
+    private final Long collection_seq;
 
     @NotBlank(message = "path must be provided")
-    private String path;
+    private final String path;
 
     @NotBlank(message = "httpMethod must be provided")
-    private String httpMethod;
+    private final String httpMethod;
 
-    private Integer port;
+    private final Integer port;
 
-    private String params;
+    private final String params;
 
-    private String headers;
+    private final String headers;
 
-    private String authorization;
+    private final String authorization;
 
 }

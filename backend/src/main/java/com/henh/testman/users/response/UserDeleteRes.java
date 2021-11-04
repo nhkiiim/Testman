@@ -11,6 +11,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class UserDeleteRes {
 
-    private String userId;
+    private final String userId;
 
 }

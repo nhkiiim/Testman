@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @ToString
 @AllArgsConstructor
-public class UriInfoRegistReq {
+public class UriInfoInsertReq {
 
     @NotBlank(message = "workspace_seq must be provided")
     private Long workspace_seq;

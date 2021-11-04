@@ -1,19 +1,20 @@
-package com.henh.testman.histories.request;
+package com.henh.testman.uri_info.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 
 @Getter
 @ToString
 @AllArgsConstructor
-public class HistoryRegistReq {
+public class UriInfoRegistReq {
 
     @NotBlank(message = "workspace_seq must be provided")
     private Long workspace_seq;
+
+    private Long collection_seq;
 
     @NotBlank(message = "path must be provided")
     private String path;

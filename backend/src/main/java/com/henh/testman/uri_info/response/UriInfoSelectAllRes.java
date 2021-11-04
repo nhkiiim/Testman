@@ -1,6 +1,6 @@
-package com.henh.testman.histories.response;
+package com.henh.testman.uri_info.response;
 
-import com.henh.testman.histories.HistoryDto;
+import com.henh.testman.uri_info.UriInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,8 +12,8 @@ import java.util.List;
 @Setter
 @ToString
 @AllArgsConstructor
-public class HistoryGetAllRes {
+public class UriInfoSelectAllRes {
 
-    List<HistoryDto> historyDtoList;
+    List<UriInfoDto> UriInfoDtoList;
 
 }

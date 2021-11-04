@@ -1,11 +1,8 @@
-package com.henh.testman.histories;
+package com.henh.testman.uri_info;
 
-import com.henh.testman.collections.Collection;
 import com.henh.testman.common.utils.BaseEntity;
 import com.henh.testman.workspaces.Workspace;
 import lombok.*;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,10 +12,13 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @NoArgsConstructor
-public class History extends BaseEntity {
+@AllArgsConstructor
+public class UriInfo extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Workspace workspace;
+
+    private Long collection_seq;
 
     private String path;
 

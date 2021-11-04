@@ -1,4 +1,4 @@
-package com.henh.testman.histories;
+package com.henh.testman.uri_info;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface HistoryRepository extends JpaRepository<History, Long> {
+public interface UriInfoRepository extends JpaRepository<UriInfo, Long> {
 
-    Optional<History> findbySeq(Long seq);
+    Optional<UriInfo> findBySeq(Long seq);
 
 }

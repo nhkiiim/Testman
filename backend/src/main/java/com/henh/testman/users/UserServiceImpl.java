@@ -6,7 +6,7 @@ import com.henh.testman.common.errors.UnauthorizedException;
 
 import com.henh.testman.common.errors.ExistException;
 import com.henh.testman.users.request.UserLoginReq;
-import com.henh.testman.users.request.UserRegistReq;
+import com.henh.testman.users.request.UserInsertReq;
 import com.henh.testman.users.request.UserUpdateReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,14 +33,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Optional<User> insertUser(UserRegistReq userRegistReq) {
-        Optional<User> checkUser = userRepository.findByUserId(userRegistReq.getUserId());
+    public Optional<User> insertUser(UserInsertReq userInsertReq) {
+        Optional<User> checkUser = userRepository.findByUserId(userInsertReq.getUserId());
         if(checkUser.isPresent()) throw new ExistException("Exist userId");
 
         User user = User.builder()
-                .userId(userRegistReq.getUserId())
-                .password(passwordEncoder.encode(userRegistReq.getPassword()))
-                .email(userRegistReq.getEmail())
+                .userId(userInsertReq.getUserId())
+                .password(passwordEncoder.encode(userInsertReq.getPassword()))
+                .email(userInsertReq.getEmail())
                 .build();
         userRepository.save(user);
         return Optional.of(user);

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class WorkReq {
+public class LoadPostReq {
 
     @NotBlank(message = "userId must be provided")
     private String userId;

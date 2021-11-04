@@ -65,10 +65,16 @@ public class MySummariser {
         endTime = System.currentTimeMillis();
     }
 
+    public void setEndTime() {
+        endTime = System.currentTimeMillis();
+    }
+
+    // 샘플 수
     public long getNumSamples() {
         return counter;
     }
 
+    // 총 응답시간
     public long getElapsed() {
         if (counter == 0) {
             return 0;
@@ -76,7 +82,26 @@ public class MySummariser {
         return endTime - startTime;
     }
 
-    public double getRate() {
+    // 평균 응답시간
+    public long getAverage() {
+        if (counter == 0) {
+            return 0;
+        }
+        return runningSum / counter;
+    }
+
+    // 최대 응답시간
+    public long getMax() {
+        return max;
+    }
+
+    // 최소 응답시간
+    public long getMin() {
+        return min;
+    }
+
+    // 처리량
+    public double getThroughput() {
         long howLongRunning = getElapsed();
 
         if (howLongRunning == 0) {
@@ -85,13 +110,7 @@ public class MySummariser {
         return (double) counter / howLongRunning * 1000.0;
     }
 
-    public long getAverage() {
-        if (counter == 0) {
-            return 0;
-        }
-        return runningSum / counter;
-    }
-
+    // 초당 받은 바이트
     public String getReceivePerSec() {
         long howLongRunning = getElapsed();
 
@@ -101,6 +120,7 @@ public class MySummariser {
         return dfDouble.format((double) totalReceiveBytes / howLongRunning);
     }
 
+    // 초당 보낸 바이트
     public String getSentPerSec() {
         long howLongRunning = getElapsed();
 
@@ -110,31 +130,22 @@ public class MySummariser {
         return dfDouble.format((double) totalSentBytes / howLongRunning);
     }
 
+    // 에러 횟수
     public long getErrorCount() {
         return errorCount;
     }
 
+    // 에러율 (퍼센트)
     public String getErrorPercentageString() {
         return errorFormatter.format(getErrorPercentage() * 100);
     }
 
+    // 에러율 (소수)
     public double getErrorPercentage() {
         if (counter == 0) {
             return 0.0;
         }
         return  (double) errorCount / (double) counter;
-    }
-
-    public long getMax() {
-        return max;
-    }
-
-    public long getMin() {
-        return min;
-    }
-
-    public void setEndTime() {
-        endTime = System.currentTimeMillis();
     }
 
 }

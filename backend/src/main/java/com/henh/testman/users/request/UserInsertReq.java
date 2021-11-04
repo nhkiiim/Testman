@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @ToString
 @AllArgsConstructor
-public class UserRegistReq {
+public class UserInsertReq {
 
     @NotBlank(message = "userId must be provided")
     private String userId;

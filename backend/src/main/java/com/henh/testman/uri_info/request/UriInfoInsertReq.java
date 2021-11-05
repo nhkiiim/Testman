@@ -5,13 +5,16 @@ import lombok.Getter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 @Getter
 @ToString
 @AllArgsConstructor
 public class UriInfoInsertReq {
 
-    @NotBlank(message = "workspace_seq must be provided")
+    @Positive
+    @NotNull(message = "workspace_seq must be provided")
     private final Long workspaceSeq;
 
     private final Long collectionSeq;
@@ -22,6 +25,7 @@ public class UriInfoInsertReq {
     @NotBlank(message = "httpMethod must be provided")
     private final String httpMethod;
 
+    @Positive
     private final Integer port;
 
     private final String params;

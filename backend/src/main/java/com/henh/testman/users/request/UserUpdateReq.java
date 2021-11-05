@@ -13,8 +13,8 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class UserUpdateReq {
 
-    private String password;
+    private final String password;
 
-    private String email;
+    private final String email;
 
 }

@@ -10,9 +10,12 @@ import lombok.ToString;
 @ToString
 public class HistoryDto {
 
+    private Long seq;
+
     private UriInfo uriInfo;
 
     public HistoryDto(History history) {
+        this.seq = history.getSeq();
         this.uriInfo = history.getUriInfo();
     }
 

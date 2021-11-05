@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 public class HistorySelectAllRes {
 
-    List<HistoryDto> historyList;
+    private final List<HistoryDto> historyList;
 
     public HistorySelectAllRes(List<HistoryDto> historyDtoList) {
         this.historyList = historyDtoList;

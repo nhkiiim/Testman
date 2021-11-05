@@ -1,7 +1,6 @@
 package com.henh.testman.histories;
 
 import com.henh.testman.common.errors.NotFoundException;
-import com.henh.testman.histories.request.HistoryDeleteReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +30,8 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public Optional<Long> deleteHistory(HistoryDeleteReq historyDeleteReq) {
-        History history = historyRepository.findById(historyDeleteReq.getSeq())
+    public Optional<Long> deleteHistory(Long seq) {
+        History history = historyRepository.findById(seq)
                 .orElseThrow(() -> new NotFoundException("could not found history"));
 
         historyRepository.delete(history);

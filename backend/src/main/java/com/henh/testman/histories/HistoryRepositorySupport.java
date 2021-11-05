@@ -16,13 +16,4 @@ public class HistoryRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-//    List<HistoryDto> findByWorkspaceSeq(Long workspaceSeq) {
-//        List<HistoryDto> historyDtoList = jpaQueryFactory
-//                .select(qHistory)
-//                .from(qHistory.uriInfo, )
-//                .where(qHistory.workspace.user.userId.eq(id))
-//                .fetch();
-//        return historyDtoList;
-//    }
-
 }

@@ -2,17 +2,17 @@ package com.henh.testman.results.load_results;
 
 import com.henh.testman.results.load_results.request.LoadDeleteReq;
 import com.henh.testman.results.load_results.request.LoadGetReq;
-import com.henh.testman.results.load_results.request.WorkReq;
+import com.henh.testman.results.load_results.request.LoadPostReq;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface LoadResultService {
 
-    Optional<LoadResult> work(WorkReq workReq);
+    Optional<LoadResult> insertLoad(LoadPostReq loadPostReq);
 
-    List<LoadResult> selectLoadResult(LoadGetReq loadGetReq);
+    List<LoadResult> selectLoad(LoadGetReq loadGetReq);
 
-    Integer deleteLoadResult(LoadDeleteReq loadDeleteReq);
+    Integer deleteLoad(LoadDeleteReq loadDeleteReq);
 
 }

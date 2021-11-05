@@ -1,4 +1,4 @@
-package com.henh.testman.users.response;
+package com.henh.testman.uri_info.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,8 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-public class UserDeleteRes {
+public class UriInfoDeleteRes {
 
-    private final String userId;
+    private Long seq;
 
 }

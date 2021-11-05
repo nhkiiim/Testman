@@ -12,7 +12,7 @@ public interface UriInfoService {
 
     Optional<UriInfo> selectUriInfo(Long seq);
 
-    List<UriInfoDto> selectUriInfoByUserAndCollection(String userId, Long collection_seq);
+    List<UriInfoDto> selectUriInfoByUserAndCollection(String userId, Long collectionSeq);
 
     Optional<UriInfo> updateUriInfo(UriInfoUpdateReq uriInfoUpdateReq);
 

@@ -12,9 +12,9 @@ import javax.validation.constraints.NotBlank;
 public class UriInfoInsertReq {
 
     @NotBlank(message = "workspace_seq must be provided")
-    private final Long workspace_seq;
+    private final Long workspaceSeq;
 
-    private final Long collection_seq;
+    private final Long collectionSeq;
 
     @NotBlank(message = "path must be provided")
     private final String path;

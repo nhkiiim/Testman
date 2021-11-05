@@ -18,4 +18,6 @@ public interface UserService {
 
     Optional<User> updateUser(UserUpdateReq userUpdateReq, String userId);
 
+    public boolean checkUser(String userId);
+
 }

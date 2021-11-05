@@ -18,7 +18,7 @@ public class UriInfo extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Workspace workspace;
 
-    private Long collection_seq;
+    private Long collectionSeq;
 
     private String path;
 
@@ -34,10 +34,10 @@ public class UriInfo extends BaseEntity {
 
     private LocalDateTime creatDate;
 
-    public void update(Long collection_seq, String path, String httpMethod,
+    public void update(Long collectionSeq, String path, String httpMethod,
                   Integer port, String params, String headers, String authorization){
-        if(collection_seq!=null){
-            this.collection_seq = collection_seq;
+        if(collectionSeq!=null){
+            this.collectionSeq = collectionSeq;
         }
         if(path!=null){
             this.path = path;

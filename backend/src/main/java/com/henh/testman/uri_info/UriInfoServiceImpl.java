@@ -35,14 +35,14 @@ public class UriInfoServiceImpl implements UriInfoService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Optional<UriInfo> insertUriInfo(UriInfoInsertReq uriInfoInsertReq) {
-        Workspace workspace = workspaceRepository.findBySeq(uriInfoInsertReq.getWorkspace_seq())
-                .orElseThrow(() -> new NotFoundException("Could not found workspace seq" + uriInfoInsertReq.getWorkspace_seq()));
+        Workspace workspace = workspaceRepository.findBySeq(uriInfoInsertReq.getWorkspaceSeq())
+                .orElseThrow(() -> new NotFoundException("Could not found workspace seq " + uriInfoInsertReq.getWorkspaceSeq()));
 
         return Optional.of(
                 uriInfoRepository.save(
                         UriInfo.builder()
                         .workspace(workspace)
-                        .collection_seq(uriInfoInsertReq.getCollection_seq())
+                        .collectionSeq(uriInfoInsertReq.getCollectionSeq())
                         .httpMethod(uriInfoInsertReq.getHttpMethod())
                         .path(uriInfoInsertReq.getPath())
                         .port(uriInfoInsertReq.getPort())
@@ -64,9 +64,9 @@ public class UriInfoServiceImpl implements UriInfoService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UriInfoDto> selectUriInfoByUserAndCollection(String userId, Long collection_seq) {
+    public List<UriInfoDto> selectUriInfoByUserAndCollection(String userId, Long collectionSeq) {
         checkNotNull(userId, "userId must be provided");
-        List<UriInfoDto> uriInfoDtoList = uriInfoRepositorySupport.findByUserAndCollection(userId, collection_seq);
+        List<UriInfoDto> uriInfoDtoList = uriInfoRepositorySupport.findByUserAndCollection(userId, collectionSeq);
         if(uriInfoDtoList.isEmpty()) throw new NotFoundException("Could not found history for "+ userId);
         return uriInfoDtoList;
     }
@@ -77,7 +77,7 @@ public class UriInfoServiceImpl implements UriInfoService {
         UriInfo uriInfo = uriInfoRepository.findBySeq(uriInfoUpdateReq.getSeq())
                 .orElseThrow(() -> new NotFoundException("Could not find uri info by " + uriInfoUpdateReq.getSeq()));
 
-        uriInfo.update(uriInfoUpdateReq.getCollection_seq(), uriInfoUpdateReq.getPath(), uriInfoUpdateReq.getHttpMethod(),
+        uriInfo.update(uriInfoUpdateReq.getCollectionSeq(), uriInfoUpdateReq.getPath(), uriInfoUpdateReq.getHttpMethod(),
                 uriInfoUpdateReq.getPort(), uriInfoUpdateReq.getParams(), uriInfoUpdateReq.getHeaders(), uriInfoUpdateReq.getAuthorization());
         return Optional.of(
                 uriInfoRepository.save(uriInfo)

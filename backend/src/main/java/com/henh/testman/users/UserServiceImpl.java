@@ -91,4 +91,13 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean checkUser(String userId) {
+        checkNotNull(userId, "userId must be provided");
+        Optional<User> user = userRepository.findByUserId(userId);
+        if(user.isPresent()) return true;
+        else return false;
+    }
+
 }

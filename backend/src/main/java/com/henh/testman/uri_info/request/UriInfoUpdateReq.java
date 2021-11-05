@@ -14,7 +14,7 @@ public class UriInfoUpdateReq {
     @NotBlank(message = "seq must be provided")
     private final Long seq;
 
-    private final Long collection_seq;
+    private final Long collectionSeq;
 
     @NotBlank(message = "path must be provided")
     private final String path;

@@ -22,7 +22,11 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<HistoryDto> selectAllHistory(Long workspaceSeq) {
         List<History> histories =  historyRepository.findByWorkspaceSeq(workspaceSeq);
-        return histories.stream().map(HistoryDto::new).collect(Collectors.toList());
+        System.out.println(histories.size());
+        return histories.stream()
+                .map(History::getUriInfo)
+                .map(HistoryDto::new)
+                .collect(Collectors.toList());
     }
 
     @Override

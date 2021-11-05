@@ -12,10 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import static com.henh.testman.common.utils.ApiUtils.success;
 
 @Controller
+@RequestMapping("api/histories")
 public class HistoryRestController {
 
     private final HistoryService historyService;
@@ -25,7 +27,7 @@ public class HistoryRestController {
         this.historyService = historyService;
     }
 
-    @GetMapping("{workspaceSeq}")
+    @GetMapping("list/{workspaceSeq}")
     public ApiResult<HistorySelectAllRes> selectAllHistory(Authentication authentication, @PathVariable Long workspaceSeq) {
         return success(
                 new HistorySelectAllRes(
@@ -39,6 +41,7 @@ public class HistoryRestController {
         return success(
             new HistorySelectRes(
                     historyService.selectHistory(seq)
+                            .map(HistoryDto::new)
                             .orElseThrow(() -> new NotFoundException("Could not found history"))
             )
         );

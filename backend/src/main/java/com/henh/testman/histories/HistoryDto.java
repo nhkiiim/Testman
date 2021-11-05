@@ -16,4 +16,8 @@ public class HistoryDto {
         this.uriInfo = history.getUriInfo();
     }
 
+    public HistoryDto(UriInfo uriInfo) {
+        this.uriInfo = new UriInfo(uriInfo.getPath(), uriInfo.getHttpMethod(), uriInfo.getPort());
+    }
+
 }

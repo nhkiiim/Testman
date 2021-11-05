@@ -1,16 +1,15 @@
 package com.henh.testman.histories.response;
 
-import com.henh.testman.histories.History;
-import com.henh.testman.uri_info.UriInfo;
+import com.henh.testman.histories.HistoryDto;
 import lombok.Getter;
 
 @Getter
 public class HistorySelectRes {
 
-    private UriInfo uriInfo;
+    private final HistoryDto history;
 
-    public HistorySelectRes(History history) {
-        this.uriInfo = history.getUriInfo();
+    public HistorySelectRes(HistoryDto history) {
+        this.history = history;
     }
 
 }

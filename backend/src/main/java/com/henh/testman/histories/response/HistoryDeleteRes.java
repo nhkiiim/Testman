@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class HistoryDeleteRes {
 
-    private Long seq;
+    private final Long seq;
 
     public HistoryDeleteRes(Long seq) {
         this.seq = seq;

@@ -34,6 +34,12 @@ public class UriInfo extends BaseEntity {
 
     private LocalDateTime creatDate;
 
+    public UriInfo(String path, String httpMethod, Integer port) {
+        this.path = path;
+        this.httpMethod = httpMethod;
+        this.port = port;
+    }
+
     public void update(Long collectionSeq, String path, String httpMethod,
                   Integer port, String params, String headers, String authorization){
         if(collectionSeq!=null){

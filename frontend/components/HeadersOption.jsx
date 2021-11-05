@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PlusCircleIcon } from "@heroicons/react/solid";
+import { useDispatch } from "react-redux";
+import { setParamsState } from "../store/modules/api";
 
 const HeadersOption = () => {
   const [tableCnt, setTableCnt] = useState([0]);
@@ -30,13 +32,14 @@ const HeadersOption = () => {
     const { value, name } = e.target
     const copied = params.slice()
     setParams(() => {
-      return [...params.slice(0, index), {
+      [...params.slice(0, index), {
         ...copied[index],
         [name]:value
       },
       ...params.slice(index + 1)
     ]
     })
+    return useDispatch(setParamsState(params))
   }
 
   return (

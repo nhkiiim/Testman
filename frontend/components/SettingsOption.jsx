@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaToggleOff, FaToggleOn } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
 const SettingsOption = () => {
   const [sslBtn, setSslBtn] = useState(true)

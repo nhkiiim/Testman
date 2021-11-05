@@ -10,9 +10,9 @@ import lombok.ToString;
 @ToString
 public class HistoryDto {
 
-    private Long seq;
+    private final Long seq;
 
-    private UriInfo uriInfo;
+    private final UriInfo uriInfo;
 
     public HistoryDto(History history) {
         this.seq = history.getSeq();

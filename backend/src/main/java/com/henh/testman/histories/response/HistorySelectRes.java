@@ -8,8 +8,8 @@ public class HistorySelectRes {
 
     private final HistoryDto history;
 
-    public HistorySelectRes(HistoryDto history) {
-        this.history = history;
+    public HistorySelectRes(HistoryDto historyDto) {
+        this.history = historyDto;
     }
 
 }

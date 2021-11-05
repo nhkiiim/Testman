@@ -52,8 +52,9 @@ public class CollectionServiceImpl implements CollectionService {
                 .orElseThrow(() -> new NotFoundException("could not found collection"));
 
         collection.setName(collectionUpdateReq.getName());
-        collectionRepository.save(collection);
-        return Optional.of(collection);
+        return Optional.of(
+                collectionRepository.save(collection)
+        );
     }
 
     @Override

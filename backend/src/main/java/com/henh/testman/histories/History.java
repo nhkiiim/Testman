@@ -6,7 +6,6 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -19,7 +18,6 @@ import javax.persistence.ManyToOne;
 public class History extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uri_info_seq")
     private UriInfo uriInfo;
 
 }

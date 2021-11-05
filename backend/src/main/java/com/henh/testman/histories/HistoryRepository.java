@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface HistoryRepository extends JpaRepository<History, Long> {
 
-    @Query("select h from History h join fetch h.uriInfo where h.uriInfo.seq = :workspaceSeq")
+    @Query("select h from History h where h.uriInfo.workspace.seq = :workspaceSeq")
     List<History> findByWorkspaceSeq(Long workspaceSeq);
 
 }

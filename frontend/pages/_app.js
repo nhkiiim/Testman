@@ -3,8 +3,13 @@ import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
 import { wrapper } from "../store/configureStore";
 import axios from "axios";
+import { Provider } from "react-redux";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import { createStore } from "redux";
+import rootReducer from "../store/modules";
 
-axios.defaults.baseURL = "http://www.testsman.com:8080";
+axios.defaults.baseURL = "http://testsman.com:8080";
 axios.defaults.withCredentials = true;
 const progress = new ProgressBar({
   size: 4,
@@ -16,9 +21,17 @@ const progress = new ProgressBar({
 Router.events.on("routeChangeStart", progress.start);
 Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
+const store = createStore(rootReducer);
+const persistor = persistStore(store);
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Component {...pageProps} />
+      </PersistGate>
+    </Provider>
+  );
 }
 
 export default wrapper.withRedux(MyApp);

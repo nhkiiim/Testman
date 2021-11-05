@@ -67,7 +67,7 @@ const Header2 = () => {
                   <div className="relative flex items-center h-12 w-12 cursor-pointer my-auto">
                     <Image src={icon} layout="fill" objectFit="contain" objectPosition="left" />
                   </div>
-                  <p className="text-bold md:text2xl text-base pl-3 text-gray-800">TESTMAN</p>
+                  <p className="text-bold md:text2xl text-base pl-3 text-gray-800">TESTSMAN</p>
                 </div>
                 <div id="cross" className=" text-gray-800" onClick={() => setShow(!show)}>
                   <svg
@@ -267,7 +267,7 @@ const Header2 = () => {
                 <Image src={icon} layout="fill" objectFit="contain" objectPosition="left" />
               </div>
               <h3 className="text-base text-gray-800 font-bold tracking-normal leading-tight ml-3 hidden lg:block">
-                TESTMAN
+                TESTSMAN
               </h3>
             </div>
             <ul className="pr-12 xl:flex items-center h-full hidden">

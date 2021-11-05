@@ -1,21 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import Header from "../components/Header";
-import workspaceDump from "../dummy/workspaceDump.json";
 import MediumCard from "../components/MediumCard";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import Header2 from "../components/Header2";
+import axios from "axios"
+
 const MyPage = () => {
-  const [dataCnt, setDataCnt] = useState(4);
+  const [dataCnt, setDataCnt] = useState(0);
+  const [workspaceList, setWorkspaceList] = useState([]);
 
   useEffect(() => {
-    workspaceDump.filter((data) => {
+    workspaceList.filter((data) => {
       {
         data.name == "" ? setDataCnt(dataCnt - 1) : null;
       }
     });
     Aos.init({ duration: 2000 });
   }, []);
+
+  useLayoutEffect(() => {
+    getDataCnt()
+    getWorkspace()
+    
+  })
+
+  const getWorkspace = () => {
+    axios
+      .get('/api/workspace')
+      .then((res) => {
+        setWorkspaceList(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      }) 
+  }
+
+  const getDataCnt = () => {
+    axios
+      .get('api/workspace/count')
+      .then((res) => {
+        setDataCnt(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   return (
     <div className="bg-gray-200 ">
@@ -29,7 +59,7 @@ const MyPage = () => {
           </h2>
 
           <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8 ">
-            {workspaceDump?.map(({ no, name, url, description, img }) => (
+            {workspaceList?.map(({ no, name, url, description, img }) => (
               <MediumCard
                 key={no}
                 no={no}

@@ -13,9 +13,9 @@ public class UriInfoDto {
 
     private Long seq;
 
-    private Long workspace_seq;
+    private Long workspaceSeq;
 
-    private Long collection_seq;
+    private Long collectionSeq;
 
     private String path;
 
@@ -33,8 +33,8 @@ public class UriInfoDto {
 
     public UriInfoDto(UriInfo uriInfo) {
         this.seq = uriInfo.getSeq();
-        this.workspace_seq = uriInfo.getWorkspace().getSeq();
-        this.collection_seq = uriInfo.getCollection_seq();
+        this.workspaceSeq = uriInfo.getWorkspace().getSeq();
+        this.collectionSeq = uriInfo.getCollectionSeq();
         this.path = uriInfo.getPath();
         this.httpMethod = uriInfo.getHttpMethod();
         this.port = uriInfo.getPort();
@@ -44,10 +44,10 @@ public class UriInfoDto {
         this.creatDate = uriInfo.getCreatDate();
     }
 
-    public UriInfoDto(Long seq, Long workspace_seq, Long collection_seq, String path, String httpMethod, Integer port, String params, String headers, String authorization, LocalDateTime creatDate) {
+    public UriInfoDto(Long seq, Long workspaceSeq, Long collectionSeq, String path, String httpMethod, Integer port, String params, String headers, String authorization, LocalDateTime creatDate) {
         this.seq = seq;
-        this.workspace_seq = workspace_seq;
-        this.collection_seq = collection_seq;
+        this.workspaceSeq = workspaceSeq;
+        this.collectionSeq = collectionSeq;
         this.path = path;
         this.httpMethod = httpMethod;
         this.port = port;

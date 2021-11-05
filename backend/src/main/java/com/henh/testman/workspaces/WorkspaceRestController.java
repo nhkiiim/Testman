@@ -31,7 +31,7 @@ public class WorkspaceRestController {
         this.workspaceService = workspaceService;
     }
 
-    @PostMapping("regist")
+    @PostMapping
     public ApiResult<WorkspaceDto> registWorkspace(@Valid @RequestBody WorkspaceRegistReq workspaceRegistReq, Authentication authentication) {
         return success(
                 workspaceService.insertWorkspace(workspaceRegistReq, authentication.getName())

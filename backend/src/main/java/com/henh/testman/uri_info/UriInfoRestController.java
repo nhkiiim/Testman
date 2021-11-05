@@ -37,16 +37,16 @@ public class UriInfoRestController {
         return success(
                 uriInfoService.selectUriInfo(seq)
                         .map(UriInfoDto::new)
-                        .orElseThrow(() -> new NotFoundException("Could not found history seq" + seq))
+                        .orElseThrow(() -> new NotFoundException("Could not found uri info seq " + seq))
         );
     }
 
     @GetMapping("collection/{collection_seq}")
     public ApiResult<UriInfoSelectAllRes> selectUriInfoByUserAndCollection(
-            Authentication authentication, @PathVariable Long collection_seq){
+            Authentication authentication, @PathVariable Long collectionSeq){
         return success(
                 new UriInfoSelectAllRes(
-                        uriInfoService.selectUriInfoByUserAndCollection(authentication.getName(),collection_seq)
+                        uriInfoService.selectUriInfoByUserAndCollection(authentication.getName(),collectionSeq)
                 )
         );
     }

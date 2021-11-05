@@ -21,10 +21,10 @@ public class UriInfoRepositorySupport {
 
     List<UriInfoDto> findByUserAndCollection(String id, Long collection_seq){
         List<UriInfoDto> UriInfoDtoList = jpaQueryFactory
-                .select(Projections.constructor(UriInfoDto.class,qUriInfo.seq, qUriInfo.workspace.seq, qUriInfo.collection_seq,
+                .select(Projections.constructor(UriInfoDto.class,qUriInfo.seq, qUriInfo.workspace.seq, qUriInfo.collectionSeq,
                         qUriInfo.path, qUriInfo.httpMethod, qUriInfo.port, qUriInfo.params, qUriInfo.headers, qUriInfo.authorization, qUriInfo.creatDate))
                 .from(qUriInfo)
-                .where(qUriInfo.workspace.user.userId.eq(id), qUriInfo.collection_seq.eq(collection_seq))
+                .where(qUriInfo.workspace.user.userId.eq(id), qUriInfo.collectionSeq.eq(collection_seq))
                 .fetch();
         return UriInfoDtoList;
     }

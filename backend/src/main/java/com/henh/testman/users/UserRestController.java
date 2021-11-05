@@ -5,8 +5,9 @@ import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.JwtTokenUtil;
 import com.henh.testman.common.errors.ExistException;
 import com.henh.testman.users.request.UserLoginReq;
-import com.henh.testman.users.request.UserRegistReq;
+import com.henh.testman.users.request.UserInsertReq;
 import com.henh.testman.users.request.UserUpdateReq;
+import com.henh.testman.users.response.UserCheckRes;
 import com.henh.testman.users.response.UserLoginRes;
 
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
@@ -42,8 +43,8 @@ public class UserRestController {
         );
     }
 
-    @GetMapping("me")
-    public ApiResult<UserDto> me(Authentication authentication) {
+    @GetMapping
+    public ApiResult<UserDto> selectUser(Authentication authentication) {
         return success(
                 userService.selectUser(authentication.getName())
                         .map(UserDto::new)
@@ -52,12 +53,11 @@ public class UserRestController {
     }
 
     @PostMapping("regist")
-    public ApiResult<UserDto> registUser(@Valid @RequestBody UserRegistReq userRegistReq) {
+    public ApiResult<UserDto> insertUser(@Valid @RequestBody UserInsertReq userInsertReq) {
         return success(
-                userService.insertUser(userRegistReq)
+                userService.insertUser(userInsertReq)
                         .map(UserDto::new)
-                        .orElseThrow(() -> new ExistException("Exist user " + userRegistReq.getUserId()))
-
+                        .orElseThrow(() -> new ExistException("Exist user " + userInsertReq.getUserId()))
         );
     }
 
@@ -79,4 +79,12 @@ public class UserRestController {
                         .orElseThrow(() -> new NotFoundException("Could nof found user for " + authentication.getName()))
         );
     }
+
+    @GetMapping("{userId}")
+    public ApiResult<UserCheckRes> checkUser(@PathVariable String userId) {
+        return success(
+                new UserCheckRes(userService.checkUser(userId))
+        );
+    }
+
 }

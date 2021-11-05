@@ -9,8 +9,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-public class UserDeleteRes {
+public class UserCheckRes {
 
-    private final String userId;
-
+    private final boolean exist;
 }

@@ -1,10 +1,10 @@
 package com.henh.testman.results.load_results;
 
 import com.henh.testman.common.errors.NotFoundException;
-import com.henh.testman.common.utils.ApiUtils;
+import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.results.load_results.request.LoadDeleteReq;
 import com.henh.testman.results.load_results.request.LoadGetReq;
-import com.henh.testman.results.load_results.request.WorkReq;
+import com.henh.testman.results.load_results.request.LoadPostReq;
 import com.henh.testman.results.load_results.response.LoadDeleteRes;
 import com.henh.testman.results.load_results.response.LoadGetRes;
 import com.henh.testman.results.load_results.response.WorkRes;
@@ -27,10 +27,10 @@ public class LoadResultRestController {
     }
 
     @PostMapping
-    public ApiUtils.ApiResult<WorkRes> work(@Valid WorkReq workReq) {
+    public ApiResult<WorkRes> insertLoad(@Valid LoadPostReq loadPostReq) {
         return success(
             new WorkRes(
-                loadResultService.work(workReq)
+                loadResultService.insertLoad(loadPostReq)
                     .map(LoadResultDto::new)
                     .orElseThrow(() -> new NotFoundException("fail work"))
             )
@@ -38,19 +38,19 @@ public class LoadResultRestController {
     }
 
     @GetMapping
-    public ApiUtils.ApiResult<LoadGetRes> getLoadResult(@Valid LoadGetReq loadGetReq) {
+    public ApiResult<LoadGetRes> selectLoad(@Valid LoadGetReq loadGetReq) {
         return success(
                 new LoadGetRes(
-                        loadResultService.selectLoadResult(loadGetReq)
+                        loadResultService.selectLoad(loadGetReq)
                 )
         );
     }
 
     @DeleteMapping
-    public ApiUtils.ApiResult<LoadDeleteRes> deleteLoadResult(@Valid LoadDeleteReq loadDeleteReq) {
+    public ApiResult<LoadDeleteRes> deleteLoad(@Valid LoadDeleteReq loadDeleteReq) {
         return success(
                 new LoadDeleteRes(
-                        loadResultService.deleteLoadResult(loadDeleteReq)
+                        loadResultService.deleteLoad(loadDeleteReq)
                 )
         );
     }

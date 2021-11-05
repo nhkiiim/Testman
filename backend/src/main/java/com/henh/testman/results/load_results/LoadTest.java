@@ -1,6 +1,6 @@
 package com.henh.testman.results.load_results;
 
-import com.henh.testman.results.load_results.request.WorkReq;
+import com.henh.testman.results.load_results.request.LoadPostReq;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.control.LoopController;
@@ -113,14 +113,14 @@ public class LoadTest {
         System.out.println("Test completed.");
     }
 
-    public static void work(WorkReq workReq, LoadResultRepository loadResultRepository) {
+    public static void work(LoadPostReq loadPostReq, LoadResultRepository loadResultRepository) {
         initialization();
-        HTTPSamplerProxy sampler = makeSampler(workReq.getAddress(), workReq.getPort(), workReq.getHttpMethod());
-        LoopController loopController = makeLoopController(workReq.getLoop());
-        ThreadGroup threadGroup = makeThreadGroup(loopController, workReq.getThread());
+        HTTPSamplerProxy sampler = makeSampler(loadPostReq.getAddress(), loadPostReq.getPort(), loadPostReq.getHttpMethod());
+        LoopController loopController = makeLoopController(loadPostReq.getLoop());
+        ThreadGroup threadGroup = makeThreadGroup(loopController, loadPostReq.getThread());
         TestPlan testPlan = makeTestPlan();
         HashTree testPlanTree = makeTestPlanTree(testPlan, threadGroup, sampler);
-        makeCollector(testPlanTree, loadResultRepository, workReq.getUserId(), workReq.getHistorySeq(), workReq.getCreateAt());
+        makeCollector(testPlanTree, loadResultRepository, loadPostReq.getUserId(), loadPostReq.getHistorySeq(), loadPostReq.getCreateAt());
         run(testPlanTree);
     }
 

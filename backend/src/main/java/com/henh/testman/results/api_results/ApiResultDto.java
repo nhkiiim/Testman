@@ -1,6 +1,6 @@
 package com.henh.testman.results.api_results;
 
-import com.henh.testman.histories.History;
+import com.henh.testman.uri_info.UriInfo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,7 +12,7 @@ import java.util.Map;
 @ToString
 public class ApiResultDto {
 
-    private History history;
+    private UriInfo URIInfo;
 
     private Integer code;
 
@@ -21,7 +21,7 @@ public class ApiResultDto {
     private Map<String, String> headers;
 
     public ApiResultDto(ApiResult apiResult) {
-        this.history = apiResult.getHistory();
+        this.URIInfo = apiResult.getURIInfo();
         this.code = apiResult.getCode();
         this.body = apiResult.getBody();
         this.headers = apiResult.getHeaders();

@@ -1,6 +1,5 @@
 package com.henh.testman.collections;
 
-import com.henh.testman.users.QUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 

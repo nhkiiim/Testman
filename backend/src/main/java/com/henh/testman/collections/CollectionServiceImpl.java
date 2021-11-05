@@ -34,7 +34,7 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public Optional<Collection> insertCollection(CollectionInsertReq collectionInsertReq) {
         Workspace workspace = workspaceRepository.findById(collectionInsertReq.getWorkspaceSeq())
-                .orElseThrow(() -> new NotFoundException("could not found history"));
+                .orElseThrow(() -> new NotFoundException("could not found workspace"));
 
         return Optional.of(
                 collectionRepository.save(
@@ -64,4 +64,5 @@ public class CollectionServiceImpl implements CollectionService {
         collectionRepository.delete(collection);
         return Optional.of(collection.getName());
     }
+
 }

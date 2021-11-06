@@ -12,6 +12,6 @@ public interface LoadResultRepository extends CrudRepository<LoadResult, Long> {
 
     Optional<LoadResult> findByUserIdAndCreateAt(String userId, LocalDateTime creatAt);
 
-    List<LoadResult> findAllByUserIdAndHistorySeq(String userId, Long historySeq);
+    List<LoadResult> findByUserIdAndUriInfoSeq(String userId, Long uriInfoSeq);
 
 }

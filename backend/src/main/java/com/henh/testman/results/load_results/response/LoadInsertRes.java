@@ -4,11 +4,11 @@ import com.henh.testman.results.load_results.LoadResultDto;
 import lombok.Getter;
 
 @Getter
-public class WorkRes {
+public class LoadInsertRes {
 
     private final LoadResultDto loadResult;
 
-    public WorkRes(LoadResultDto loadResultDto) {
+    public LoadInsertRes(LoadResultDto loadResultDto) {
         this.loadResult = loadResultDto;
     }
 

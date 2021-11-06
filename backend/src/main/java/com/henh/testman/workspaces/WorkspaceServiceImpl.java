@@ -67,9 +67,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     @Transactional(readOnly = true)
     public List<WorkspaceDto> selectWorkspaceByUserId(String userId) {
         checkNotNull(userId, "userId must be provided");
-        List<WorkspaceDto> workspaceDtoList = workspaceRepositorySupport.findByUserId(userId);
-        if(workspaceDtoList.isEmpty()) throw new NotFoundException("Could not found workspace for "+ userId);
-        return workspaceDtoList;
+        return workspaceRepositorySupport.findByUserId(userId);
     }
 
     @Override

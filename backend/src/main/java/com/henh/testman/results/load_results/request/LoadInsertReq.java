@@ -18,7 +18,7 @@ public class LoadInsertReq {
     private String userId;
 
     @NotNull(message = "historySeq must be provided")
-    private Long uriInfoSeq;
+    private Long historySeq;
 
     @NotBlank(message = "address must be provided")
     private String address;

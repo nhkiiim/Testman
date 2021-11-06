@@ -36,7 +36,7 @@ public class LoadResultRestController {
     }
 
     @GetMapping("{userId}/{uriInfoSeq}")
-    public ApiResult<LoadSelectRes> selectLoad(@PathVariable String userId, Long uriInfoSeq) {
+    public ApiResult<LoadSelectRes> selectLoad(@PathVariable String userId, @PathVariable Long uriInfoSeq) {
         return success(
                 new LoadSelectRes(
                         loadResultService.selectLoad(userId, uriInfoSeq)
@@ -44,8 +44,8 @@ public class LoadResultRestController {
         );
     }
 
-    @DeleteMapping
-    public ApiResult<LoadDeleteRes> deleteLoad(@PathVariable String userId, Long uriInfoSeq) {
+    @DeleteMapping("{userId}/{uriInfoSeq}")
+    public ApiResult<LoadDeleteRes> deleteLoad(@PathVariable String userId, @PathVariable Long uriInfoSeq) {
         return success(
                 new LoadDeleteRes(
                         loadResultService.deleteLoad(userId, uriInfoSeq)

@@ -31,11 +31,13 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public Optional<Long> deleteHistory(Long seq) {
+
+
         History history = historyRepository.findById(seq)
                 .orElseThrow(() -> new NotFoundException("could not found history"));
 
         historyRepository.delete(history);
-        return Optional.of(history.getId());
+        return Optional.of(history.getSeq());
     }
 
 }

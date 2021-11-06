@@ -23,9 +23,6 @@ public class History {
     @Indexed
     private final Long workspaceSeq;
 
-    @Indexed
-    private final Long tabSeq;
-
     private final String address;
 
     private final String httpMethod;

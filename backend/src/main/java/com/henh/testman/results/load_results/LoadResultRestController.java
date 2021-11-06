@@ -2,12 +2,10 @@ package com.henh.testman.results.load_results;
 
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
-import com.henh.testman.results.load_results.request.LoadDeleteReq;
-import com.henh.testman.results.load_results.request.LoadGetReq;
-import com.henh.testman.results.load_results.request.LoadPostReq;
+import com.henh.testman.results.load_results.request.LoadInsertReq;
 import com.henh.testman.results.load_results.response.LoadDeleteRes;
-import com.henh.testman.results.load_results.response.LoadGetRes;
-import com.henh.testman.results.load_results.response.WorkRes;
+import com.henh.testman.results.load_results.response.LoadInsertRes;
+import com.henh.testman.results.load_results.response.LoadSelectRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,30 +25,30 @@ public class LoadResultRestController {
     }
 
     @PostMapping
-    public ApiResult<WorkRes> insertLoad(@Valid LoadPostReq loadPostReq) {
+    public ApiResult<LoadInsertRes> insertLoad(@Valid LoadInsertReq loadInsertReq) {
         return success(
-            new WorkRes(
-                loadResultService.insertLoad(loadPostReq)
+            new LoadInsertRes(
+                loadResultService.insertLoad(loadInsertReq)
                     .map(LoadResultDto::new)
                     .orElseThrow(() -> new NotFoundException("fail work"))
             )
         );
     }
 
-    @GetMapping
-    public ApiResult<LoadGetRes> selectLoad(@Valid LoadGetReq loadGetReq) {
+    @GetMapping("{userId}/{uriInfoSeq}")
+    public ApiResult<LoadSelectRes> selectLoad(@PathVariable String userId, Long uriInfoSeq) {
         return success(
-                new LoadGetRes(
-                        loadResultService.selectLoad(loadGetReq)
+                new LoadSelectRes(
+                        loadResultService.selectLoad(userId, uriInfoSeq)
                 )
         );
     }
 
     @DeleteMapping
-    public ApiResult<LoadDeleteRes> deleteLoad(@Valid LoadDeleteReq loadDeleteReq) {
+    public ApiResult<LoadDeleteRes> deleteLoad(@PathVariable String userId, Long uriInfoSeq) {
         return success(
                 new LoadDeleteRes(
-                        loadResultService.deleteLoad(loadDeleteReq)
+                        loadResultService.deleteLoad(userId, uriInfoSeq)
                 )
         );
     }

@@ -1,18 +1,16 @@
 package com.henh.testman.results.load_results;
 
-import com.henh.testman.results.load_results.request.LoadDeleteReq;
-import com.henh.testman.results.load_results.request.LoadGetReq;
-import com.henh.testman.results.load_results.request.LoadPostReq;
+import com.henh.testman.results.load_results.request.LoadInsertReq;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface LoadResultService {
 
-    Optional<LoadResult> insertLoad(LoadPostReq loadPostReq);
+    Optional<LoadResult> insertLoad(LoadInsertReq loadInsertReq);
 
-    List<LoadResult> selectLoad(LoadGetReq loadGetReq);
+    List<LoadResult> selectLoad(String userId, Long uriInfoSeq);
 
-    Integer deleteLoad(LoadDeleteReq loadDeleteReq);
+    Integer deleteLoad(String userId, Long uriInfoSeq);
 
 }

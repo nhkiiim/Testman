@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class History {
 
     @Id
-    private final Long id;
+    private final Long seq;
 
     @Indexed
     private final Long workspaceSeq;

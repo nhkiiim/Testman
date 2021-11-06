@@ -2,7 +2,7 @@ package com.henh.testman.results.load_results;
 
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
-import com.henh.testman.results.load_results.request.LoadPostReq;
+import com.henh.testman.results.load_results.request.LoadInsertReq;
 import com.henh.testman.results.load_results.response.LoadDeleteRes;
 import com.henh.testman.results.load_results.response.LoadInsertRes;
 import com.henh.testman.results.load_results.response.LoadSelectRes;
@@ -25,10 +25,10 @@ public class LoadResultRestController {
     }
 
     @PostMapping
-    public ApiResult<LoadInsertRes> insertLoad(@Valid LoadPostReq loadPostReq) {
+    public ApiResult<LoadInsertRes> insertLoad(@Valid LoadInsertReq loadInsertReq) {
         return success(
             new LoadInsertRes(
-                loadResultService.insertLoad(loadPostReq)
+                loadResultService.insertLoad(loadInsertReq)
                     .map(LoadResultDto::new)
                     .orElseThrow(() -> new NotFoundException("fail work"))
             )

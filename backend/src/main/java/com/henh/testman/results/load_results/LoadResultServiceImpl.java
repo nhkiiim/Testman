@@ -1,6 +1,7 @@
 package com.henh.testman.results.load_results;
 
-import com.henh.testman.results.load_results.request.LoadPostReq;
+import com.henh.testman.results.load_results.request.LoadInsertReq;
+import com.henh.testman.uri_info.UriInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +15,20 @@ public class LoadResultServiceImpl implements LoadResultService {
 
     private final LoadResultRepository loadResultRepository;
 
+    private final UriInfoRepository uriInfoRepository;
+
     @Autowired
-    public LoadResultServiceImpl(LoadResultRepository loadResultRepository) {
+    public LoadResultServiceImpl(LoadResultRepository loadResultRepository, UriInfoRepository uriInfoRepository) {
         this.loadResultRepository = loadResultRepository;
+        this.uriInfoRepository = uriInfoRepository;
     }
 
     @Override
-    public Optional<LoadResult> insertLoad(LoadPostReq loadPostReq) {
-        LoadTest.work(loadPostReq, loadResultRepository);
+    public Optional<LoadResult> insertLoad(LoadInsertReq loadInsertReq) {
+        LoadTest.work(loadInsertReq, loadResultRepository);
+        // 히스토리 저장
 
-        return loadResultRepository.findByUserIdAndCreateAt(loadPostReq.getUserId(), loadPostReq.getCreateAt());
+        return loadResultRepository.findByUserIdAndCreateAt(loadInsertReq.getUserId(), loadInsertReq.getCreateAt());
     }
 
     @Override

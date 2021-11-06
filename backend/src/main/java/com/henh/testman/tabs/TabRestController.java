@@ -27,7 +27,7 @@ public class TabRestController {
                 new TabInsertRes(
                         tabService.insertTab(tabInsertReq)
                                 .map(TabDto::new)
-                                .orElseThrow(() -> new IllegalArgumentException("Could not insert history"))
+                                .orElseThrow(() -> new IllegalArgumentException("Could not insert tab"))
                 )
         );
     }
@@ -54,12 +54,11 @@ public class TabRestController {
 
     @PatchMapping
     public ApiResult<TabUpdateRes> updateTab(@RequestBody TabUpdateReq tabUpdateReq){
-        System.out.println(tabUpdateReq.toString());
         return success(
                 new TabUpdateRes(
                         tabService.updateTab(tabUpdateReq)
                                 .map(TabDto::new)
-                                .orElseThrow(() -> new NotFoundException("Could not found uri info " + tabUpdateReq.getSeq()))
+                                .orElseThrow(() -> new NotFoundException("Could not found tab " + tabUpdateReq.getSeq()))
                 )
         );
     }
@@ -69,7 +68,7 @@ public class TabRestController {
         return success(
                 new TabDeleteRes(
                         tabService.deleteTab(seq)
-                                .orElseThrow(() -> new NotFoundException("Could not found uri info " + seq))
+                                .orElseThrow(() -> new NotFoundException("Could not found tab " + seq))
                 )
         );
     }

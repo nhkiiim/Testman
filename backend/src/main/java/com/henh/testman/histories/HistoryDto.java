@@ -15,6 +15,8 @@ public class HistoryDto {
 
     private final Long workspaceSeq;
 
+    private final Long tabSeq;
+
     private final String address;
 
     private final String httpMethod;
@@ -27,18 +29,19 @@ public class HistoryDto {
 
     private final String authorization;
 
-    private final LocalDateTime creatDate;
+    private final LocalDateTime createAt;
 
     public HistoryDto(History history) {
         this.seq = history.getSeq();
         this.workspaceSeq = history.getWorkspaceSeq();
+        this.tabSeq = history.getTabSeq();
         this.address = history.getAddress();
         this.httpMethod = history.getHttpMethod();
         this.port = history.getPort();
         this.params = history.getParams();
         this.headers = history.getHeaders();
         this.authorization = history.getAuthorization();
-        this.creatDate = history.getCreatDate();
+        this.createAt = history.getCreateAt();
     }
 
 }

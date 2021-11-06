@@ -14,9 +14,7 @@ public class LoadResultDto {
 
     private final Long seq;
 
-    private final String userId;
-
-    private final Long historySeq;
+    private final Long tabSeq;
 
     private final ResultSummary resultSummary;
 
@@ -26,8 +24,7 @@ public class LoadResultDto {
 
     public LoadResultDto(LoadResult loadResult) {
         this.seq = loadResult.getSeq();
-        this.userId = loadResult.getUserId();
-        this.historySeq = loadResult.getHistorySeq();
+        this.tabSeq = loadResult.getTabSeq();
         this.resultSummary = loadResult.getResultSummary();
         this.resultRawList = loadResult.getResultRawList();
         this.createAt = loadResult.getCreateAt();

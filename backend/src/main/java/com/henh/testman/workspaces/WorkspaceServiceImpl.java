@@ -72,7 +72,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     @Transactional(readOnly = true)
-    public int countWorkspaceByUserId(String userId) {
+    public Integer countWorkspaceByUserId(String userId) {
         checkNotNull(userId, "userId must be provided");
         return workspaceRepository.countByUserUserId(userId);
     }

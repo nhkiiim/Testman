@@ -14,7 +14,7 @@ public interface WorkspaceService {
 
     List<WorkspaceDto> selectWorkspaceByUserId(String id);
 
-    int countWorkspaceByUserId(String id);
+    Integer countWorkspaceByUserId(String id);
 
     Optional<Workspace> updateWorkspace(WorkspaceUpdateReq workspaceUpdateReq);
 

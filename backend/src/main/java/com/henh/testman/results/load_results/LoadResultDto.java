@@ -12,9 +12,11 @@ import java.util.List;
 @ToString
 public class LoadResultDto {
 
+    private final Long seq;
+
     private final String userId;
 
-    private final Long historySeq;
+    private final Long uriInfoSeq;
 
     private final ResultSummary resultSummary;
 
@@ -23,8 +25,9 @@ public class LoadResultDto {
     private final LocalDateTime createAt;
 
     public LoadResultDto(LoadResult loadResult) {
+        this.seq = loadResult.getId();
         this.userId = loadResult.getUserId();
-        this.historySeq = loadResult.getHistorySeq();
+        this.uriInfoSeq = loadResult.getUriInfoSeq();
         this.resultSummary = loadResult.getResultSummary();
         this.resultRawList = loadResult.getResultRawList();
         this.createAt = loadResult.getCreateAt();

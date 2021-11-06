@@ -1,7 +1,5 @@
 package com.henh.testman.results.load_results;
 
-import com.henh.testman.results.load_results.request.LoadDeleteReq;
-import com.henh.testman.results.load_results.request.LoadGetReq;
 import com.henh.testman.results.load_results.request.LoadPostReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,19 +27,19 @@ public class LoadResultServiceImpl implements LoadResultService {
     }
 
     @Override
-    public List<LoadResult> selectLoad(LoadGetReq loadGetReq) {
-        checkNotNull(loadGetReq.getUserId(), "userId must be provided");
-        checkNotNull(loadGetReq.getHistorySeq(), "historySeq must be provided");
+    public List<LoadResult> selectLoad(String userId, Long uriInfoSeq) {
+        checkNotNull(userId, "userId must be provided");
+        checkNotNull(uriInfoSeq, "uriInfoSeq must be provided");
 
-        return loadResultRepository.findAllByUserIdAndHistorySeq(loadGetReq.getUserId(), loadGetReq.getHistorySeq());
+        return loadResultRepository.findByUserIdAndUriInfoSeq(userId, uriInfoSeq);
     }
 
     @Override
-    public Integer deleteLoad(LoadDeleteReq loadDeleteReq) {
-        checkNotNull(loadDeleteReq.getUserId(), "userId must be provided");
-        checkNotNull(loadDeleteReq.getHistorySeq(), "historySeq must be provided");
+    public Integer deleteLoad(String userId, Long uriInfoSeq) {
+        checkNotNull(userId, "userId must be provided");
+        checkNotNull(uriInfoSeq, "uriInfoSeq must be provided");
 
-        List<LoadResult> list = loadResultRepository.findAllByUserIdAndHistorySeq(loadDeleteReq.getUserId(), loadDeleteReq.getHistorySeq());
+        List<LoadResult> list = loadResultRepository.findByUserIdAndUriInfoSeq(userId, uriInfoSeq);
         loadResultRepository.deleteAll(list);
 
         return list.size();

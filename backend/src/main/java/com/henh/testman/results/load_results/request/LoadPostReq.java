@@ -18,7 +18,7 @@ public class LoadPostReq {
     private String userId;
 
     @NotNull(message = "historySeq must be provided")
-    private Long historySeq;
+    private Long uriInfoSeq;
 
     @NotBlank(message = "address must be provided")
     private String address;

@@ -97,9 +97,10 @@ public class LoadTest {
         return testPlanTree;
     }
 
-    private static void makeCollector(HashTree testPlanTree, LoadResultRepository loadResultRepository, String userId, Long historySeq, LocalDateTime createAt) {
+    private static void makeCollector(HashTree testPlanTree, LoadResultRepository loadResultRepository,
+                                      Long tabSeq, LocalDateTime createAt) {
         Summariser summer = new Summariser(summariserName);
-        MyResultCollector logger = new MyResultCollector(summer, loadResultRepository, userId, historySeq, createAt);
+        MyResultCollector logger = new MyResultCollector(summer, loadResultRepository, tabSeq, createAt);
 
         testPlanTree.add(testPlanTree.getArray()[0], logger);
     }
@@ -120,7 +121,7 @@ public class LoadTest {
         ThreadGroup threadGroup = makeThreadGroup(loopController, loadInsertReq.getThread());
         TestPlan testPlan = makeTestPlan();
         HashTree testPlanTree = makeTestPlanTree(testPlan, threadGroup, sampler);
-        makeCollector(testPlanTree, loadResultRepository, loadInsertReq.getUserId(), loadInsertReq.getHistorySeq(), loadInsertReq.getCreateAt());
+        makeCollector(testPlanTree, loadResultRepository, loadInsertReq.getTabSeq(), loadInsertReq.getCreateAt());
         run(testPlanTree);
     }
 

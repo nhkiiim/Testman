@@ -1,17 +1,13 @@
 package com.henh.testman.results.load_results.response;
 
-import com.henh.testman.results.load_results.LoadResult;
+import com.henh.testman.results.load_results.LoadResultDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
+@AllArgsConstructor
 public class LoadSelectRes {
 
-    private final List<LoadResult> LoadResultList;
-
-    public LoadSelectRes(List<LoadResult> LoadResultList) {
-        this.LoadResultList = LoadResultList;
-    }
+    private final LoadResultDto loadResult;
 
 }

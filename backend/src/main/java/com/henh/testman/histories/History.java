@@ -1,5 +1,6 @@
 package com.henh.testman.histories;
 
+import com.henh.testman.results.load_results.request.LoadInsertReq;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,23 +19,37 @@ import java.time.LocalDateTime;
 public class History {
 
     @Id
-    private final Long seq;
+    private Long seq;
 
     @Indexed
-    private final Long workspaceSeq;
+    private Long workspaceSeq;
 
-    private final String address;
+    private Long tabSeq;
 
-    private final String httpMethod;
+    private String address;
 
-    private final Integer port;
+    private String httpMethod;
 
-    private final String params;
+    private Integer port;
 
-    private final String headers;
+    private String params;
 
-    private final String authorization;
+    private String headers;
 
-    private final LocalDateTime creatDate;
+    private String authorization;
+
+    private LocalDateTime createAt;
+
+    public History(LoadInsertReq loadInsertReq) {
+        this.workspaceSeq = loadInsertReq.getWorkspaceSeq();;
+        this.tabSeq = loadInsertReq.getTabSeq();
+        this.address = loadInsertReq.getAddress();
+        this.httpMethod = loadInsertReq.getHttpMethod();
+        this.port = loadInsertReq.getPort();
+        this.params = loadInsertReq.getParams();
+        this.headers = loadInsertReq.getHeaders();
+        this.authorization = loadInsertReq.getAuthorization();
+        this.createAt = loadInsertReq.getCreateAt();
+    }
 
 }

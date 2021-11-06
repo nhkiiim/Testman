@@ -15,8 +15,8 @@ public class TabUpdateReq {
     @NotNull(message = "seq must be provided")
     private Long seq;
 
-    @NotBlank(message = "address must be provided")
-    private String address;
+    @NotBlank(message = "path must be provided")
+    private String path;
 
     @NotBlank(message = "httpMethod must be provided")
     private String httpMethod;

@@ -17,7 +17,7 @@ public class Tab extends BaseEntity {
 
     private Long workspaceSeq;
 
-    private String address;
+    private String path;
 
     private String httpMethod;
 
@@ -30,7 +30,7 @@ public class Tab extends BaseEntity {
     private String authorization;
 
     public void update(TabUpdateReq tabUpdateReq){
-        this.address = tabUpdateReq.getAddress();
+        this.path = tabUpdateReq.getPath();
         this.httpMethod = tabUpdateReq.getHttpMethod();
         this.port = tabUpdateReq.getPort();
         this.params = tabUpdateReq.getParams();

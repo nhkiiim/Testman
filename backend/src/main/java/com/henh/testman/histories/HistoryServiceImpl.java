@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Service
 public class HistoryServiceImpl implements HistoryService {
 
@@ -20,19 +22,21 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public List<HistoryDto> selectAllHistory(Long workspaceSeq) {
+        checkNotNull(workspaceSeq, "workspaceSeq must be provided");
         List<History> histories =  historyRepository.findByWorkspaceSeq(workspaceSeq);
+
         return histories.stream().map(HistoryDto::new).collect(Collectors.toList());
     }
 
     @Override
     public Optional<History> selectHistory(Long seq) {
+        checkNotNull(seq, "seq must be provided");
         return historyRepository.findById(seq);
     }
 
     @Override
     public Optional<Long> deleteHistory(Long seq) {
-
-
+        checkNotNull(seq, "seq must be provided");
         History history = historyRepository.findById(seq)
                 .orElseThrow(() -> new NotFoundException("could not found history"));
 

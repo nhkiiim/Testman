@@ -55,7 +55,6 @@ public class TabServiceImpl implements TabService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Optional<Tab> updateTab(TabUpdateReq tabUpdateReq) {
-        System.out.println(tabUpdateReq.getSeq());
         Tab tab = tabRepository.findById(tabUpdateReq.getSeq())
                 .orElseThrow(() -> new NotFoundException("Could not find tab by " + tabUpdateReq.getSeq()));
 
@@ -67,6 +66,7 @@ public class TabServiceImpl implements TabService {
 
     @Override
     public Optional<Long> deleteTab(Long seq) {
+        checkNotNull(seq, "seq must be provided");
         Tab tab = tabRepository.findById(seq)
                 .orElseThrow(() -> new NotFoundException("Could not find tab by " + seq));
 

@@ -5,6 +5,7 @@ import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
 import com.henh.testman.results.load_results.response.LoadDeleteRes;
 import com.henh.testman.results.load_results.response.LoadInsertRes;
+import com.henh.testman.results.load_results.response.LoadSelectAllRes;
 import com.henh.testman.results.load_results.response.LoadSelectRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,27 +29,38 @@ public class LoadResultRestController {
     public ApiResult<LoadInsertRes> insertLoad(@Valid LoadInsertReq loadInsertReq) {
         return success(
             new LoadInsertRes(
-                loadResultService.insertLoad(loadInsertReq)
-                    .map(LoadResultDto::new)
-                    .orElseThrow(() -> new NotFoundException("fail work"))
+                    loadResultService.insertLoad(loadInsertReq)
+                            .map(Long::new)
+                            .orElseThrow(() -> new NotFoundException("fail insert for load"))
             )
         );
     }
 
-    @GetMapping("{userId}/{uriInfoSeq}")
-    public ApiResult<LoadSelectRes> selectLoad(@PathVariable String userId, @PathVariable Long uriInfoSeq) {
+    @GetMapping("{seq}")
+    public ApiResult<LoadSelectRes> selectLoad(@PathVariable Long seq) {
         return success(
                 new LoadSelectRes(
-                        loadResultService.selectLoad(userId, uriInfoSeq)
+                        loadResultService.selectLoad(seq)
+                                .map(LoadResultDto::new)
+                                .orElseThrow(() -> new NotFoundException("fail select for load"))
                 )
         );
     }
 
-    @DeleteMapping("{userId}/{uriInfoSeq}")
-    public ApiResult<LoadDeleteRes> deleteLoad(@PathVariable String userId, @PathVariable Long uriInfoSeq) {
+    @GetMapping("list/{tabSeq}")
+    public ApiResult<LoadSelectAllRes> selectLoadByTabSeq(@PathVariable Long tabSeq) {
+        return success(
+                new LoadSelectAllRes(
+                        loadResultService.selectLoadByTabSeq(tabSeq)
+                )
+        );
+    }
+
+    @DeleteMapping("{tabSeq}")
+    public ApiResult<LoadDeleteRes> deleteLoad(@PathVariable Long tabSeq) {
         return success(
                 new LoadDeleteRes(
-                        loadResultService.deleteLoad(userId, uriInfoSeq)
+                        loadResultService.deleteLoad(tabSeq)
                 )
         );
     }

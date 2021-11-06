@@ -19,19 +19,15 @@ import java.util.List;
 public class LoadResult {
 
     @Id
-    private final Long seq;
+    private Long seq;
 
     @Indexed
-    private final String userId;
+    private Long tabSeq;
 
-    @Indexed
-    private final Long historySeq;
+    private List<ResultRaw> resultRawList;
 
-    private final List<ResultRaw> resultRawList;
+    private ResultSummary resultSummary;
 
-    private final ResultSummary resultSummary;
-
-    @Indexed
     private final LocalDateTime createAt;
 
 }

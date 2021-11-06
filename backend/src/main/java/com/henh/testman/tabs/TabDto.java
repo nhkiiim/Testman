@@ -4,33 +4,31 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @ToString
 public class TabDto {
 
-    private Long seq;
+    private final Long seq;
 
-    private Long workspaceSeq;
+    private final Long workspaceSeq;
 
-    private String address;
+    private final String path;
 
-    private String httpMethod;
+    private final String httpMethod;
 
-    private Integer port;
+    private final Integer port;
 
-    private String params;
+    private final String params;
 
-    private String headers;
+    private final String headers;
 
-    private String authorization;
+    private final String authorization;
 
     public TabDto(Tab tab) {
         this.seq = tab.getSeq();
         this.workspaceSeq = tab.getWorkspaceSeq();
-        this.address = tab.getAddress();
+        this.path = tab.getPath();
         this.httpMethod = tab.getHttpMethod();
         this.port = tab.getPort();
         this.params = tab.getParams();

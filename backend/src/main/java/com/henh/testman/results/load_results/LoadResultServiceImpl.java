@@ -1,7 +1,8 @@
 package com.henh.testman.results.load_results;
 
+import com.henh.testman.histories.History;
+import com.henh.testman.histories.HistoryRepository;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
-import com.henh.testman.tabs.TabRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,36 +16,39 @@ public class LoadResultServiceImpl implements LoadResultService {
 
     private final LoadResultRepository loadResultRepository;
 
-    private final TabRepository tabRepository;
+    private final HistoryRepository historyRepository;
 
     @Autowired
-    public LoadResultServiceImpl(LoadResultRepository loadResultRepository, TabRepository tabRepository) {
+    public LoadResultServiceImpl(LoadResultRepository loadResultRepository, HistoryRepository historyRepository) {
         this.loadResultRepository = loadResultRepository;
-        this.tabRepository = tabRepository;
+        this.historyRepository = historyRepository;
     }
 
     @Override
-    public Optional<LoadResult> insertLoad(LoadInsertReq loadInsertReq) {
+    public Optional<Long> insertLoad(LoadInsertReq loadInsertReq) {
+        History history = historyRepository.save(new History(loadInsertReq));
         LoadTest.work(loadInsertReq, loadResultRepository);
-        // 히스토리 저장
 
-        return loadResultRepository.findByUserIdAndCreateAt(loadInsertReq.getUserId(), loadInsertReq.getCreateAt());
+        return Optional.of(history.getSeq());
     }
 
     @Override
-    public List<LoadResult> selectLoad(String userId, Long uriInfoSeq) {
-        checkNotNull(userId, "userId must be provided");
-        checkNotNull(uriInfoSeq, "uriInfoSeq must be provided");
-
-        return loadResultRepository.findByUserIdAndUriInfoSeq(userId, uriInfoSeq);
+    public Optional<LoadResult> selectLoad(Long seq) {
+        checkNotNull(seq, "seq must be provided");
+        return loadResultRepository.findById(seq);
     }
 
     @Override
-    public Integer deleteLoad(String userId, Long uriInfoSeq) {
-        checkNotNull(userId, "userId must be provided");
-        checkNotNull(uriInfoSeq, "uriInfoSeq must be provided");
+    public List<LoadResult> selectLoadByTabSeq(Long tabSeq) {
+        checkNotNull(tabSeq, "tabSeq must be provided");
+        return loadResultRepository.findByTabSeq(tabSeq);
+    }
 
-        List<LoadResult> list = loadResultRepository.findByUserIdAndUriInfoSeq(userId, uriInfoSeq);
+    @Override
+    public Integer deleteLoad(Long tabSeq) {
+        checkNotNull(tabSeq, "tabSeq must be provided");
+
+        List<LoadResult> list = loadResultRepository.findByTabSeq(tabSeq);
         loadResultRepository.deleteAll(list);
 
         return list.size();

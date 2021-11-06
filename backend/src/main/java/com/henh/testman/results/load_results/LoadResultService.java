@@ -7,10 +7,12 @@ import java.util.Optional;
 
 public interface LoadResultService {
 
-    Optional<LoadResult> insertLoad(LoadInsertReq loadInsertReq);
+    Optional<Long> insertLoad(LoadInsertReq loadInsertReq);
 
-    List<LoadResult> selectLoad(String userId, Long uriInfoSeq);
+    List<LoadResult> selectLoadByTabSeq(Long tabSeq);
 
-    Integer deleteLoad(String userId, Long uriInfoSeq);
+    Optional<LoadResult> selectLoad(Long seq);
+
+    Integer deleteLoad(Long tabSeq);
 
 }

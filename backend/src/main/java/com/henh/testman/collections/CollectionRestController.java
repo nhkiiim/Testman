@@ -35,7 +35,7 @@ public class CollectionRestController {
     }
 
     @PostMapping
-    public ApiResult<CollectionInsertRes> insertCollection(CollectionInsertReq collectionInsertReq) {
+    public ApiResult<CollectionInsertRes> insertCollection(@RequestBody CollectionInsertReq collectionInsertReq) {
         return success(
                 new CollectionInsertRes (
                         collectionService.insertCollection(collectionInsertReq)
@@ -46,7 +46,7 @@ public class CollectionRestController {
     }
 
     @PatchMapping
-    public ApiResult<CollectionUpdateRes> updateCollection(CollectionUpdateReq collectionUpdateReq) {
+    public ApiResult<CollectionUpdateRes> updateCollection(@RequestBody CollectionUpdateReq collectionUpdateReq) {
         return success(
                 new CollectionUpdateRes (
                         collectionService.updateCollection(collectionUpdateReq)

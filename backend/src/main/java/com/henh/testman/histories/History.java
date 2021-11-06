@@ -1,23 +1,40 @@
 package com.henh.testman.histories;
 
-import com.henh.testman.common.utils.BaseEntity;
-import com.henh.testman.uri_info.UriInfo;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
-@Entity
 @Getter
-@Setter
-@ToString
 @Builder
+@ToString
 @AllArgsConstructor
-@NoArgsConstructor
-public class History extends BaseEntity {
+@RedisHash(value = "history")
+public class History {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private UriInfo uriInfo;
+    @Id
+    private final Long id;
+
+    @Indexed
+    private final Long workspaceSeq;
+
+    private final String address;
+
+    private final String httpMethod;
+
+    private final Integer port;
+
+    private final String params;
+
+    private final String headers;
+
+    private final String authorization;
+
+    private final LocalDateTime creatDate;
 
 }

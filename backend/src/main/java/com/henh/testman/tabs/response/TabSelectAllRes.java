@@ -1,6 +1,6 @@
-package com.henh.testman.uri_info.response;
+package com.henh.testman.tabs.response;
 
-import com.henh.testman.uri_info.UriInfoDto;
+import com.henh.testman.tabs.TabDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,8 +12,8 @@ import java.util.List;
 @Setter
 @ToString
 @AllArgsConstructor
-public class UriInfoSelectAllRes {
+public class TabSelectAllRes {
 
-    private final List<UriInfoDto> UriInfoDtoList;
+    private final List<TabDto> tabList;
 
 }

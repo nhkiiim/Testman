@@ -35,7 +35,7 @@ public class HistoryServiceImpl implements HistoryService {
                 .orElseThrow(() -> new NotFoundException("could not found history"));
 
         historyRepository.delete(history);
-        return Optional.of(history.getSeq());
+        return Optional.of(history.getId());
     }
 
 }

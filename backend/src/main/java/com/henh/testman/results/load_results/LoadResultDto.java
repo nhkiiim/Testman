@@ -16,7 +16,7 @@ public class LoadResultDto {
 
     private final String userId;
 
-    private final Long uriInfoSeq;
+    private final Long historySeq;
 
     private final ResultSummary resultSummary;
 
@@ -25,9 +25,9 @@ public class LoadResultDto {
     private final LocalDateTime createAt;
 
     public LoadResultDto(LoadResult loadResult) {
-        this.seq = loadResult.getId();
+        this.seq = loadResult.getSeq();
         this.userId = loadResult.getUserId();
-        this.uriInfoSeq = loadResult.getUriInfoSeq();
+        this.historySeq = loadResult.getHistorySeq();
         this.resultSummary = loadResult.getResultSummary();
         this.resultRawList = loadResult.getResultRawList();
         this.createAt = loadResult.getCreateAt();

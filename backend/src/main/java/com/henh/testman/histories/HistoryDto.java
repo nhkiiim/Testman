@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @ToString
 public class HistoryDto {
 
-    private final Long id;
+    private final Long seq;
 
     private final Long workspaceSeq;
 
@@ -30,7 +30,7 @@ public class HistoryDto {
     private final LocalDateTime creatDate;
 
     public HistoryDto(History history) {
-        this.id = history.getId();
+        this.seq = history.getSeq();
         this.workspaceSeq = history.getWorkspaceSeq();
         this.address = history.getAddress();
         this.httpMethod = history.getHttpMethod();

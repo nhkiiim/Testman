@@ -1,7 +1,7 @@
 package com.henh.testman.results.load_results;
 
 import com.henh.testman.results.load_results.request.LoadInsertReq;
-import com.henh.testman.uri_info.UriInfoRepository;
+import com.henh.testman.tabs.TabRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +15,12 @@ public class LoadResultServiceImpl implements LoadResultService {
 
     private final LoadResultRepository loadResultRepository;
 
-    private final UriInfoRepository uriInfoRepository;
+    private final TabRepository tabRepository;
 
     @Autowired
-    public LoadResultServiceImpl(LoadResultRepository loadResultRepository, UriInfoRepository uriInfoRepository) {
+    public LoadResultServiceImpl(LoadResultRepository loadResultRepository, TabRepository tabRepository) {
         this.loadResultRepository = loadResultRepository;
-        this.uriInfoRepository = uriInfoRepository;
+        this.tabRepository = tabRepository;
     }
 
     @Override

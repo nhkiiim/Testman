@@ -19,13 +19,13 @@ import java.util.List;
 public class LoadResult {
 
     @Id
-    private final Long id;
+    private final Long seq;
 
     @Indexed
     private final String userId;
 
     @Indexed
-    private final Long uriInfoSeq;
+    private final Long historySeq;
 
     private final List<ResultRaw> resultRawList;
 

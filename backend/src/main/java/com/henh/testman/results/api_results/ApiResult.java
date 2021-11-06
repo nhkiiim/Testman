@@ -1,6 +1,6 @@
 package com.henh.testman.results.api_results;
 
-import com.henh.testman.uri_info.UriInfo;
+import com.henh.testman.tabs.Tab;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -18,7 +18,7 @@ public class ApiResult {
     @Id
     private Long seq;
 
-    private UriInfo URIInfo;
+    private Tab Tab;
 
     private Integer code;
 

@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Service
 public class CollectionServiceImpl implements CollectionService {
 
@@ -27,7 +29,9 @@ public class CollectionServiceImpl implements CollectionService {
 
     @Override
     public List<CollectionDto> selectCollection(Long workspaceSeq) {
+        checkNotNull(workspaceSeq, "workspaceSeq must be provided");
         List<Collection> collections = collectionRepository.findByWorkspaceSeq(workspaceSeq);
+
         return collections.stream().map(CollectionDto::new).collect(Collectors.toList());
     }
 
@@ -52,12 +56,14 @@ public class CollectionServiceImpl implements CollectionService {
                 .orElseThrow(() -> new NotFoundException("could not found collection"));
 
         collection.setName(collectionUpdateReq.getName());
-        collectionRepository.save(collection);
-        return Optional.of(collection);
+        return Optional.of(
+                collectionRepository.save(collection)
+        );
     }
 
     @Override
     public Optional<String> deleteCollection(Long seq) {
+        checkNotNull(seq, "seq must be provided");
         Collection collection = collectionRepository.findById(seq)
                 .orElseThrow(() -> new NotFoundException("could not found collection"));
 

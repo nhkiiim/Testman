@@ -1,8 +1,8 @@
 package com.henh.testman.results.load_results;
 
-import com.henh.testman.results.load_results.request.LoadDeleteReq;
-import com.henh.testman.results.load_results.request.LoadGetReq;
-import com.henh.testman.results.load_results.request.LoadPostReq;
+import com.henh.testman.histories.History;
+import com.henh.testman.histories.HistoryRepository;
+import com.henh.testman.results.load_results.request.LoadInsertReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,32 +16,39 @@ public class LoadResultServiceImpl implements LoadResultService {
 
     private final LoadResultRepository loadResultRepository;
 
+    private final HistoryRepository historyRepository;
+
     @Autowired
-    public LoadResultServiceImpl(LoadResultRepository loadResultRepository) {
+    public LoadResultServiceImpl(LoadResultRepository loadResultRepository, HistoryRepository historyRepository) {
         this.loadResultRepository = loadResultRepository;
+        this.historyRepository = historyRepository;
     }
 
     @Override
-    public Optional<LoadResult> insertLoad(LoadPostReq loadPostReq) {
-        LoadTest.work(loadPostReq, loadResultRepository);
+    public Optional<Long> insertLoad(LoadInsertReq loadInsertReq) {
+        History history = historyRepository.save(new History(loadInsertReq));
+        LoadTest.work(loadInsertReq, loadResultRepository);
 
-        return loadResultRepository.findByUserIdAndCreateAt(loadPostReq.getUserId(), loadPostReq.getCreateAt());
+        return Optional.of(history.getSeq());
     }
 
     @Override
-    public List<LoadResult> selectLoad(LoadGetReq loadGetReq) {
-        checkNotNull(loadGetReq.getUserId(), "userId must be provided");
-        checkNotNull(loadGetReq.getHistorySeq(), "historySeq must be provided");
-
-        return loadResultRepository.findAllByUserIdAndHistorySeq(loadGetReq.getUserId(), loadGetReq.getHistorySeq());
+    public Optional<LoadResult> selectLoad(Long seq) {
+        checkNotNull(seq, "seq must be provided");
+        return loadResultRepository.findById(seq);
     }
 
     @Override
-    public Integer deleteLoad(LoadDeleteReq loadDeleteReq) {
-        checkNotNull(loadDeleteReq.getUserId(), "userId must be provided");
-        checkNotNull(loadDeleteReq.getHistorySeq(), "historySeq must be provided");
+    public List<LoadResult> selectLoadByTabSeq(Long tabSeq) {
+        checkNotNull(tabSeq, "tabSeq must be provided");
+        return loadResultRepository.findByTabSeq(tabSeq);
+    }
 
-        List<LoadResult> list = loadResultRepository.findAllByUserIdAndHistorySeq(loadDeleteReq.getUserId(), loadDeleteReq.getHistorySeq());
+    @Override
+    public Integer deleteLoad(Long tabSeq) {
+        checkNotNull(tabSeq, "tabSeq must be provided");
+
+        List<LoadResult> list = loadResultRepository.findByTabSeq(tabSeq);
         loadResultRepository.deleteAll(list);
 
         return list.size();

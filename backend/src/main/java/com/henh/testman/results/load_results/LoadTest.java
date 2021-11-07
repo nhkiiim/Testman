@@ -1,6 +1,6 @@
 package com.henh.testman.results.load_results;
 
-import com.henh.testman.results.load_results.request.LoadPostReq;
+import com.henh.testman.results.load_results.request.LoadInsertReq;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.control.LoopController;
@@ -97,9 +97,10 @@ public class LoadTest {
         return testPlanTree;
     }
 
-    private static void makeCollector(HashTree testPlanTree, LoadResultRepository loadResultRepository, String userId, Long historySeq, LocalDateTime createAt) {
+    private static void makeCollector(HashTree testPlanTree, LoadResultRepository loadResultRepository,
+                                      Long tabSeq, LocalDateTime createAt) {
         Summariser summer = new Summariser(summariserName);
-        MyResultCollector logger = new MyResultCollector(summer, loadResultRepository, userId, historySeq, createAt);
+        MyResultCollector logger = new MyResultCollector(summer, loadResultRepository, tabSeq, createAt);
 
         testPlanTree.add(testPlanTree.getArray()[0], logger);
     }
@@ -113,14 +114,14 @@ public class LoadTest {
         System.out.println("Test completed.");
     }
 
-    public static void work(LoadPostReq loadPostReq, LoadResultRepository loadResultRepository) {
+    public static void work(LoadInsertReq loadInsertReq, LoadResultRepository loadResultRepository) {
         initialization();
-        HTTPSamplerProxy sampler = makeSampler(loadPostReq.getAddress(), loadPostReq.getPort(), loadPostReq.getHttpMethod());
-        LoopController loopController = makeLoopController(loadPostReq.getLoop());
-        ThreadGroup threadGroup = makeThreadGroup(loopController, loadPostReq.getThread());
+        HTTPSamplerProxy sampler = makeSampler(loadInsertReq.getAddress(), loadInsertReq.getPort(), loadInsertReq.getHttpMethod());
+        LoopController loopController = makeLoopController(loadInsertReq.getLoop());
+        ThreadGroup threadGroup = makeThreadGroup(loopController, loadInsertReq.getThread());
         TestPlan testPlan = makeTestPlan();
         HashTree testPlanTree = makeTestPlanTree(testPlan, threadGroup, sampler);
-        makeCollector(testPlanTree, loadResultRepository, loadPostReq.getUserId(), loadPostReq.getHistorySeq(), loadPostReq.getCreateAt());
+        makeCollector(testPlanTree, loadResultRepository, loadInsertReq.getTabSeq(), loadInsertReq.getCreateAt());
         run(testPlanTree);
     }
 

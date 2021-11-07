@@ -2,12 +2,11 @@ package com.henh.testman.results.load_results;
 
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
-import com.henh.testman.results.load_results.request.LoadDeleteReq;
-import com.henh.testman.results.load_results.request.LoadGetReq;
-import com.henh.testman.results.load_results.request.LoadPostReq;
+import com.henh.testman.results.load_results.request.LoadInsertReq;
 import com.henh.testman.results.load_results.response.LoadDeleteRes;
-import com.henh.testman.results.load_results.response.LoadGetRes;
-import com.henh.testman.results.load_results.response.WorkRes;
+import com.henh.testman.results.load_results.response.LoadInsertRes;
+import com.henh.testman.results.load_results.response.LoadSelectAllRes;
+import com.henh.testman.results.load_results.response.LoadSelectRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,30 +26,41 @@ public class LoadResultRestController {
     }
 
     @PostMapping
-    public ApiResult<WorkRes> insertLoad(@Valid LoadPostReq loadPostReq) {
+    public ApiResult<LoadInsertRes> insertLoad(@Valid LoadInsertReq loadInsertReq) {
         return success(
-            new WorkRes(
-                loadResultService.insertLoad(loadPostReq)
-                    .map(LoadResultDto::new)
-                    .orElseThrow(() -> new NotFoundException("fail work"))
+            new LoadInsertRes(
+                    loadResultService.insertLoad(loadInsertReq)
+                            .map(Long::new)
+                            .orElseThrow(() -> new NotFoundException("fail insert for load"))
             )
         );
     }
 
-    @GetMapping
-    public ApiResult<LoadGetRes> selectLoad(@Valid LoadGetReq loadGetReq) {
+    @GetMapping("{seq}")
+    public ApiResult<LoadSelectRes> selectLoad(@PathVariable Long seq) {
         return success(
-                new LoadGetRes(
-                        loadResultService.selectLoad(loadGetReq)
+                new LoadSelectRes(
+                        loadResultService.selectLoad(seq)
+                                .map(LoadResultDto::new)
+                                .orElseThrow(() -> new NotFoundException("fail select for load"))
                 )
         );
     }
 
-    @DeleteMapping
-    public ApiResult<LoadDeleteRes> deleteLoad(@Valid LoadDeleteReq loadDeleteReq) {
+    @GetMapping("list/{tabSeq}")
+    public ApiResult<LoadSelectAllRes> selectLoadByTabSeq(@PathVariable Long tabSeq) {
+        return success(
+                new LoadSelectAllRes(
+                        loadResultService.selectLoadByTabSeq(tabSeq)
+                )
+        );
+    }
+
+    @DeleteMapping("{tabSeq}")
+    public ApiResult<LoadDeleteRes> deleteLoad(@PathVariable Long tabSeq) {
         return success(
                 new LoadDeleteRes(
-                        loadResultService.deleteLoad(loadDeleteReq)
+                        loadResultService.deleteLoad(tabSeq)
                 )
         );
     }

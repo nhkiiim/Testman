@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class LoadPostReq {
+public class LoadInsertReq {
 
-    @NotBlank(message = "userId must be provided")
-    private String userId;
+    @NotNull(message = "workspaceSeq must be provided")
+    private Long workspaceSeq;
 
-    @NotNull(message = "historySeq must be provided")
-    private Long historySeq;
+    @NotNull(message = "tabSeq must be provided")
+    private Long tabSeq;
 
     @NotBlank(message = "address must be provided")
     private String address;

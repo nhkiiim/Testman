@@ -1,17 +1,15 @@
 package com.henh.testman.histories.response;
 
 import com.henh.testman.histories.HistoryDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
 public class HistorySelectAllRes {
 
-    List<HistoryDto> historyList;
-
-    public HistorySelectAllRes(List<HistoryDto> historyDtoList) {
-        this.historyList = historyDtoList;
-    }
+    private final List<HistoryDto> historyList;
 
 }

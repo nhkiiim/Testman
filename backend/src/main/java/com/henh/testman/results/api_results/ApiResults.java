@@ -1,6 +1,5 @@
 package com.henh.testman.results.api_results;
 
-import com.henh.testman.tabs.Tab;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -20,7 +19,7 @@ public class ApiResults {
     private Long seq;
 
     @Indexed
-    private Long tapSeq;
+    private Long tabSeq;
 
     private Integer code;
 

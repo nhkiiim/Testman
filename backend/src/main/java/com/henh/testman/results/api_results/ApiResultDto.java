@@ -11,7 +11,7 @@ import java.util.Map;
 @ToString
 public class ApiResultDto {
 
-    private long tapSeq;
+    private long tabSeq;
 
     private Integer code;
 
@@ -20,7 +20,7 @@ public class ApiResultDto {
     private Map<String, String> headers;
 
     public ApiResultDto(ApiResults apiResults) {
-        this.tapSeq = apiResults.getTapSeq();
+        this.tabSeq = apiResults.getTabSeq();
         this.code = apiResults.getCode();
         this.body = apiResults.getBody();
         this.headers = apiResults.getHeaders();

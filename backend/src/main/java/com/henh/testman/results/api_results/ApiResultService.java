@@ -4,8 +4,8 @@ import java.util.Optional;
 
 public interface ApiResultService {
 
-    Optional<ApiResults> selectApi(Long tapSeq);
+    Optional<ApiResults> selectApi(Long tabSeq);
 
-    Long deleteApi(Long tapSeq);
+    Long deleteApi(Long tabSeq);
 
 }

@@ -8,6 +8,6 @@ import java.util.Optional;
 @Repository
 public interface ApiResultRepository extends CrudRepository<ApiResults, Long> {
 
-    Optional<ApiResults> findByTapSeq(Long tabSeq);
+    Optional<ApiResults> findByTabSeq(Long tabSeq);
 
 }

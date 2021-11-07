@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React from "react";
 import Content from "../components/Content";
 import Header2 from "../components/Header2";

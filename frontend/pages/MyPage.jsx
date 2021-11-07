@@ -5,18 +5,44 @@ import MediumCard from "../components/MediumCard";
 import Aos from "aos";
 import "aos/dist/aos.css";
 import Header2 from "../components/Header2";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/dist/client/router";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import * as projectActions from "../store/modules/project";
+
 const MyPage = () => {
+  const router = useRouter();
+  const category = router.query;
   const [dataCnt, setDataCnt] = useState(4);
+  const [workspaces, setWorkSpaces] = useState([]);
+  const token = useSelector((state) => state.user.token);
+  // console.log(token);
+  const dispatch = useDispatch();
+  useEffect(async () => {
+    {
+      token === "" ? router.push("/Login") : await getFetchData();
+    }
 
-  useEffect(() => {
-    workspaceDump.filter((data) => {
-      {
-        data.name == "" ? setDataCnt(dataCnt - 1) : null;
-      }
-    });
-    Aos.init({ duration: 2000 });
+    // workspaceDump.filter((data) => {
+    //   {
+    //     data.name == "" ? setDataCnt(dataCnt - 1) : null;
+    //   }
+    // });
+    // Aos.init({ duration: 2000 });
   }, []);
-
+  const getFetchData = async () => {
+    await axios
+      .get("/api/workspaces")
+      .then((res) => {
+        setWorkSpaces(res.data.response.workspaceDtoList);
+        dispatch(projectActions.setProject(res.data.response.workspaceDtoList));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  // console.log(workspaces);
   return (
     <div className="bg-gray-200 ">
       {/* <Header /> */}
@@ -29,14 +55,14 @@ const MyPage = () => {
           </h2>
 
           <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8 ">
-            {workspaceDump?.map(({ no, name, url, description, img }) => (
+            {workspaces?.map(({ seq, title, url, description, img, createDate }) => (
               <MediumCard
-                key={no}
-                no={no}
-                name={name}
+                key={seq}
+                title={title}
                 url={url}
                 description={description}
                 img={img}
+                createDate={createDate}
               />
             ))}
           </div>

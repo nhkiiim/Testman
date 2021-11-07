@@ -9,7 +9,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { createStore } from "redux";
 import rootReducer from "../store/modules";
 
-axios.defaults.baseURL = "http://testsman.com:8080";
+axios.defaults.baseURL = "http://www.testsman.com:8080";
 axios.defaults.withCredentials = true;
 const progress = new ProgressBar({
   size: 4,

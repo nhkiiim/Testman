@@ -117,7 +117,7 @@ const RequestOptions = (props) => {
         return <SettingsOption />;
     }
   };
-  console.log(requestTabIndex);
+  // console.log(requestTabIndex);
   return <div>{render()}</div>;
 };
 

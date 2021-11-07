@@ -34,16 +34,18 @@ const Login = () => {
     axios
       .post("/api/users/login", data)
       .then((res) => {
-        // console.log(res.data.response.user);
+        console.log(res.data);
         const { accessToken } = res.data.response.token;
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.response.token}`;
+
         dispatch(userActions.setUserState(res.data.response.user));
         dispatch(userActions.setUserToken(res.data.response.token));
         router.push({
           pathname: "/MyPage",
           query: {
             id: res.data.response.user.userId,
+            category: 0,
           },
         });
       })

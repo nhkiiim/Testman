@@ -4,17 +4,26 @@ import { useRouter } from "next/dist/client/router";
 import axios from "axios";
 import { PlusCircleIcon } from "@heroicons/react/solid";
 import { XCircleIcon } from "@heroicons/react/solid";
+import bg from "../img/bg.png";
 
 // import { useSelector } from "react-redux";
-const MediumCard = ({ no, name, url, description, img }) => {
+const MediumCard = ({ seq, title, url, description, img, createDate }) => {
   const [showModal, setShowModal] = useState(false);
+  const [date, setDate] = useState(createDate);
   const router = useRouter();
   const [titleCategory, setTitleCategory] = useState(4);
 
+  useEffect(() => {
+    dateForm();
+  }, [date]);
+  const dateForm = () => {
+    setDate(createDate.slice(0, 11));
+  };
+
   return (
     <>
-      <div className="mb-8 cursor-pointer hover:scale-105 transform transition duration-300 ease-out shadow-md rounded-lg sm:mx-2 md:mx-3 bg-white">
-        {name === "" ? (
+      <div className="mb-8 cursor-pointer hover:scale-105 transform transition duration-300 ease-out shadow-md rounded-sm sm:mx-2 md:mx-3 bg-white">
+        {title === "" ? (
           <div
             className="w-[372px] pt-3 px-2 h-80 mx-auto "
             onClick={() => {
@@ -33,10 +42,13 @@ const MediumCard = ({ no, name, url, description, img }) => {
             <h3 className="mt-3 text-1xl">URL : {url}</h3>
             <h3 className="mt-3 text-1xl">설명 : {description}</h3>
           </div> */}
-            <img className="w-full bg-gray-200" src={img} />
+            {/* <img className="w-full bg-gray-200" src="${bg}" /> */}
+            <div className="relative h-[312px] bg-gray-200 ">
+              <Image src={bg} layout="fill" objectFit="contain" />
+            </div>
             <div className="py-2 px-4 w-full flex justify-between bg-indigo-700">
-              <p className="text-sm text-white font-semibold tracking-wide">{name}</p>
-              <p className="text-sm text-white font-semibold tracking-wide">27TH Oct, 2021</p>
+              <p className="text-sm text-white font-semibold tracking-wide">{title}</p>
+              <p className="text-sm text-white font-semibold tracking-wide">{date}</p>
             </div>
             <div className="bg-white px-3  lg:px-6 py-4 rounded-bl-3xl rounded-br-3xl">
               <h1 className="text-lg text-gray-900 font-semibold tracking-wider">{url}</h1>
@@ -68,7 +80,10 @@ const MediumCard = ({ no, name, url, description, img }) => {
                 <div className="relative p-6 flex-auto">
                   <form className="flex flex-col w-[350px]" method="POST" action="#">
                     <div className="mb-6 pt-3 rounded bg-gray-200">
-                      <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="Name">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-0 ml-3"
+                        htmlFor="Name"
+                      >
                         Name
                       </label>
                       <input
@@ -78,7 +93,10 @@ const MediumCard = ({ no, name, url, description, img }) => {
                       />
                     </div>
                     <div className="mb-6 pt-3 rounded bg-gray-200">
-                      <label className="block text-gray-700 text-sm font-bold mb-0 ml-3" for="URL">
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-0 ml-3"
+                        htmlFor="URL"
+                      >
                         URL
                       </label>
                       <input
@@ -90,7 +108,7 @@ const MediumCard = ({ no, name, url, description, img }) => {
                     <div className="mb-6 pt-3 rounded bg-gray-200">
                       <label
                         className="block text-gray-700 text-sm font-bold mb-0 ml-3"
-                        for="Description"
+                        htmlFor="Description"
                       >
                         Description
                       </label>

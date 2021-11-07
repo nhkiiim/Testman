@@ -65,6 +65,7 @@ public class TabServiceImpl implements TabService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Optional<Long> deleteTab(Long seq) {
         checkNotNull(seq, "seq must be provided");
         Tab tab = tabRepository.findById(seq)

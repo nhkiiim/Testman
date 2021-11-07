@@ -5,6 +5,7 @@ import com.henh.testman.histories.HistoryRepository;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class LoadResultServiceImpl implements LoadResultService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Optional<Long> insertLoad(LoadInsertReq loadInsertReq) {
         History history = historyRepository.save(new History(loadInsertReq));
         LoadTest.work(loadInsertReq, loadResultRepository);
@@ -33,18 +35,21 @@ public class LoadResultServiceImpl implements LoadResultService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<LoadResult> selectLoad(Long seq) {
         checkNotNull(seq, "seq must be provided");
         return loadResultRepository.findById(seq);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<LoadResult> selectLoadByTabSeq(Long tabSeq) {
         checkNotNull(tabSeq, "tabSeq must be provided");
         return loadResultRepository.findByTabSeq(tabSeq);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Integer deleteLoad(Long tabSeq) {
         checkNotNull(tabSeq, "tabSeq must be provided");
 

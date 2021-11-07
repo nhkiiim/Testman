@@ -7,6 +7,7 @@ import com.henh.testman.workspaces.Workspace;
 import com.henh.testman.workspaces.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CollectionDto> selectCollection(Long workspaceSeq) {
         checkNotNull(workspaceSeq, "workspaceSeq must be provided");
         List<Collection> collections = collectionRepository.findByWorkspaceSeq(workspaceSeq);
@@ -36,6 +38,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Optional<Collection> insertCollection(CollectionInsertReq collectionInsertReq) {
         Workspace workspace = workspaceRepository.findById(collectionInsertReq.getWorkspaceSeq())
                 .orElseThrow(() -> new NotFoundException("could not found workspace"));
@@ -51,6 +54,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Optional<Collection> updateCollection(CollectionUpdateReq collectionUpdateReq) {
         Collection collection = collectionRepository.findById(collectionUpdateReq.getSeq())
                 .orElseThrow(() -> new NotFoundException("could not found collection"));
@@ -62,6 +66,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Optional<String> deleteCollection(Long seq) {
         checkNotNull(seq, "seq must be provided");
         Collection collection = collectionRepository.findById(seq)

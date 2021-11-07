@@ -1,6 +1,5 @@
 package com.henh.testman.results.api_results;
 
-import com.henh.testman.tabs.Tab;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,7 +11,7 @@ import java.util.Map;
 @ToString
 public class ApiResultDto {
 
-    private Tab Tab;
+    private long tapSeq;
 
     private Integer code;
 
@@ -20,11 +19,11 @@ public class ApiResultDto {
 
     private Map<String, String> headers;
 
-    public ApiResultDto(ApiResult apiResult) {
-        this.Tab = apiResult.getTab();
-        this.code = apiResult.getCode();
-        this.body = apiResult.getBody();
-        this.headers = apiResult.getHeaders();
+    public ApiResultDto(ApiResults apiResults) {
+        this.tapSeq = apiResults.getTapSeq();
+        this.code = apiResults.getCode();
+        this.body = apiResults.getBody();
+        this.headers = apiResults.getHeaders();
     }
 
 }

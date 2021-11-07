@@ -14,12 +14,13 @@ import java.util.Map;
 @Builder
 @ToString
 @RedisHash(value = "apiResult")
-public class ApiResult {
+public class ApiResults {
 
     @Id
     private Long seq;
 
-    private Tab Tab;
+    @Indexed
+    private Long tapSeq;
 
     private Integer code;
 

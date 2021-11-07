@@ -26,7 +26,7 @@ public class LoadResultRestController {
     }
 
     @PostMapping
-    public ApiResult<LoadInsertRes> insertLoad(@Valid LoadInsertReq loadInsertReq) {
+    public ApiResult<LoadInsertRes> insertLoad(@Valid @RequestBody LoadInsertReq loadInsertReq) {
         return success(
             new LoadInsertRes(
                     loadResultService.insertLoad(loadInsertReq)

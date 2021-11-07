@@ -8,6 +8,8 @@ import com.henh.testman.tabs.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.henh.testman.common.utils.ApiUtils.success;
 
 @RestController
@@ -22,7 +24,7 @@ public class TabRestController {
     }
 
     @PostMapping
-    public ApiResult<TabInsertRes> insertTab(@RequestBody TabInsertReq tabInsertReq){
+    public ApiResult<TabInsertRes> insertTab(@Valid @RequestBody TabInsertReq tabInsertReq){
         return success(
                 new TabInsertRes(
                         tabService.insertTab(tabInsertReq)
@@ -53,7 +55,7 @@ public class TabRestController {
     }
 
     @PatchMapping
-    public ApiResult<TabUpdateRes> updateTab(@RequestBody TabUpdateReq tabUpdateReq){
+    public ApiResult<TabUpdateRes> updateTab(@Valid @RequestBody TabUpdateReq tabUpdateReq){
         return success(
                 new TabUpdateRes(
                         tabService.updateTab(tabUpdateReq)

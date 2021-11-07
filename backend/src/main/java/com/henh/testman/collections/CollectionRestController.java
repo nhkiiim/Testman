@@ -12,6 +12,8 @@ import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 import static com.henh.testman.common.utils.ApiUtils.success;
 
 @RestController
@@ -35,7 +37,7 @@ public class CollectionRestController {
     }
 
     @PostMapping
-    public ApiResult<CollectionInsertRes> insertCollection(@RequestBody CollectionInsertReq collectionInsertReq) {
+    public ApiResult<CollectionInsertRes> insertCollection(@Valid @RequestBody CollectionInsertReq collectionInsertReq) {
         return success(
                 new CollectionInsertRes (
                         collectionService.insertCollection(collectionInsertReq)
@@ -46,7 +48,7 @@ public class CollectionRestController {
     }
 
     @PatchMapping
-    public ApiResult<CollectionUpdateRes> updateCollection(@RequestBody CollectionUpdateReq collectionUpdateReq) {
+    public ApiResult<CollectionUpdateRes> updateCollection(@Valid @RequestBody CollectionUpdateReq collectionUpdateReq) {
         return success(
                 new CollectionUpdateRes (
                         collectionService.updateCollection(collectionUpdateReq)

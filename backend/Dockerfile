@@ -5,6 +5,10 @@ LABEL maintainer="lsyeup1206@naver.com"
 
 EXPOSE 8080
 
+CMD chmod +x gradlew
+
+CMD gradlew clean build
+
 ARG JAR_FILE=build/libs/testman-0.0.1-SNAPSHOT.jar
 
 COPY ${JAR_FILE} testman.jar

@@ -9,7 +9,8 @@ const pageSlice = createSlice({
   initialState,
   reducers: {
     setPageState: (state, action) => {
-      state.category = action.payload.category;
+      const category = action.payload;
+      state.category = category;
     },
   },
 });

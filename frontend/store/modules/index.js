@@ -7,6 +7,8 @@ import storageSession from "redux-persist/lib/storage/session";
 import api from "./api";
 import project from "./project";
 import page from "./page";
+import seq from "./seq";
+import current from "./current";
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -18,6 +20,8 @@ const rootReducer = (state, action) => {
         api,
         project,
         page,
+        seq,
+        current,
       });
       return combineReducer(state, action);
     }
@@ -27,7 +31,7 @@ const rootReducer = (state, action) => {
 const persistConfig = {
   key: "root",
   storage: storageSession,
-  whitelist: ["user"],
+  whitelist: ["user", "seq", "project", "current", "page"],
 };
 
 export default persistReducer(persistConfig, rootReducer);

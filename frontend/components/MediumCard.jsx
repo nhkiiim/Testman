@@ -5,6 +5,10 @@ import axios from "axios";
 import { PlusCircleIcon } from "@heroicons/react/solid";
 import { XCircleIcon } from "@heroicons/react/solid";
 import bg from "../img/bg.png";
+import { useDispatch } from "react-redux";
+import * as currentActions from "../store/modules/current";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 // import { useSelector } from "react-redux";
 const MediumCard = ({ seq, title, url, description, img, createDate }) => {
@@ -12,16 +16,28 @@ const MediumCard = ({ seq, title, url, description, img, createDate }) => {
   const [date, setDate] = useState(createDate);
   const router = useRouter();
   const [titleCategory, setTitleCategory] = useState(4);
+  const dispatch = useDispatch();
+  const data = {
+    seq: seq,
+    title: title,
+    url: url,
+    description: description,
+    img: img,
+    createDate: createDate,
+  };
+  // console.log(data);
   // console.log(seq);
 
   useEffect(() => {
     dateForm();
+    Aos.init({ duration: 1000 });
   }, [date]);
   const dateForm = () => {
     setDate(createDate.slice(0, 11));
   };
 
   const pageRouting = () => {
+    dispatch(currentActions.setCurrentProject(data));
     router.push({
       pathname: "/TestPage",
       query: {
@@ -33,6 +49,7 @@ const MediumCard = ({ seq, title, url, description, img, createDate }) => {
   return (
     <>
       <div
+        data-aos="fade-zoom-in"
         className="mb-8 cursor-pointer hover:scale-105 transform transition duration-300 ease-out shadow-md rounded-sm sm:mx-2 md:mx-3 bg-white"
         onClick={pageRouting}
       >

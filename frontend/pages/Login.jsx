@@ -5,8 +5,11 @@ import Image from "next/image";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import * as userActions from "../store/modules/user";
+import * as pageAction from "../store/modules/page";
+import { useCookies } from "react-cookie";
 
 const Login = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
   const [inputObj, setInputObj] = useState({
     userId: "",
     password: "",
@@ -34,19 +37,19 @@ const Login = () => {
     axios
       .post("/api/users/login", data)
       .then((res) => {
-        console.log(res.data);
-        const { accessToken } = res.data.response.token;
+        setCookie("token", res.data.response.token, {
+          path: "/",
+          secure: true,
+          sameSite: "none",
+        });
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.response.token}`;
 
         dispatch(userActions.setUserState(res.data.response.user));
         dispatch(userActions.setUserToken(res.data.response.token));
+        dispatch(pageAction.setPageState(0));
         router.push({
           pathname: "/MyPage",
-          query: {
-            id: res.data.response.user.userId,
-            category: 0,
-          },
         });
       })
       .catch((error) => {
@@ -56,7 +59,6 @@ const Login = () => {
 
   return (
     <div>
-      {/* <body className="body-bg min-h-screen pb-6 px-2 md:px-0"> */}
       <main className="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl mt-48">
         <section className="">
           <div className="relative h-16 mx-auto justify-center w-40">
@@ -121,7 +123,6 @@ const Login = () => {
           Privacy
         </a>
       </footer>
-      {/* </body> */}
     </div>
   );
 };

@@ -1,10 +1,13 @@
 package com.henh.testman.results.api_results;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.henh.testman.results.api_results.request.ApiInsertReq;
+
 import java.util.Optional;
 
 public interface ApiResultService {
 
-    Optional<ApiResults> selectApi(Long tabSeq);
+    Optional<ApiResults> insertApi(ApiInsertReq apiInsertReq) throws JsonProcessingException;
 
     Long deleteApi(Long tabSeq);
 

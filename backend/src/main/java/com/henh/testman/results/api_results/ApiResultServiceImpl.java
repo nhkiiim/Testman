@@ -1,14 +1,19 @@
 package com.henh.testman.results.api_results;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.henh.testman.common.errors.NotFoundException;
+import com.henh.testman.results.api_results.request.ApiInsertReq;
 import com.henh.testman.tabs.Tab;
 import com.henh.testman.tabs.TabRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +21,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -38,12 +44,21 @@ public class ApiResultServiceImpl implements ApiResultService {
     }
 
     @Override
-    public Optional<ApiResults> selectApi(Long tapSeq) {
-        checkNotNull(tapSeq, "tabSeq must be provided");
-        Tab tab = tabRepository.findBySeq(tapSeq)
-                .orElseThrow(() -> new NotFoundException("Could not found tab seq " + tapSeq));
+    public Optional<ApiResults> insertApi(ApiInsertReq apiInsertReq) throws JsonProcessingException {
+        ResponseEntity<Map> resultMap = apiTest(apiInsertReq);
 
-        apiTest(tab);
+        Map<String, Object> body = new HashMap<>();
+        Map<String, String> headers = new HashMap<>();
+
+        ObjectMapper mapper = new ObjectMapper();
+        String bodyStr = mapper.writeValueAsString(resultMap.getBody());
+        String headerStr = mapper.writeValueAsString(resultMap.getHeaders());
+
+        System.out.println(bodyStr);
+        System.out.println(headerStr);
+
+        Tab tab = tabRepository.findBySeq(apiInsertReq.getTabSeq())
+                .orElseThrow(() -> new NotFoundException("Could not found tab seq " + apiInsertReq.getTabSeq()));
         return Optional.empty();
     }
 
@@ -57,39 +72,33 @@ public class ApiResultServiceImpl implements ApiResultService {
         return apiResults.getTabSeq();
     }
 
-    //문제 1. url 가져오기
-    //문제 2. 쿼리있는 경우는 ..? -> path에 포함으로? 쿼리 지정해주는 함수 따로 있음
-    //문제 3. delete update는 반환해주는지 모르겠다(해보자)
-    //문제 4. 헤더 입력 for문 돌리기..? string으로 입력 받는게 맞나욥..
-    //문제 5. prams도 마찬가지..
-    public void apiTest(Tab tab){
-        HashMap<String, Object> result = new HashMap<String, Object>();
-
+    public ResponseEntity<Map> apiTest(ApiInsertReq apiInsertReq) {
+        ResponseEntity<Map> resultMap = null;
         try {
-            HttpEntity<String> request;
-            if (tab.getHeaders() != null) {
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                request = new HttpEntity<>("Hello World!", headers);
-            }
+            String url = apiInsertReq.getAddress() + apiInsertReq.getPath();
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
 
-            String url = "";
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url + tab.getPath());
+            HttpHeaders headers = new HttpHeaders();
 
+            MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
+            params.add("userId", "ssafy17");
+            params.add("password", "1234");
+            params.add("email", "ssafy@naver.com");
 
-            String empEntity = restTemplate.exchange(BASE_URL + "/exchange/employee/{id}", HttpMethod.GET, request, Employee.class, 50);
+            HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(params, headers);
 
-        }catch (HttpClientErrorException | HttpServerErrorException e) {
-            result.put("statusCode", e.getRawStatusCode());
-            result.put("body"  , e.getStatusText());
-            System.out.println("오류");
-            System.out.println(e.toString());
+            resultMap = restTemplate.exchange(uri.toString(), HttpMethod.POST, request, Map.class);
+
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            System.out.println("statusCode: " + e.getRawStatusCode());
+            System.out.println(e.getStatusText());
 
         } catch (Exception e) {
-            result.put("statusCode", "500");
-            result.put("body"  , "excpetion오류");
-            System.out.println(e.toString());
+            System.out.println("statusCode: 500");
+            System.out.println("excpetion오류");
+
         }
+        return resultMap;
     }
 
 }

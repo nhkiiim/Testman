@@ -1,8 +1,8 @@
 package com.henh.testman.results.api_results;
 
 import com.henh.testman.common.errors.NotFoundException;
-import com.henh.testman.common.utils.ApiUtils;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
+import com.henh.testman.results.api_results.request.ApiInsertReq;
 import com.henh.testman.results.api_results.response.ApiDeleteRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +21,10 @@ public class ApiResultRestController {
     }
 
 
-    @GetMapping("{tabSeq}")
-    public ApiResult<ApiResultDto> selectApi(@PathVariable Long tabSeq) {
+    @PostMapping("{tabSeq}")
+    public ApiResult<ApiResultDto> insertApi(@RequestBody ApiInsertReq apiInsertReq) {
         return success(
-                apiResultService.selectApi(tabSeq)
+                apiResultService.insertApi(apiInsertReq)
                         .map(ApiResultDto::new)
                         .orElseThrow(() -> new NotFoundException("fail select for load"))
 

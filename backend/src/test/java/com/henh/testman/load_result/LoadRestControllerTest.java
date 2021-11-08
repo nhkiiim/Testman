@@ -1,12 +1,9 @@
 package com.henh.testman.load_result;
 
-import com.henh.testman.results.load_results.LoadResult;
 import com.henh.testman.results.load_results.LoadResultRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 @SpringBootTest
 public class LoadRestControllerTest {
@@ -27,10 +24,17 @@ public class LoadRestControllerTest {
 //
 //        List<LoadResult> result = loadResultRepository.findAllByUserIdAndHistorySeq("heung", 1L);
 //        System.out.println(result.toString());
+//
+//        List<LoadResult> list = loadResultRepository.findAllByUserIdAndHistorySeq("heung", 1L);
+//        loadResultRepository.deleteAll(list);
 
-        List<LoadResult> list = loadResultRepository.findAllByUserIdAndHistorySeq("heung", 1L);
-        loadResultRepository.deleteAll(list);
+        String[] part = "http://localhost:8080".replaceAll("//", "").split(":");
+        String protocol = part[0];
+        String domain = part[1];
+        int port = Integer.parseInt(part[2]);
 
-        System.out.println(list.size());
+        System.out.println(protocol);
+        System.out.println(domain);
+        System.out.println(port);
     }
 }

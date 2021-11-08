@@ -1,7 +1,9 @@
 package com.henh.testman.tabs;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.henh.testman.common.utils.BaseEntity;
-import com.henh.testman.tabs.request.TabUpdateReq;
+import com.henh.testman.results.load_results.request.LoadInsertReq;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -17,25 +19,24 @@ public class Tab extends BaseEntity {
 
     private Long workspaceSeq;
 
+    private String address;
+
     private String path;
 
     private String httpMethod;
-
-    private Integer port;
 
     private String params;
 
     private String headers;
 
-    private String authorization;
+    public void updateByLoad(LoadInsertReq loadInsertReq) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
 
-    public void update(TabUpdateReq tabUpdateReq){
-        this.path = tabUpdateReq.getPath();
-        this.httpMethod = tabUpdateReq.getHttpMethod();
-        this.port = tabUpdateReq.getPort();
-        this.params = tabUpdateReq.getParams();
-        this.headers = tabUpdateReq.getHeaders();
-        this.authorization = tabUpdateReq.getAuthorization();
+        this.address = loadInsertReq.getAddress();
+        this.path = loadInsertReq.getPath();
+        this.httpMethod = loadInsertReq.getHttpMethod();
+        this.params = mapper.writeValueAsString(loadInsertReq.getParams());
+        this.headers = mapper.writeValueAsString(loadInsertReq.getHeaders());
     }
 
 }

@@ -1,8 +1,12 @@
 package com.henh.testman.tabs;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Map;
 
 @Getter
 @Setter
@@ -13,27 +17,26 @@ public class TabDto {
 
     private final Long workspaceSeq;
 
+    private final String address;
+
     private final String path;
 
     private final String httpMethod;
 
-    private final Integer port;
+    private final Map<?, ?> params;
 
-    private final String params;
+    private final Map<?, ?> headers;
 
-    private final String headers;
+    public TabDto(Tab tab) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
 
-    private final String authorization;
-
-    public TabDto(Tab tab) {
         this.seq = tab.getSeq();
         this.workspaceSeq = tab.getWorkspaceSeq();
+        this.address = tab.getAddress();
         this.path = tab.getPath();
         this.httpMethod = tab.getHttpMethod();
-        this.port = tab.getPort();
-        this.params = tab.getParams();
-        this.headers = tab.getHeaders();
-        this.authorization = tab.getAuthorization();
+        this.params = mapper.readValue(tab.getParams(), Map.class);
+        this.headers = mapper.readValue(tab.getHeaders(), Map.class);
     }
 
 }

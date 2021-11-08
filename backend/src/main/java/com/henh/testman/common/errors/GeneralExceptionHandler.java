@@ -1,5 +1,6 @@
 package com.henh.testman.common.errors;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.henh.testman.common.utils.ApiUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ public class GeneralExceptionHandler {
     @ExceptionHandler({
             NoHandlerFoundException.class,
             NotFoundException.class,
+            FailLoadTestException.class
     })
     public ResponseEntity<?> handleNotFoundException(Exception e) {
         return newResponse(e, HttpStatus.NOT_FOUND);
@@ -57,7 +59,8 @@ public class GeneralExceptionHandler {
             IllegalArgumentException.class,
             IllegalStateException.class,
             ConstraintViolationException.class,
-            MethodArgumentNotValidException.class
+            MethodArgumentNotValidException.class,
+            JsonProcessingException.class
     })
     public ResponseEntity<?> handleBadRequestException(Exception e) {
         log.debug("Bad request exception occurred: {}", e.getMessage(), e);

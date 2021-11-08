@@ -1,5 +1,6 @@
 package com.henh.testman.results.load_results;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
@@ -26,7 +27,7 @@ public class LoadResultRestController {
     }
 
     @PostMapping
-    public ApiResult<LoadInsertRes> insertLoad(@Valid @RequestBody LoadInsertReq loadInsertReq) {
+    public ApiResult<LoadInsertRes> insertLoad(@Valid @RequestBody LoadInsertReq loadInsertReq) throws JsonProcessingException {
         return success(
             new LoadInsertRes(
                     loadResultService.insertLoad(loadInsertReq)

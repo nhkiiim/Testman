@@ -24,3 +24,4 @@ ENTRYPOINT ["java","-jar","/testman.jar"]
 # WORKDIR /opt/target
 
 # CMD ["/bin/bash", "-c", "find -type f -name '*-with-dependencies.jar' | xargs java -jar"]
+# docker main branch build-test

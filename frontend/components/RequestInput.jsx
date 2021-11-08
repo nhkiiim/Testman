@@ -76,7 +76,7 @@ const RequestInput = (props) => {
               onChange={handleURLChange}
               className="border-r border-b border-gray-300 bg-gray-200 p-[8px] w-[60%] border-t rounded-sm"
             />
-            <button className="flex bg-blue-500 text-white p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm ">
+            <button className="flex bg-blue-500 text-white p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm " onClick={handleSubmit}>
               SEND
               <FaCaretDown className="ml-[10px] mt-[2px]" />
             </button>

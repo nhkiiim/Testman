@@ -11,7 +11,6 @@ const TestPage = () => {
   const token = useSelector((state) => state.user.token);
   // console.log(token);
   const [projectData, setProjectData] = useState({});
-  console.log(no);
   const getLogin = async () => {
     await router.push("/Login");
   };
@@ -40,8 +39,8 @@ const TestPage = () => {
   return (
     <div>
       <Header2 />
-      <Sidebar />
-      <Content data={projectData} />
+      <Sidebar no={no}/>
+      <Content data={projectData}/>
     </div>
   );
 };

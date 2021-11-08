@@ -4,9 +4,9 @@ import RequestInput from "./RequestInput";
 import RequestOptions from "./RequestOptions";
 import RequestOptionsSector from "./RequestOptionsSector";
 import TabBar from "./Tabs/TabBar";
+import { useSelector } from "react-redux";
 
-const Content = ({ data }) => {
-  console.log(data);
+const Content = ({ data}) => {
   const [tabs, setTabs] = useState([
     {
       index: Math.random(0, 10) * 10,
@@ -50,8 +50,17 @@ const Content = ({ data }) => {
     setTabs(tempTabs);
   };
 
+  const request = useSelector((state) => state.api.request);
+  
   const handleSubmit = () => {
-    //   axios 통신
+    axios
+    .post('api/api-result', data=request)
+    .then((res) => {
+      console.log(res.data.response)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   };
 
   const handleURLChange = (e) => {
@@ -83,7 +92,7 @@ const Content = ({ data }) => {
         tabIndex={requestTabIndex}
         handleRequestTabChange={(index) => handleRequestTabChange(index)}
       />
-      <RequestOptions requestTabIndex={requestTabIndex} />
+      <RequestOptions requestTabIndex={requestTabIndex}/>
     </div>
   );
 };

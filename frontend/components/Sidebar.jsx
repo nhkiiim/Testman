@@ -1,16 +1,68 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import Aos from "aos";
 import { DotsHorizontalIcon } from "@heroicons/react/solid";
 import { FaPlus } from "react-icons/fa";
 import CollectionsList from "../components/CollectionsList";
-import historyDump from "../dummy/historyDump.json";
 import HistoryList from "../components/HistoryList";
-const Sidebar = () => {
+import axios from "axios";
+import { useSelector } from "react-redux";
+import router from "next/router";
+const Sidebar = (props) => {
   const [tabs] = useState(["History", "Collections"]);
   const [tabIndex, setTabIndex] = useState(1);
   const handleTabChange = (index) => {
-    console.log(index);
     setTabIndex(index);
   };
+  const token = useSelector((state) => state.user.token);
+  useEffect(async () => {
+    if (token === "") {
+      router.push("/Login")
+    } else {
+      getHistoryData(props.no)
+      getCollectionsData(props.no)
+    }
+    Aos.init({ duration: 1000 });
+  }, []);
+  const [historyData, setHistoryData] = useState([
+    {
+      index:'',
+      method:'',
+      url:''
+    }
+  ]);
+  const [historyDataNone, setHistoryDataNone] = useState(false);
+  const getHistoryData = async(no) => {
+    await axios({
+      method: "get",
+      url: `/api/histories/list/${no}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((res) => {
+        setHistoryData(res.data.response)
+      })
+      .catch((error) => {
+        error.response.status === 404 ? setHistoryDataNone(true) : null
+      })
+  }
+  const [collectionsData, setCollectionsData] = useState([]);
+  const [collectionsDataNone, setCollectionsDataNone] = useState(false);
+  const getCollectionsData = async(no) => {
+    await axios({
+      mehtod:"get",
+      url: `/api/collections/${no}`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then((res) => {
+        setCollectionsData(res.data.response)
+      })
+      .catch((error) => {
+        error.response.status === 404 ? setCollectionsDataNone(true) : null
+      })
+  }
   return (
     <div className=" border-r-2 h-[100%] w-[300px] overflow-x-hidden fixed z-10 p-1.5">
       <div className="">
@@ -48,8 +100,8 @@ const Sidebar = () => {
             </>
           ) : (
             <>
-              {historyDump?.map(({ index, method, url }) => (
-                <HistoryList key={index} method={method} url={url} />
+              {historyData?.map(({ index, method, url }) => (
+                <HistoryList key={index} method={method} url={url} historyDataNone={historyDataNone}/>
               ))}
             </>
           )}

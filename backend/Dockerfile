@@ -5,7 +5,7 @@ LABEL maintainer="lsyeup1206@naver.com"
 
 EXPOSE 8080
 
-ARG JAR_FILE=build/libs/*.jar
+ARG JAR_FILE=build/libs/testman-0.0.1-SNAPSHOT.jar
 
 COPY ${JAR_FILE} testman.jar
 

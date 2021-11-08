@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { FaCaretRight, FaCaretDown, FaToggleOn, FaToggleOff } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 const RequestInput = (props) => {
-  const { tabs, handleURLChange, handleSubmit } = props;
-  const [testBtn, setTestBtn] = useState(true);
+  const { tabs, handleURLChange, handleSubmit, url } = props;
+  const [testBtn, setTestBtn] = useState(false);
   const clickTestBtn = () => {
     console.log(testBtn);
     if (testBtn) {
@@ -72,6 +72,7 @@ const RequestInput = (props) => {
             <input
               type="text"
               placeholder=""
+              value={`${url}` + "/"}
               onChange={handleURLChange}
               className="border-r border-b border-gray-300 bg-gray-200 p-[8px] w-[60%] border-t rounded-sm"
             />

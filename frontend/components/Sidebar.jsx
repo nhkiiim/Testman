@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { DotsHorizontalIcon } from "@heroicons/react/solid";
 import { FaPlus } from "react-icons/fa";
 import CollectionsList from "../components/CollectionsList";

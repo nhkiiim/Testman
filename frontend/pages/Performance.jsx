@@ -4,10 +4,11 @@ import Header2 from "../components/Header2";
 
 const Performance = () => {
   const router = useRouter();
-  const { category } = router.query;
+  const query = router.query;
+
   return (
     <div>
-      <Header2 category={category} />
+      <Header2 />
     </div>
   );
 };

@@ -5,7 +5,8 @@ import RequestOptions from "./RequestOptions";
 import RequestOptionsSector from "./RequestOptionsSector";
 import TabBar from "./Tabs/TabBar";
 
-const Content = () => {
+const Content = ({ data }) => {
+  console.log(data);
   const [tabs, setTabs] = useState([
     {
       index: Math.random(0, 10) * 10,
@@ -60,7 +61,10 @@ const Content = () => {
   };
   return (
     <div className="ml-[312px]">
-      <p className="mt-5 font-bold text-xl">TESTSMAN PROJECT</p>
+      <p className="mt-5 font-bold text-xl">
+        {data.title} ({data.url})
+      </p>
+      <p className="mt-2 text-gray-400 text-xs">{data.description}</p>
       <TabBar
         tabs={tabs}
         tabIndex={tabIndex}
@@ -72,6 +76,7 @@ const Content = () => {
         tabs={tabs[tabIndex]}
         handleURLChange={handleURLChange}
         handleSubmit={handleSubmit}
+        url={data.url}
       />
       <RequestOptionsSector
         requestTabs={requestTabs}

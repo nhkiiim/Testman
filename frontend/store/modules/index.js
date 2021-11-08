@@ -6,6 +6,7 @@ import storageSession from "redux-persist/lib/storage/session";
 //  새로고침 시 store 초기화 방지 작업 진행중
 import api from "./api";
 import project from "./project";
+import page from "./page";
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -16,6 +17,7 @@ const rootReducer = (state, action) => {
         user,
         api,
         project,
+        page,
       });
       return combineReducer(state, action);
     }

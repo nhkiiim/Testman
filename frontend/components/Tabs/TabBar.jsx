@@ -1,5 +1,4 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FaTimes, FaPlus } from "react-icons/fa";
 const TabBar = (props) => {
   const { tabs, tabIndex, handleTabChange, handleNewTab, handleRemoveTab } = props;

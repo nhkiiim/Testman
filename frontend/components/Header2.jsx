@@ -7,86 +7,43 @@ import icon3 from "../img/icon3.jpg";
 import { useRouter } from "next/dist/client/router";
 import workspaceDump from "../dummy/workspaceDump.json";
 import ProjectLists from "./ProjectLists";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import ProjectListsDt from "./ProjectListsDt";
+import * as pageAction from "../store/modules/page";
+import { LogoutIcon } from "@heroicons/react/solid";
 
-const Header2 = (props) => {
+const Header2 = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
   const [project, setproject] = useState(false);
   const [profile, setProfile] = useState(false);
   const [dtProject, setDtProject] = useState(false);
   const [select, setSelecet] = useState(0);
-  const [pjtObject, setPjtObject] = useState();
+  const [pjtObject, setPjtObject] = useState([{}]);
+  console.log(pjtList);
 
   const uid = useSelector((state) => state.user.user.userId);
-  console.log(uid);
+  const cPage = useSelector((state) => state.page.category);
+
+  // console.log(uid);
   const pjtList = useSelector((state) => state.project);
-  console.log(pjtList);
 
   useEffect(() => {
     setPjtObject(pjtList[0]);
-    console.log(pjtObject);
-  });
+  }, []);
 
-  // console.log(pjtObject[1]);
-  const handlerSelected = useCallback((value) => {
-    setSelecet(value);
-    // Routing(value);
-  });
-
-  const Routing = useCallback(() => {});
-
-  const handleShowList = () => {
-    setSelecet(1);
-    setDtProject(!dtProject);
+  const handlerSelect = (value) => {
+    if (value === 1) {
+      setSelecet(value);
+      setDtProject(!dtProject);
+    } else {
+      setSelecet(value);
+      setDtProject(false);
+    }
   };
-
-  // const getFunction = () => {
-  //   for (let j = 0; j < pjtObject.length; j++) {
-  //     const data = {
-  //       seq: pjtObject[0].seq,
-  //       title: pjtObject[0].title,
-  //     };
-
-  //     setPjtObject([...pjtObject, data]);
-  //     console.log(pjtObject);
-  //   }
-  // };
-
-  const dumpdata = [
-    {
-      no: 1,
-      name: "First",
-      url: "https://naver.com",
-      description: "이것은 네이버임니다 !!!",
-      img: "https://cdn.tuk.dev/assets/components/111220/Blg-6/blog(2).png",
-    },
-    {
-      no: 2,
-      name: "Second",
-      url: "https://google.com",
-      description: "이것은 네이버임니다 !!!",
-      img: "https://cdn.tuk.dev/assets/components/111220/Blg-6/blog(3).png",
-    },
-    {
-      no: 3,
-      name: "Third",
-      url: "https://kakao.com",
-      description: "이것은 카카오임니다 !!!",
-      img: "https://cdn.tuk.dev/assets/components/111220/Blg-6/blog(4).png",
-    },
-    {
-      no: 4,
-      name: "",
-      url: "",
-      description: "",
-      img: "https://cdn.tuk.dev/assets/components/111220/Blg-6/blog(1).png",
-    },
-  ];
-
   return (
     <>
       <div
@@ -265,10 +222,10 @@ const Header2 = (props) => {
                     </div>
                     {project ? (
                       <div className="pt-4 ">
-                        {dumpdata?.map(({ no, name }) => {
+                        {pjtObject?.map(({ seq, title }) => {
                           return (
                             <>
-                              <ProjectLists key={no} name={name} select={project} />
+                              <ProjectLists key={seq} name={title} select={project} />
                             </>
                           );
                         })}
@@ -319,7 +276,7 @@ const Header2 = (props) => {
                     : "cursor-pointer h-full flex items-center text-sm text-gray-800  tracking-normal"
                 }
                 onClick={() => {
-                  handlerSelected(0);
+                  handlerSelect(0);
                 }}
               >
                 <div className="md:w-6 md:h-6 w-5 h-5 mr-1">
@@ -362,9 +319,7 @@ const Header2 = (props) => {
                     ? "cursor-pointer h-full flex items-center text-sm text-indigo-700 tracking-normal border-b-2 border-indigo-700 ml-8"
                     : "cursor-pointer h-full flex items-center text-sm text-gry-800 ml-8 tracking-normal"
                 }
-                onClick={() => {
-                  handlerSelected(2);
-                }}
+                onClick={() => handlerSelect(2)}
               >
                 <div className="md:w-6 md:h-6 w-5 h-5 mr-1">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none">
@@ -392,7 +347,7 @@ const Header2 = (props) => {
                     ? "cursor-pointer h-full flex items-center text-sm text-indigo-700 tracking-normal border-b-2 border-indigo-700 ml-8"
                     : "cursor-pointer h-full flex items-center text-sm text-gry-800 ml-8 tracking-normal"
                 }
-                onClick={handleShowList}
+                onClick={() => handlerSelect(1)}
               >
                 <div className="md:w-6 md:h-6 w-5 h-5 mr-1">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" fill="none">
@@ -406,78 +361,19 @@ const Header2 = (props) => {
                   </svg>
                 </div>
                 Projects
-                {dtProject ? (
-                  <div className="p-2 w-40 border-r bg-white flex rounded  right-12 shadow mt-[160px] cursor-default">
-                    <ul>
-                      {pjtObject.map(({ seq, title }) => (
-                        <ProjectListsDt key={seq} seq={seq} title={title} />
-                      ))}
-
-                      {/* <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
-                      <div className="flex items-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="icon icon-tabler icon-tabler-user"
-                          width={20}
-                          height={20}
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" />
-                          <circle cx={12} cy={7} r={4} />
-                          <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-                        </svg>
-                        <span className="ml-2">My Profile</span>
-                      </div>
-                    </li>
-                    <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="icon icon-tabler icon-tabler-help"
-                        width={20}
-                        height={20}
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" />
-                        <circle cx={12} cy={12} r={9} />
-                        <line x1={12} y1={17} x2={12} y2="17.01" />
-                        <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                      </svg>
-                      <span className="ml-2">Help Center</span>
-                    </li>
-                    <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 flex items-center focus:text-indigo-700 focus:outline-none">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="icon icon-tabler icon-tabler-settings"
-                        width={20}
-                        height={20}
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path stroke="none" d="M0 0h24v24H0z" />
-                        <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <circle cx={12} cy={12} r={3} />
-                      </svg>
-                      <span className="ml-2">Account Settings</span>
-                    </li> */}
-                    </ul>
-                  </div>
-                ) : (
-                  ""
-                )}
+                <div className={dtProject ? "h-40 mt-60 z-40 flex ml-[-80px]" : "hidden"}>
+                  {dtProject ? (
+                    <div className="p-2 w-44 border-r  bg-white relative rounded  shadow  cursor-default  overflow-y-scroll">
+                      <ul className="w-full">
+                        {pjtObject?.map(({ seq, title }) => (
+                          <ProjectListsDt key={seq} seq={seq} title={title} />
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </li>
             </ul>
           </div>
@@ -512,26 +408,7 @@ const Header2 = (props) => {
                           <span className="ml-2">My Profile</span>
                         </div>
                       </li>
-                      <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="icon icon-tabler icon-tabler-help"
-                          width={20}
-                          height={20}
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" />
-                          <circle cx={12} cy={12} r={9} />
-                          <line x1={12} y1={17} x2={12} y2="17.01" />
-                          <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
-                        </svg>
-                        <span className="ml-2">Help Center</span>
-                      </li>
+
                       <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 flex items-center focus:text-indigo-700 focus:outline-none">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -550,6 +427,16 @@ const Header2 = (props) => {
                           <circle cx={12} cy={12} r={3} />
                         </svg>
                         <span className="ml-2">Account Settings</span>
+                      </li>
+                      <li
+                        className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center"
+                        onClick={() => {
+                          sessionStorage.removeItem("persist:root");
+                          document.location.href = "/Login";
+                        }}
+                      >
+                        <LogoutIcon className="h-4 ml-1" />
+                        <span className="ml-2">Log Out</span>
                       </li>
                     </ul>
                   ) : (

@@ -44,4 +44,5 @@ public class WorkspaceDto {
         this.img = img;
         this.createDate = createDate;
     }
+
 }

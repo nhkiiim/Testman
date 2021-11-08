@@ -1,12 +1,9 @@
 package com.henh.testman.workspaces;
 
-import com.henh.testman.users.User;
 import com.henh.testman.common.utils.BaseEntity;
+import com.henh.testman.users.User;
 import lombok.*;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -45,4 +42,5 @@ public class Workspace extends BaseEntity {
             this.description = description;
         }
     }
+
 }

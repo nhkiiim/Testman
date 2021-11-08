@@ -2,7 +2,7 @@ version: '3'
 services: 
     testman-backend: 
         build: ./backend 
-        image: testman:latest
+        image: testman2:latest
         ports: 
             - "8080:8080"
         # volumes:

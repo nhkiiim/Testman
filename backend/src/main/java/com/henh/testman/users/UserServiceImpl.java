@@ -24,7 +24,6 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-
     @Autowired
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -93,11 +92,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public boolean checkUser(String userId) {
+    public Boolean checkUser(String userId) {
         checkNotNull(userId, "userId must be provided");
         Optional<User> user = userRepository.findByUserId(userId);
-        if(user.isPresent()) return true;
-        else return false;
+        return user.isPresent();
     }
 
 }

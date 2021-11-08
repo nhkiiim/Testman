@@ -13,9 +13,7 @@ public class MyResultCollector extends ResultCollector {
 
     private final LoadResultRepository loadResultRepository;
 
-    private final String userId;
-
-    private final Long historySeq;
+    private final Long tabSeq;
 
     private final LocalDateTime creatAt;
 
@@ -23,13 +21,13 @@ public class MyResultCollector extends ResultCollector {
 
     private final MySummariser mySummariser;
 
-    public MyResultCollector(Summariser summariser, LoadResultRepository loadResultRepository, String userId, Long historySeq, LocalDateTime createAt) {
+    public MyResultCollector(Summariser summariser, LoadResultRepository loadResultRepository,
+                             Long tabSeq, LocalDateTime createAt) {
         super(summariser);
         this.resultRawList = new ArrayList<>();
         this.mySummariser = new MySummariser();
         this.loadResultRepository = loadResultRepository;
-        this.userId = userId;
-        this.historySeq = historySeq;
+        this.tabSeq = tabSeq;
         this.creatAt = createAt;
     }
 
@@ -61,8 +59,7 @@ public class MyResultCollector extends ResultCollector {
 
         loadResultRepository.save(
                 LoadResult.builder()
-                        .userId(userId)
-                        .historySeq(historySeq)
+                        .tabSeq(tabSeq)
                         .resultRawList(resultRawList)
                         .resultSummary(resultSummary)
                         .createAt(creatAt)

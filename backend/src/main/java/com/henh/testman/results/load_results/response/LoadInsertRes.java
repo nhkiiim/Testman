@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class LoadDeleteRes {
+public class LoadInsertRes {
 
-    private final Integer count;
+    private final Long historySeq;
 
 }

@@ -4,20 +4,21 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 @ToString
-public class WorkspaceUpdateReq {
+public class WorkspaceInsertReq {
 
-    @NotNull(message = "seq must be provided")
-    private Long seq;
-
+    @NotBlank(message = "title must be provided")
     private String title;
 
+    @NotBlank(message = "url must be provided")
     private String url;
 
     private String description;
+
+    private String img;
 
 }

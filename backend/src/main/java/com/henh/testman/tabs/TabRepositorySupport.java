@@ -1,16 +1,18 @@
-package com.henh.testman.collections;
+package com.henh.testman.tabs;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-public class CollectionRepositorySupport {
+@Repository
+public class TabRepositorySupport {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    private final QCollection qCollection = QCollection.collection;
+    private final QTab qTab = QTab.tab;
 
     @Autowired
-    public CollectionRepositorySupport(JPAQueryFactory jpaQueryFactory) {
+    public TabRepositorySupport(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 

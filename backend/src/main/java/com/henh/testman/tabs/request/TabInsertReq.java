@@ -1,4 +1,4 @@
-package com.henh.testman.collections.request;
+package com.henh.testman.tabs.request;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @ToString
-public class CollectionSelectReq {
+public class TabInsertReq {
 
     @NotNull(message = "workspaceSeq must be provided")
     private Long workspaceSeq;

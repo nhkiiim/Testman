@@ -1,19 +1,14 @@
 package com.henh.testman.results.api_results;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.results.api_results.request.ApiInsertReq;
 import com.henh.testman.tabs.Tab;
 import com.henh.testman.tabs.TabRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -45,21 +40,13 @@ public class ApiResultServiceImpl implements ApiResultService {
 
     @Override
     public Optional<ApiResults> insertApi(ApiInsertReq apiInsertReq) throws JsonProcessingException {
-        ResponseEntity<Map> resultMap = apiTest(apiInsertReq);
-
-        Map<String, Object> body = new HashMap<>();
-        Map<String, String> headers = new HashMap<>();
-
-        ObjectMapper mapper = new ObjectMapper();
-        String bodyStr = mapper.writeValueAsString(resultMap.getBody());
-        String headerStr = mapper.writeValueAsString(resultMap.getHeaders());
-
-        System.out.println(bodyStr);
-        System.out.println(headerStr);
-
         Tab tab = tabRepository.findBySeq(apiInsertReq.getTabSeq())
                 .orElseThrow(() -> new NotFoundException("Could not found tab seq " + apiInsertReq.getTabSeq()));
-        return Optional.empty();
+        tab.updateByApi(apiInsertReq);
+
+        System.out.println("tab 성공");
+        ResponseEntity<Map> resultMap = apiTest(apiInsertReq);
+        return saveApi(resultMap, apiInsertReq.getTabSeq());
     }
 
     @Override
@@ -73,32 +60,66 @@ public class ApiResultServiceImpl implements ApiResultService {
     }
 
     public ResponseEntity<Map> apiTest(ApiInsertReq apiInsertReq) {
-        ResponseEntity<Map> resultMap = null;
+        ResponseEntity<Map> resultMap;
         try {
+            System.out.println("테스트 시작");
             String url = apiInsertReq.getAddress() + apiInsertReq.getPath();
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
+            System.out.println(uri.toString());
 
             HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-            MultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-            params.add("userId", "ssafy17");
-            params.add("password", "1234");
-            params.add("email", "ssafy@naver.com");
+            JSONObject request = new JSONObject();
+            request.put("userId", "ssafy5");
+            request.put("password", "1234");
+            request.put("email", "ssafy@naver.com");
 
-            HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(params, headers);
+            HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
 
-            resultMap = restTemplate.exchange(uri.toString(), HttpMethod.POST, request, Map.class);
+            resultMap = restTemplate.exchange(uri.toString(), HttpMethod.POST, entity, Map.class);
+            System.out.println("테스트결과");
+            System.out.println(resultMap.toString());
+            return resultMap;
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
-            System.out.println("statusCode: " + e.getRawStatusCode());
-            System.out.println(e.getStatusText());
+            System.out.println("실패 statusCode: " + e.getRawStatusCode());
 
         } catch (Exception e) {
             System.out.println("statusCode: 500");
             System.out.println("excpetion오류");
 
         }
-        return resultMap;
+        return null;
+    }
+
+    public Optional<ApiResults> saveApi(ResponseEntity<Map> resultMap, Long tabSeq){
+        JSONObject bodyJson = new JSONObject(resultMap.getBody());
+        JSONObject headerJson = new JSONObject(resultMap.getHeaders());
+
+        int code = resultMap.getStatusCodeValue();
+        Map<String, Object> body = new HashMap<>();
+        Map<String, String> header = new HashMap<>();
+
+        System.out.println("body-------------------------");
+        for (String key : bodyJson.keySet()) {
+            body.put(key, bodyJson.get(key));
+            System.out.println("key: "+ key + " value: " + bodyJson.get(key));
+        }
+
+        System.out.println("header-------------------------");
+        for (String key : headerJson.keySet()) {
+            header.put(key, headerJson.get(key).toString());
+            System.out.println("key: "+ key + " value: " + headerJson.get(key));
+        }
+
+        ApiResults apiResults =  apiResultRepository.findByTabSeq(tabSeq)
+                .orElse(new ApiResults());
+        apiResults.update(tabSeq, code, body, header);
+
+        return Optional.of(
+                apiResultRepository.save(apiResults)
+        );
     }
 
 }

@@ -2,7 +2,6 @@ package com.henh.testman.tabs;
 
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.tabs.request.TabInsertReq;
-import com.henh.testman.tabs.request.TabUpdateReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,18 +49,6 @@ public class TabServiceImpl implements TabService {
 
         return tabRepository.findByWorkspaceSeq(workspaceSeq).stream()
                 .map(TabDto::new).collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Optional<Tab> updateTab(TabUpdateReq tabUpdateReq) {
-        Tab tab = tabRepository.findById(tabUpdateReq.getSeq())
-                .orElseThrow(() -> new NotFoundException("Could not find tab by " + tabUpdateReq.getSeq()));
-
-        tab.update(tabUpdateReq);
-        return Optional.of(
-                tabRepository.save(tab)
-        );
     }
 
     @Override

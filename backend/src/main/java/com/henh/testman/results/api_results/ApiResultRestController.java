@@ -1,5 +1,6 @@
 package com.henh.testman.results.api_results;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.results.api_results.request.ApiInsertReq;
@@ -21,12 +22,12 @@ public class ApiResultRestController {
     }
 
 
-    @PostMapping("{tabSeq}")
-    public ApiResult<ApiResultDto> insertApi(@RequestBody ApiInsertReq apiInsertReq) {
+    @PostMapping
+    public ApiResult<ApiResultDto> insertApi(@RequestBody ApiInsertReq apiInsertReq) throws JsonProcessingException {
         return success(
                 apiResultService.insertApi(apiInsertReq)
                         .map(ApiResultDto::new)
-                        .orElseThrow(() -> new NotFoundException("fail select for load"))
+                        .orElseThrow(() -> new NotFoundException("fail api test"))
 
         );
     }

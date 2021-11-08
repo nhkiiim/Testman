@@ -1,7 +1,7 @@
 package com.henh.testman.tabs;
 
 import com.henh.testman.common.utils.BaseEntity;
-import com.henh.testman.tabs.request.TabUpdateReq;
+import com.henh.testman.results.api_results.request.ApiInsertReq;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -17,25 +17,21 @@ public class Tab extends BaseEntity {
 
     private Long workspaceSeq;
 
+    private String address;
+
     private String path;
 
     private String httpMethod;
-
-    private Integer port;
 
     private String params;
 
     private String headers;
 
-    private String authorization;
-
-    public void update(TabUpdateReq tabUpdateReq){
-        this.path = tabUpdateReq.getPath();
-        this.httpMethod = tabUpdateReq.getHttpMethod();
-        this.port = tabUpdateReq.getPort();
-        this.params = tabUpdateReq.getParams();
-        this.headers = tabUpdateReq.getHeaders();
-        this.authorization = tabUpdateReq.getAuthorization();
+    public void updateByApi(ApiInsertReq apiInsertReq){
+        this.address = apiInsertReq.getAddress();
+        this.path = apiInsertReq.getPath();
+        this.httpMethod = apiInsertReq.getHttpMethod();
+        if(apiInsertReq.getParams()!=null) this.params = apiInsertReq.getParams().toString();
+        if(apiInsertReq.getHeaders()!=null) this.headers = apiInsertReq.getHeaders().toString();
     }
-
 }

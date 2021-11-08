@@ -52,17 +52,6 @@ public class TabRestController {
         );
     }
 
-    @PatchMapping
-    public ApiResult<TabUpdateRes> updateTab(@RequestBody TabUpdateReq tabUpdateReq){
-        return success(
-                new TabUpdateRes(
-                        tabService.updateTab(tabUpdateReq)
-                                .map(TabDto::new)
-                                .orElseThrow(() -> new NotFoundException("Could not found tab " + tabUpdateReq.getSeq()))
-                )
-        );
-    }
-
     @DeleteMapping("{seq}")
     public ApiResult<TabDeleteRes> deleteTab(@PathVariable Long seq){
         return success(

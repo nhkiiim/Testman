@@ -2,7 +2,6 @@ HELP.md
 ssafy-web.log*
 .gradle
 build/
-src/test/*
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/

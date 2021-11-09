@@ -37,7 +37,8 @@ public class GeneralExceptionHandler {
     @ExceptionHandler({
             NoHandlerFoundException.class,
             NotFoundException.class,
-            FailLoadTestException.class
+            FailLoadTestException.class,
+            FailApiTestException.class
     })
     public ResponseEntity<?> handleNotFoundException(Exception e) {
         return newResponse(e, HttpStatus.NOT_FOUND);

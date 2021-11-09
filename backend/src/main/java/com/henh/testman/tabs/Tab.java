@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.henh.testman.common.errors.InvalidMapperException;
 import com.henh.testman.common.utils.BaseEntity;
+import com.henh.testman.results.api_results.request.ApiInsertReq;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
 import lombok.*;
 
@@ -30,6 +31,15 @@ public class Tab extends BaseEntity {
 
     private String headers;
 
+
+    public void updateByApi(ApiInsertReq apiInsertReq) {
+        this.address = apiInsertReq.getAddress();
+        this.path = apiInsertReq.getPath();
+        this.httpMethod = apiInsertReq.getHttpMethod();
+        if (apiInsertReq.getParams() != null) this.params = apiInsertReq.getParams().toString();
+        if (apiInsertReq.getHeaders() != null) this.headers = apiInsertReq.getHeaders().toString();
+    }
+
     public void updateByLoad(LoadInsertReq loadInsertReq) {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -44,5 +54,4 @@ public class Tab extends BaseEntity {
             throw new InvalidMapperException("Mapping failed");
         }
     }
-
 }

@@ -32,6 +32,16 @@ public class ApiResultRestController {
         );
     }
 
+    @GetMapping("{tabSeq}")
+    public ApiResult<ApiResultDto> selectApi(@PathVariable Long tabSeq) {
+        return success(
+                apiResultService.selectApi(tabSeq)
+                        .map(ApiResultDto::new)
+                        .orElseThrow(() -> new NotFoundException("Could not found api result tabSeq " + tabSeq))
+
+        );
+    }
+
     @DeleteMapping("{tabSeq}")
     public ApiResult<ApiDeleteRes> deleteApi(@PathVariable Long tabSeq) {
         return success(

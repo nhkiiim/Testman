@@ -9,6 +9,8 @@ public interface ApiResultService {
 
     Optional<ApiResults> insertApi(ApiInsertReq apiInsertReq) throws JsonProcessingException;
 
+    Optional<ApiResults> selectApi(Long tabSeq);
+
     Long deleteApi(Long tabSeq);
 
 }

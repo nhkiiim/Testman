@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
 @Getter
 @Setter
@@ -15,6 +16,7 @@ public class ApiResults {
     @Id
     private Long seq;
 
+    @Indexed
     private Long tabSeq;
 
     private Integer code;

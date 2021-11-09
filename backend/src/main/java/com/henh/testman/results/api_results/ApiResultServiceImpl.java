@@ -50,6 +50,12 @@ public class ApiResultServiceImpl implements ApiResultService {
     }
 
     @Override
+    public Optional<ApiResults> selectApi(Long tabSeq) {
+        checkNotNull(tabSeq,"tabSeq must be provided");
+        return apiResultRepository.findByTabSeq(tabSeq);
+    }
+
+    @Override
     public Long deleteApi(Long tapSeq) {
         checkNotNull(tapSeq, "tabSeq must be provided");
         ApiResults apiResults = apiResultRepository.findByTabSeq(tapSeq)

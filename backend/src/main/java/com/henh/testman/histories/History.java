@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Getter
 @Builder
@@ -28,15 +29,13 @@ public class History {
 
     private String address;
 
+    private String path;
+
     private String httpMethod;
 
-    private Integer port;
+    private Map<String, Object> params;
 
-    private String params;
-
-    private String headers;
-
-    private String authorization;
+    private Map<String, String> headers;
 
     private LocalDateTime createAt;
 
@@ -44,11 +43,10 @@ public class History {
         this.workspaceSeq = loadInsertReq.getWorkspaceSeq();;
         this.tabSeq = loadInsertReq.getTabSeq();
         this.address = loadInsertReq.getAddress();
+        this.path = loadInsertReq.getPath();
         this.httpMethod = loadInsertReq.getHttpMethod();
-        this.port = loadInsertReq.getPort();
         this.params = loadInsertReq.getParams();
         this.headers = loadInsertReq.getHeaders();
-        this.authorization = loadInsertReq.getAuthorization();
         this.createAt = loadInsertReq.getCreateAt();
     }
 

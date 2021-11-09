@@ -65,7 +65,7 @@ public class WorkspaceRestController {
     }
 
     @PatchMapping
-    public ApiResult<WorkspaceDto> updateWorkspace(@RequestBody WorkspaceUpdateReq workspaceUpdateReq) {
+    public ApiResult<WorkspaceDto> updateWorkspace(@Valid @RequestBody WorkspaceUpdateReq workspaceUpdateReq) {
         return success(
                 workspaceService.updateWorkspace(workspaceUpdateReq)
                         .map(WorkspaceDto::new)

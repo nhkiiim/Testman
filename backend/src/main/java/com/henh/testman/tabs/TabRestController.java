@@ -3,10 +3,14 @@ package com.henh.testman.tabs;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.tabs.request.TabInsertReq;
-import com.henh.testman.tabs.request.TabUpdateReq;
-import com.henh.testman.tabs.response.*;
+import com.henh.testman.tabs.response.TabDeleteRes;
+import com.henh.testman.tabs.response.TabInsertRes;
+import com.henh.testman.tabs.response.TabSelectAllRes;
+import com.henh.testman.tabs.response.TabSelectRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 import static com.henh.testman.common.utils.ApiUtils.success;
 
@@ -22,7 +26,7 @@ public class TabRestController {
     }
 
     @PostMapping
-    public ApiResult<TabInsertRes> insertTab(@RequestBody TabInsertReq tabInsertReq){
+    public ApiResult<TabInsertRes> insertTab(@Valid @RequestBody TabInsertReq tabInsertReq){
         return success(
                 new TabInsertRes(
                         tabService.insertTab(tabInsertReq)

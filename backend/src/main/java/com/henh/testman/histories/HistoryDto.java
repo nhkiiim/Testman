@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -19,15 +20,13 @@ public class HistoryDto {
 
     private final String address;
 
+    private final String path;
+
     private final String httpMethod;
 
-    private final Integer port;
+    private final Map<String, Object> params;
 
-    private final String params;
-
-    private final String headers;
-
-    private final String authorization;
+    private final Map<String, String> headers;
 
     private final LocalDateTime createAt;
 
@@ -36,11 +35,10 @@ public class HistoryDto {
         this.workspaceSeq = history.getWorkspaceSeq();
         this.tabSeq = history.getTabSeq();
         this.address = history.getAddress();
+        this.path = history.getPath();
         this.httpMethod = history.getHttpMethod();
-        this.port = history.getPort();
         this.params = history.getParams();
         this.headers = history.getHeaders();
-        this.authorization = history.getAuthorization();
         this.createAt = history.getCreateAt();
     }
 

@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -23,12 +24,11 @@ public class LoadInsertReq {
     @NotBlank(message = "address must be provided")
     private String address;
 
+    @NotBlank(message = "path must be provided")
+    private String path;
+
     @NotBlank(message = "httpMethod must be provided")
     private String httpMethod;
-
-    @Positive
-    @NotNull(message = "port must be provided")
-    private Integer port;
 
     @Positive
     @NotNull(message = "loop must be provided")
@@ -38,11 +38,9 @@ public class LoadInsertReq {
     @NotNull(message = "thread must be provided")
     private Integer thread;
 
-    private String params;
+    private Map<String, Object> params;
 
-    private String headers;
-
-    private String authorization;
+    private Map<String, String> headers;
 
     private final LocalDateTime createAt = LocalDateTime.now();
 

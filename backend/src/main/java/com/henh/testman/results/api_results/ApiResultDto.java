@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Map;
-
 @Getter
 @Setter
 @ToString
@@ -15,15 +13,15 @@ public class ApiResultDto {
 
     private Integer code;
 
-    private Map<String, Object> body;
+    private String body;
 
-    private Map<String, String> headers;
+    private String header;
 
     public ApiResultDto(ApiResults apiResults) {
         this.tabSeq = apiResults.getTabSeq();
         this.code = apiResults.getCode();
         this.body = apiResults.getBody();
-        this.headers = apiResults.getHeaders();
+        this.header = apiResults.getHeader();
     }
 
 }

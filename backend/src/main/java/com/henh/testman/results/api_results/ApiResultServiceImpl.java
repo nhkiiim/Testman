@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -43,8 +42,8 @@ public class ApiResultServiceImpl implements ApiResultService {
         Tab tab = tabRepository.findBySeq(apiInsertReq.getTabSeq())
                 .orElseThrow(() -> new NotFoundException("Could not found tab seq " + apiInsertReq.getTabSeq()));
         tab.updateByApi(apiInsertReq);
+        tabRepository.save(tab);
 
-        System.out.println("tab 성공");
         ResponseEntity<Map> resultMap = apiTest(apiInsertReq);
         return saveApi(resultMap, apiInsertReq.getTabSeq());
     }
@@ -71,7 +70,7 @@ public class ApiResultServiceImpl implements ApiResultService {
             headers.setContentType(MediaType.APPLICATION_JSON);
 
             JSONObject request = new JSONObject();
-            request.put("userId", "ssafy5");
+            request.put("userId", "ssafy41");
             request.put("password", "1234");
             request.put("email", "ssafy@naver.com");
 
@@ -93,27 +92,15 @@ public class ApiResultServiceImpl implements ApiResultService {
         return null;
     }
 
-    public Optional<ApiResults> saveApi(ResponseEntity<Map> resultMap, Long tabSeq){
-        JSONObject bodyJson = new JSONObject(resultMap.getBody());
+    public Optional<ApiResults> saveApi(ResponseEntity<Map> resultMap, Long tabSeq) throws JsonProcessingException {
+        Integer code = resultMap.getStatusCodeValue();
         JSONObject headerJson = new JSONObject(resultMap.getHeaders());
+        JSONObject bodyJson = new JSONObject(resultMap.getBody());
 
-        int code = resultMap.getStatusCodeValue();
-        Map<String, Object> body = new HashMap<>();
-        Map<String, String> header = new HashMap<>();
+        String body = bodyJson.toString();
+        String header = headerJson.toString();
 
-        System.out.println("body-------------------------");
-        for (String key : bodyJson.keySet()) {
-            body.put(key, bodyJson.get(key));
-            System.out.println("key: "+ key + " value: " + bodyJson.get(key));
-        }
-
-        System.out.println("header-------------------------");
-        for (String key : headerJson.keySet()) {
-            header.put(key, headerJson.get(key).toString());
-            System.out.println("key: "+ key + " value: " + headerJson.get(key));
-        }
-
-        ApiResults apiResults =  apiResultRepository.findByTabSeq(tabSeq)
+        ApiResults apiResults = apiResultRepository.findByTabSeq(tabSeq)
                 .orElse(new ApiResults());
         apiResults.update(tabSeq, code, body, header);
 

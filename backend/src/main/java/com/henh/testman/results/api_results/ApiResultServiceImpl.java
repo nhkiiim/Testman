@@ -81,10 +81,19 @@ public class ApiResultServiceImpl implements ApiResultService {
                 }
             }
 
+            HttpMethod httpMethod;
+            switch (apiInsertReq.getHttpMethod()){
+                case "POST": httpMethod = HttpMethod.POST; break;
+                case "PATCH": httpMethod = HttpMethod.PATCH; break;
+                case "PUT": httpMethod = HttpMethod.PUT; break;
+                case "DELETE": httpMethod = HttpMethod.DELETE; break;
+                default: httpMethod = HttpMethod.GET; break;
+            }
+
             HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
-            resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
+            resultMap = restTemplate.exchange(uri.toString(), httpMethod, entity, Map.class);
             System.out.println("테스트결과");
-            System.out.println(resultMap.toString());
+            System.out.println(resultMap);
             return resultMap;
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {

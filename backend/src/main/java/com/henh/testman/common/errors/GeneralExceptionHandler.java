@@ -37,6 +37,7 @@ public class GeneralExceptionHandler {
     @ExceptionHandler({
             NoHandlerFoundException.class,
             NotFoundException.class,
+            FailLoadTestException.class
     })
     public ResponseEntity<?> handleNotFoundException(Exception e) {
         return newResponse(e, HttpStatus.NOT_FOUND);
@@ -57,7 +58,8 @@ public class GeneralExceptionHandler {
             IllegalArgumentException.class,
             IllegalStateException.class,
             ConstraintViolationException.class,
-            MethodArgumentNotValidException.class
+            MethodArgumentNotValidException.class,
+            InvaildMapperException.class
     })
     public ResponseEntity<?> handleBadRequestException(Exception e) {
         log.debug("Bad request exception occurred: {}", e.getMessage(), e);

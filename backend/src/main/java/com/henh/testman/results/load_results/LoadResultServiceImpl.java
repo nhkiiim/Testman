@@ -1,6 +1,5 @@
 package com.henh.testman.results.load_results;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.histories.History;
 import com.henh.testman.histories.HistoryRepository;
@@ -34,7 +33,7 @@ public class LoadResultServiceImpl implements LoadResultService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Optional<Long> insertLoad(LoadInsertReq loadInsertReq) throws JsonProcessingException {
+    public Optional<Long> insertLoad(LoadInsertReq loadInsertReq) {
         Tab tab = tabRepository.findById(loadInsertReq.getTabSeq())
                 .orElseThrow(() -> new NotFoundException("could not found tab"));
         tab.updateByLoad(loadInsertReq);

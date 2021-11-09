@@ -2,6 +2,7 @@ package com.henh.testman.results.load_results;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.henh.testman.common.errors.InvaildMapperException;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.ArgumentsPanel;
@@ -47,6 +48,7 @@ public class LoadTest {
 
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             manager.add(new Header(entry.getKey(), entry.getValue()));
+//            System.out.println(entry.getKey() + " " + entry.getValue());
         }
 
         manager.setName(JMeterUtils.getResString("header_manager_title")); // $NON-NLS-1$
@@ -56,7 +58,7 @@ public class LoadTest {
         return manager;
     }
 
-    private static HTTPSamplerProxy makeSampler(LoadInsertReq loadInsertReq) throws JsonProcessingException {
+    private static HTTPSamplerProxy makeSampler(LoadInsertReq loadInsertReq) {
         HTTPSamplerProxy sampler = new HTTPSamplerProxy();
 
         // address parsing
@@ -67,7 +69,7 @@ public class LoadTest {
         int port = part.length == 3 ? Integer.parseInt(part[2]) : 80;
         // address parsing end
 
-        // path parsing
+        // path parsing, query string
         String[] paths = loadInsertReq.getPath().split("\\?");
 
         String path = paths[0];
@@ -79,21 +81,33 @@ public class LoadTest {
                 sampler.addArgument(entry[0], entry[1]);
             }
         }
-        // path parsing end
+        // query string end
 
-        // params
-        ObjectMapper mapper = new ObjectMapper();
-        String body = mapper.writeValueAsString(loadInsertReq.getParams());
+        // body
+        String httpMethod = loadInsertReq.getHttpMethod();
+        if (httpMethod.equals("POST") || httpMethod.equals("PATCH")) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                String body = mapper.writeValueAsString(loadInsertReq.getParams());
+                sampler.addNonEncodedArgument("body", body, "");
+                sampler.setPostBodyRaw(true);
+            } catch (JsonProcessingException e) {
+                throw new InvaildMapperException("Mapping failed");
+            }
+        }
+        // body end
 
-        sampler.addNonEncodedArgument("body", body, "");
-        // params end
+//        System.out.println("protocol : " + protocol);
+//        System.out.println("domain : " + domain);
+//        System.out.println("port : " + port);
+//        System.out.println("path : " + path);
+//        System.out.println("http method : " + httpMethod);
 
         sampler.setProtocol(protocol);
         sampler.setDomain(domain);
         sampler.setPort(port);
         sampler.setPath(path);
-        sampler.setMethod(loadInsertReq.getHttpMethod());
-        sampler.setPostBodyRaw(loadInsertReq.getHttpMethod().equals("POST"));
+        sampler.setMethod(httpMethod);
 
         sampler.setProperty(TestElement.TEST_CLASS, HTTPSamplerProxy.class.getName());
         sampler.setProperty(TestElement.GUI_CLASS, HttpTestSampleGui.class.getName());
@@ -163,7 +177,7 @@ public class LoadTest {
         System.out.println("Test completed.");
     }
 
-    public static void work(LoadInsertReq loadInsertReq, LoadResultRepository loadResultRepository) throws JsonProcessingException {
+    public static void work(LoadInsertReq loadInsertReq, LoadResultRepository loadResultRepository) {
         initialization();
         HeaderManager manager = makeHeaderManager(loadInsertReq.getHeaders());
         HTTPSamplerProxy sampler = makeSampler(loadInsertReq);

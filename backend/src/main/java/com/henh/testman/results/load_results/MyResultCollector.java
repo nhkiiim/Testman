@@ -56,6 +56,7 @@ public class MyResultCollector extends ResultCollector {
         mySummariser.setEndTime();
 
         ResultSummary resultSummary = new ResultSummary(mySummariser);
+        System.out.println(resultSummary.toString());
 
         loadResultRepository.save(
                 LoadResult.builder()

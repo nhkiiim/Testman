@@ -1,6 +1,7 @@
 package com.henh.testman.results.api_results;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.henh.testman.common.errors.FailApiTestException;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.results.api_results.request.ApiInsertReq;
 import com.henh.testman.tabs.Tab;
@@ -61,21 +62,20 @@ public class ApiResultServiceImpl implements ApiResultService {
     public ResponseEntity<Map> apiTest(ApiInsertReq apiInsertReq) {
         ResponseEntity<Map> resultMap;
         try {
-            System.out.println("테스트 시작");
             String url = apiInsertReq.getAddress() + apiInsertReq.getPath();
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
             System.out.println(uri.toString());
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            if(!apiInsertReq.getHeaders().isEmpty()){
+            if(apiInsertReq.getHeaders()!=null){
                 for(Map.Entry<String,String> map : apiInsertReq.getHeaders().entrySet()){
                     headers.add(map.getKey(),map.getValue());
                 }
             }
 
             JSONObject request = new JSONObject();
-            if(!apiInsertReq.getParams().isEmpty()){
+            if(apiInsertReq.getParams()!=null){
                 for(Map.Entry<String,Object> map : apiInsertReq.getParams().entrySet()){
                    request.put(map.getKey(),map.getValue());
                 }
@@ -92,19 +92,13 @@ public class ApiResultServiceImpl implements ApiResultService {
 
             HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
             resultMap = restTemplate.exchange(uri.toString(), httpMethod, entity, Map.class);
-            System.out.println("테스트결과");
-            System.out.println(resultMap);
             return resultMap;
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
-            System.out.println("실패 statusCode: " + e.getRawStatusCode());
-
+            throw new FailApiTestException("API TEST 실패 statusCode: " + e.getRawStatusCode());
         } catch (Exception e) {
-            System.out.println("statusCode: 500");
-            System.out.println("excpetion오류");
-
+            throw new FailApiTestException("API TEST 실패");
         }
-        return null;
     }
 
     public Optional<ApiResults> saveApi(ResponseEntity<Map> resultMap, Long tabSeq) throws JsonProcessingException {

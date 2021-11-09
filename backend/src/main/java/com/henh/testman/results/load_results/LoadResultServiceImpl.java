@@ -1,10 +1,14 @@
 package com.henh.testman.results.load_results;
 
-import com.henh.testman.results.load_results.request.LoadDeleteReq;
-import com.henh.testman.results.load_results.request.LoadGetReq;
-import com.henh.testman.results.load_results.request.LoadPostReq;
+import com.henh.testman.common.errors.NotFoundException;
+import com.henh.testman.histories.History;
+import com.henh.testman.histories.HistoryRepository;
+import com.henh.testman.results.load_results.request.LoadInsertReq;
+import com.henh.testman.tabs.Tab;
+import com.henh.testman.tabs.TabRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,32 +20,51 @@ public class LoadResultServiceImpl implements LoadResultService {
 
     private final LoadResultRepository loadResultRepository;
 
+    private final HistoryRepository historyRepository;
+
+    private final TabRepository tabRepository;
+
     @Autowired
-    public LoadResultServiceImpl(LoadResultRepository loadResultRepository) {
+    public LoadResultServiceImpl(LoadResultRepository loadResultRepository, HistoryRepository historyRepository, TabRepository tabRepository) {
         this.loadResultRepository = loadResultRepository;
+        this.historyRepository = historyRepository;
+        this.tabRepository = tabRepository;
     }
 
     @Override
-    public Optional<LoadResult> insertLoad(LoadPostReq loadPostReq) {
-        LoadTest.work(loadPostReq, loadResultRepository);
+    @Transactional(rollbackFor = Exception.class)
+    public Optional<Long> insertLoad(LoadInsertReq loadInsertReq) {
+        Tab tab = tabRepository.findById(loadInsertReq.getTabSeq())
+                .orElseThrow(() -> new NotFoundException("could not found tab"));
+        tab.updateByLoad(loadInsertReq);
+        tabRepository.save(tab);
 
-        return loadResultRepository.findByUserIdAndCreateAt(loadPostReq.getUserId(), loadPostReq.getCreateAt());
+        History history = historyRepository.save(new History(loadInsertReq));
+        LoadTest.work(loadInsertReq, loadResultRepository);
+
+        return Optional.of(history.getSeq());
     }
 
     @Override
-    public List<LoadResult> selectLoad(LoadGetReq loadGetReq) {
-        checkNotNull(loadGetReq.getUserId(), "userId must be provided");
-        checkNotNull(loadGetReq.getHistorySeq(), "historySeq must be provided");
-
-        return loadResultRepository.findAllByUserIdAndHistorySeq(loadGetReq.getUserId(), loadGetReq.getHistorySeq());
+    @Transactional(readOnly = true)
+    public Optional<LoadResult> selectLoad(Long seq) {
+        checkNotNull(seq, "seq must be provided");
+        return loadResultRepository.findById(seq);
     }
 
     @Override
-    public Integer deleteLoad(LoadDeleteReq loadDeleteReq) {
-        checkNotNull(loadDeleteReq.getUserId(), "userId must be provided");
-        checkNotNull(loadDeleteReq.getHistorySeq(), "historySeq must be provided");
+    @Transactional(readOnly = true)
+    public List<LoadResult> selectLoadByTabSeq(Long tabSeq) {
+        checkNotNull(tabSeq, "tabSeq must be provided");
+        return loadResultRepository.findByTabSeq(tabSeq);
+    }
 
-        List<LoadResult> list = loadResultRepository.findAllByUserIdAndHistorySeq(loadDeleteReq.getUserId(), loadDeleteReq.getHistorySeq());
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer deleteLoad(Long tabSeq) {
+        checkNotNull(tabSeq, "tabSeq must be provided");
+
+        List<LoadResult> list = loadResultRepository.findByTabSeq(tabSeq);
         loadResultRepository.deleteAll(list);
 
         return list.size();

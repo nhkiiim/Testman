@@ -1,24 +1,23 @@
 package com.henh.testman.workspaces.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 public class WorkspaceUpdateReq {
 
-    private final Long seq;
+    @NotNull(message = "seq must be provided")
+    private Long seq;
 
-    private final String title;
+    private String title;
 
-    private final String url;
+    private String url;
 
-    private final String description;
+    private String description;
 
 }

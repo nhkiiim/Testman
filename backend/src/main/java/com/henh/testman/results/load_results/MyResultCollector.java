@@ -1,7 +1,6 @@
 package com.henh.testman.results.load_results;
 
 import org.apache.jmeter.reporters.ResultCollector;
-import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.samplers.SampleEvent;
 import org.apache.jmeter.samplers.SampleResult;
 
@@ -21,9 +20,9 @@ public class MyResultCollector extends ResultCollector {
 
     private final MySummariser mySummariser;
 
-    public MyResultCollector(Summariser summariser, LoadResultRepository loadResultRepository,
+    public MyResultCollector(LoadResultRepository loadResultRepository,
                              Long tabSeq, LocalDateTime createAt) {
-        super(summariser);
+        super();
         this.resultRawList = new ArrayList<>();
         this.mySummariser = new MySummariser();
         this.loadResultRepository = loadResultRepository;

@@ -51,7 +51,6 @@ public class TabServiceImpl implements TabService {
                 .map(TabDto::new).collect(Collectors.toList());
     }
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public Optional<Long> deleteTab(Long seq) {
         checkNotNull(seq, "seq must be provided");

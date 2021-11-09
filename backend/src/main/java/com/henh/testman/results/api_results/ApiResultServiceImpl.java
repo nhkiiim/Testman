@@ -68,15 +68,21 @@ public class ApiResultServiceImpl implements ApiResultService {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
+            if(!apiInsertReq.getHeaders().isEmpty()){
+                for(Map.Entry<String,String> map : apiInsertReq.getHeaders().entrySet()){
+                    headers.add(map.getKey(),map.getValue());
+                }
+            }
 
             JSONObject request = new JSONObject();
-            request.put("userId", "ssafy41");
-            request.put("password", "1234");
-            request.put("email", "ssafy@naver.com");
+            if(!apiInsertReq.getParams().isEmpty()){
+                for(Map.Entry<String,Object> map : apiInsertReq.getParams().entrySet()){
+                   request.put(map.getKey(),map.getValue());
+                }
+            }
 
             HttpEntity<String> entity = new HttpEntity<>(request.toString(), headers);
-
-            resultMap = restTemplate.exchange(uri.toString(), HttpMethod.POST, entity, Map.class);
+            resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
             System.out.println("테스트결과");
             System.out.println(resultMap.toString());
             return resultMap;

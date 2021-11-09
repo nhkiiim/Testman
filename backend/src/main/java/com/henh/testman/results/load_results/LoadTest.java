@@ -16,15 +16,18 @@ import org.apache.jmeter.threads.ThreadGroup;
 import org.apache.jmeter.threads.gui.ThreadGroupGui;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.time.LocalDateTime;
 
 public class LoadTest {
 
-    private static final String slash = System.getProperty("file.separator");;
+    private static final String slash = System.getProperty("file.separator");
 
-    private static final File jmeterHome = new File("C:/Users/multicampus/Downloads/apache-jmeter-5.4.1");
+    private static final File jmeterHome = new File(new ClassPathResource("apache-jmeter-5.4.1").getPath());
+
+//    private static final File jmeterHome = new File("C:/Users/multicampus/Downloads/apache-jmeter-5.4.1");
 
     private static final File jmeterProperties  = new File(jmeterHome.getPath() + slash + "bin" + slash + "jmeter.properties");
 

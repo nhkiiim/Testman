@@ -2,7 +2,7 @@ package com.henh.testman.tabs;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.henh.testman.common.errors.InvaildMapperException;
+import com.henh.testman.common.errors.InvalidMapperException;
 import com.henh.testman.common.utils.BaseEntity;
 import com.henh.testman.results.api_results.request.ApiInsertReq;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
@@ -51,7 +51,7 @@ public class Tab extends BaseEntity {
             this.params = mapper.writeValueAsString(loadInsertReq.getParams());
             this.headers = mapper.writeValueAsString(loadInsertReq.getHeaders());
         } catch (JsonProcessingException e) {
-            throw new InvaildMapperException("Mapping failed");
+            throw new InvalidMapperException("Mapping failed");
         }
     }
 }

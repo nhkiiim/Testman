@@ -60,7 +60,7 @@ public class GeneralExceptionHandler {
             IllegalStateException.class,
             ConstraintViolationException.class,
             MethodArgumentNotValidException.class,
-            InvaildMapperException.class
+            InvalidMapperException.class
     })
     public ResponseEntity<?> handleBadRequestException(Exception e) {
         log.debug("Bad request exception occurred: {}", e.getMessage(), e);

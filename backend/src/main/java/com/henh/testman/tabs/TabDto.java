@@ -2,7 +2,7 @@ package com.henh.testman.tabs;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.henh.testman.common.errors.InvaildMapperException;
+import com.henh.testman.common.errors.InvalidMapperException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -41,7 +41,7 @@ public class TabDto {
             this.params = mapper.readValue(tab.getParams(), Map.class);
             this.headers = mapper.readValue(tab.getHeaders(), Map.class);
         } catch (JsonProcessingException e) {
-            throw new InvaildMapperException("Mapping failed");
+            throw new InvalidMapperException("Mapping failed");
         }
     }
 

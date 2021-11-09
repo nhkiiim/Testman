@@ -2,7 +2,8 @@ package com.henh.testman.results.load_results;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.henh.testman.common.errors.InvaildMapperException;
+import com.henh.testman.common.errors.FailLoadTestException;
+import com.henh.testman.common.errors.InvalidMapperException;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.ArgumentsPanel;
@@ -15,31 +16,39 @@ import org.apache.jmeter.protocol.http.control.HeaderManager;
 import org.apache.jmeter.protocol.http.control.gui.HttpTestSampleGui;
 import org.apache.jmeter.protocol.http.gui.HeaderPanel;
 import org.apache.jmeter.protocol.http.sampler.HTTPSamplerProxy;
-import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.testelement.TestElement;
 import org.apache.jmeter.testelement.TestPlan;
 import org.apache.jmeter.threads.ThreadGroup;
 import org.apache.jmeter.threads.gui.ThreadGroupGui;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
+import org.springframework.core.io.ClassPathResource;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Map;
 
 public class LoadTest {
 
-    private static final String slash = System.getProperty("file.separator");;
+    private static final String slash = System.getProperty("file.separator");
 
-    private static final File jmeterHome = new File("C:/Users/multicampus/Downloads/apache-jmeter-5.4.1");
+    private static final ClassPathResource jmeterHome = new ClassPathResource("apache-jmeter-5.4.1");
 
-    private static final File jmeterProperties  = new File(jmeterHome.getPath() + slash + "bin" + slash + "jmeter.properties");
-
-    private static final String summariserName = JMeterUtils.getPropDefault("summariser.name", "summary");
+    private static final ClassPathResource jmeterProperties = new ClassPathResource("apache-jmeter-5.4.1" + slash + "bin" + slash + "jmeter.properties");
 
     private static void initialization() {
-        JMeterUtils.setJMeterHome(jmeterHome.getPath());
-        JMeterUtils.loadJMeterProperties(jmeterProperties.getPath());
+        try {
+            Path homePath = Paths.get(jmeterHome.getURI());
+            Path propertiesPath = Paths.get(jmeterProperties.getURI());
+//            System.out.println(homePath.toString());
+//            System.out.println(propertiesPath.toString());
+
+            JMeterUtils.setJMeterHome(homePath.toString());
+            JMeterUtils.loadJMeterProperties(propertiesPath.toString());
+        } catch (Exception e) {
+            throw new FailLoadTestException("fail jmeter init");
+        }
         JMeterUtils.initLocale();
     }
 
@@ -92,7 +101,7 @@ public class LoadTest {
                 sampler.addNonEncodedArgument("body", body, "");
                 sampler.setPostBodyRaw(true);
             } catch (JsonProcessingException e) {
-                throw new InvaildMapperException("Mapping failed");
+                throw new InvalidMapperException("Mapping failed");
             }
         }
         // body end
@@ -162,8 +171,7 @@ public class LoadTest {
 
     private static void makeCollector(HashTree testPlanTree, LoadResultRepository loadResultRepository,
                                       Long tabSeq, LocalDateTime createAt) {
-        Summariser summer = new Summariser(summariserName);
-        MyResultCollector logger = new MyResultCollector(summer, loadResultRepository, tabSeq, createAt);
+        MyResultCollector logger = new MyResultCollector(loadResultRepository, tabSeq, createAt);
 
         testPlanTree.add(testPlanTree.getArray()[0], logger);
     }

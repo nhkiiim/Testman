@@ -21,12 +21,12 @@ public class ApiResults {
 
     private String body;
 
-    private String header;
+    private String headers;
 
-    public void update(Long tabSeq, Integer code, String body, String header){
+    public void update(Long tabSeq, Integer code, String body, String headers){
         this.tabSeq = tabSeq;
         this.code = code;
         this.body = body;
-        this.header = header;
+        this.headers = headers;
     }
 }

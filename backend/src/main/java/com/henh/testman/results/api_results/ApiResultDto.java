@@ -15,13 +15,13 @@ public class ApiResultDto {
 
     private String body;
 
-    private String header;
+    private String headers;
 
     public ApiResultDto(ApiResults apiResults) {
         this.tabSeq = apiResults.getTabSeq();
         this.code = apiResults.getCode();
         this.body = apiResults.getBody();
-        this.header = apiResults.getHeader();
+        this.headers = apiResults.getHeaders();
     }
 
 }

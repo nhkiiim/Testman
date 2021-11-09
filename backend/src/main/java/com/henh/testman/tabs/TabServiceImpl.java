@@ -51,11 +51,7 @@ public class TabServiceImpl implements TabService {
                 .map(TabDto::new).collect(Collectors.toList());
     }
 
-    @Override
-<<<<<<< HEAD
-=======
     @Transactional(rollbackFor = Exception.class)
->>>>>>> 59f96dcc4362d5a7357c81aca8f358986099e750
     public Optional<Long> deleteTab(Long seq) {
         checkNotNull(seq, "seq must be provided");
         Tab tab = tabRepository.findById(seq)

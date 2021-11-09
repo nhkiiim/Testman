@@ -4,11 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.henh.testman.common.errors.InvaildMapperException;
 import com.henh.testman.common.utils.BaseEntity;
-<<<<<<< HEAD
 import com.henh.testman.results.api_results.request.ApiInsertReq;
-=======
 import com.henh.testman.results.load_results.request.LoadInsertReq;
->>>>>>> 59f96dcc4362d5a7357c81aca8f358986099e750
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -34,14 +31,15 @@ public class Tab extends BaseEntity {
 
     private String headers;
 
-<<<<<<< HEAD
-    public void updateByApi(ApiInsertReq apiInsertReq){
+
+    public void updateByApi(ApiInsertReq apiInsertReq) {
         this.address = apiInsertReq.getAddress();
         this.path = apiInsertReq.getPath();
         this.httpMethod = apiInsertReq.getHttpMethod();
-        if(apiInsertReq.getParams()!=null) this.params = apiInsertReq.getParams().toString();
-        if(apiInsertReq.getHeaders()!=null) this.headers = apiInsertReq.getHeaders().toString();
-=======
+        if (apiInsertReq.getParams() != null) this.params = apiInsertReq.getParams().toString();
+        if (apiInsertReq.getHeaders() != null) this.headers = apiInsertReq.getHeaders().toString();
+    }
+
     public void updateByLoad(LoadInsertReq loadInsertReq) {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -55,6 +53,5 @@ public class Tab extends BaseEntity {
         } catch (JsonProcessingException e) {
             throw new InvaildMapperException("Mapping failed");
         }
->>>>>>> 59f96dcc4362d5a7357c81aca8f358986099e750
     }
 }

@@ -8,6 +8,7 @@ import SettingsOption from "./SettingsOption";
 import { setParamsState, setPayloadState } from "../store/modules/api";
 
 const RequestOptions = (props) => {
+  const dispatch = useDispatch()
   const inputObj = useSelector(({ api }) => api);
   const { requestTabIndex } = props;
   const [tableCnt, setTableCnt] = useState([0]);
@@ -20,7 +21,7 @@ const RequestOptions = (props) => {
       return [
         ...params,
         {
-          paramCheckbox: false,
+          paramCheckbox: 'off',
           paramKey: "",
           paramValue: "",
           paramDescription: "",
@@ -30,22 +31,13 @@ const RequestOptions = (props) => {
   };
   const handleParam = (index) => (e) => {
     const { value, name } = e.target;
-    const copied = params.slice();
-    setParams(() => {
-      [
-        ...params.slice(0, index),
-        {
-          ...copied[index],
-          [name]: value,
-        },
-        ...params.slice(index + 1),
-      ];
-    });
-    return useDispatch(setParamsState(params));
+    setParams(
+      params.map((params, idx) => idx==index? { ...params, [name]: value } : params))
+    dispatch(setParamsState(params));
   };
   const [params, setParams] = useState([
     {
-      paramCheckbox: false,
+      paramCheckbox: "off",
       paramKey: "",
       paramValue: "",
       paramDescription: "",

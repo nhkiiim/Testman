@@ -50,31 +50,53 @@ const Content = ({ data}) => {
     });
     setTabs(tempTabs);
   };
-
+  const [parsingParams, setParsingPrams] = useState({})
   const request = useSelector((state) => state.api.request);
-  
+  const token = useSelector((state) => state.user.token);
+  const [parsingHeaders, setParsingHeaders] = useState({})
   const handleSubmit = () => {
+    const paramsJson = request.params
+    paramsJson.forEach(array => {
+      const copied = parsingParams
+      copied[array.paramKey] = array.paramValue
+      setParsingPrams(copied)
+    });
+
+    const paramsHeaders = request.headers
+    paramsHeaders.forEach(array => {
+      const copied = parsingHeaders
+      copied[array.paramKey] = array.paramValue
+      setParsingHeaders(copied)
+    })
     const payload = {
-      "address": data.url,
-      "headers": {
-        "additionalProp1": "string",
-        "additionalProp2": "string",
-        "additionalProp3": "string"
-      },
-      "httpMethod": request.payload.method,
-      "params": {},
-      "path": "string",
+      "address": "http://www.testsman.com:8080",
+      "httpMethod": request.payload.httpMethod,
+      "headers": parsingHeaders,
+      "params": parsingParams,
+    //   "params": {
+    //     "seq": 1,
+    //     "title": "new project",
+    //     "url": "www.ssafy.com"
+    // },
+      "path": request.uri,
       "tabSeq": 0,
       "workspaceSeq": 0
     }
-    axios
-    .post('api/api-result', data=payload)
-    .then((res) => {
-      console.log(res.data.response)
+    console.log(payload)
+    axios({
+      method: "post",
+      url: "/api/api-result",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: payload,
     })
-    .catch((error) => {
-      console.log(error)
-    })
+      .then((res) => {
+        console.log(res.data.response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   };
 
   const handleURLChange = (e) => {
@@ -88,11 +110,14 @@ const Content = ({ data}) => {
   }
   const [btnDescription, setBtnDescription] = useState(false);
 
-  const clickSaveCollections = () => {
-    const data = 
+  const clickSaveCollections = () => { 
     axios
     .post('api/collecitons', data)
   }
+
+  // useEffect(() => {
+  //     console.log(selector)
+  //   });
   return (
     <div>
       {showModal?

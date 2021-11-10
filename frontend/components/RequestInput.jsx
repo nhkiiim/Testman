@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import * as apiActions from "../store/modules/api";
 
 const RequestInput = (props) => {
+  const dispatch = useDispatch()
+  const selector = useSelector((state) => state.api.request)
   const { tabs, handleURLChange, handleSubmit, url } = props;
   const [testBtn, setTestBtn] = useState(false);
   const clickTestBtn = () => {
@@ -14,27 +16,26 @@ const RequestInput = (props) => {
       return setTestBtn(true);
     }
   };
-  const [payload, setPayload] = useState({})
-  // const handlePayload = (e) => {
-  //   console.log(e)
-  //   const { value, name } = e.target;
-  //   setPayload({
-  //     ...payload,
-  //     [name]: value,
-  //   });
-  //   return useDispatch(apiActions.setPayloadState(payload));
-  // };
+  const [payload, setPayload] = useState({
+    httpMethod:"GET"
+  })
+
   const handlePayload = (e) => {
     const { value, name } = e.target
     setPayload({
         ...payload,
         [name]: value
     })
-    return useDispatch(setPayloadState(payload))
+    dispatch(apiActions.setPayloadState(payload))
 }
-  useEffect(() => {
-      console.log(payload)
-    });
+  const [uri, setUri] = useState('')
+  const handleUriChange = (e) => {
+    setUri(e.target.value)
+    dispatch(apiActions.setUriState(uri))
+  }
+  // useEffect(() => {
+  //     console.log(selector)
+  //   });
   if (tabs !== undefined) {
     return (
       <div>
@@ -88,10 +89,18 @@ const RequestInput = (props) => {
             <input
               type="text"
               placeholder=""
-              value={`${url}` + "/" + `${props.tabs.URL}`}
+              value={`${url}/`}
               onChange={handleURLChange}
               className="border-r border-b border-gray-300 bg-gray-200 p-[8px] w-[60%] border-t rounded-sm"
+              disabled
             />
+            <input 
+              type="text"
+              placeholder=""
+              value={uri}
+              onChange={handleUriChange}
+              className="border-r border-b border-gray-300 bg-gray-200 rounded-sm"
+             />
             <button className="flex bg-blue-500 text-white p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm " onClick={handleSubmit}>
               SEND
               <FaCaretDown className="ml-[10px] mt-[2px]" />

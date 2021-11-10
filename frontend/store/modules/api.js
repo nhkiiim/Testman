@@ -2,12 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {  
   request:{
-    payload:{},
+    payload:{
+      httpMethod:"GET"
+    },
     params:{},
     authorization:{},
     headers:{},
     body:{},
     settings:{},
+    uri:""
   }
 
 };
@@ -19,7 +22,7 @@ const requestSlice = createSlice({
     setPayloadState: (state, action) => {
       const payload = action.payload;
 
-      state.request.payload = payload;
+      state.request.payload.httpMethod = payload.httpMethod;
     },
     setParamsState: (state, action) => {
       const params = action.payload;
@@ -45,9 +48,13 @@ const requestSlice = createSlice({
       const settings = action.payload;
 
       state.request.settings = settings
+    },
+    setUriState: (state, action) => {
+      const uri = action.payload;
+      state.request.uri = action.payload
     }
   },
 });
 
-export const { setPayloadState, setParamsState, setAuthorizationState, setHeadersState, setBodyState, setSettingsState } = requestSlice.actions;
+export const { setPayloadState, setParamsState, setAuthorizationState, setHeadersState, setBodyState, setSettingsState, setUriState } = requestSlice.actions;
 export default requestSlice.reducer;

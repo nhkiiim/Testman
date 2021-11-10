@@ -27,7 +27,7 @@ const HistoryList = (props) => {
   }
   return (
     <>
-    {props.historyData==false? (
+    {props.historyData? (
       <div>
         no history
       </div>

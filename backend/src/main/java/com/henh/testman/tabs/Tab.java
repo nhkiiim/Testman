@@ -31,7 +31,6 @@ public class Tab extends BaseEntity {
 
     private String headers;
 
-
     public void updateByApi(ApiInsertReq apiInsertReq) {
         this.address = apiInsertReq.getAddress();
         this.path = apiInsertReq.getPath();

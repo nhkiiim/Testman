@@ -5,11 +5,9 @@ import icon from "../img/icon.png";
 import { useRouter } from "next/dist/client/router";
 import ProjectLists from "./ProjectLists";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import ProjectListsDt from "./ProjectListsDt";
 import * as pageAction from "../store/modules/page";
 import { LogoutIcon } from "@heroicons/react/solid";
-import * as seqActions from "../store/modules/seq";
 import { useCookies } from "react-cookie";
 
 const Header2 = () => {
@@ -20,11 +18,9 @@ const Header2 = () => {
   const [project, setproject] = useState(false);
   const [profile, setProfile] = useState(false);
   const [dtProject, setDtProject] = useState(false);
-  const [select, setSelecet] = useState(0);
 
   const uid = useSelector((state) => state.user.user.userId);
   const cPage = useSelector((state) => state.page.category);
-  console.log(cPage);
 
   // console.log(uid);
   const pjtList = useSelector((state) => state.project[0]);
@@ -343,7 +339,7 @@ const Header2 = () => {
               </li>
               <li
                 className={
-                  pjtList === undefined
+                  pjtList.length === 0
                     ? "hidden"
                     : cPage === 1
                     ? "cursor-pointer h-full flex items-center text-sm text-indigo-700 tracking-normal border-b-2 border-indigo-700 ml-8"

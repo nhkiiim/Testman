@@ -16,6 +16,7 @@ import AnimatedProgressProvider from "../components/Modals/AnimatedProgressProvi
 import { easeQuadInOut } from "d3-ease";
 import NoneData from "../components/NoneData";
 import withAuth from "../HOC/withAuth";
+import * as pageAction from "../store/modules/page";
 
 const MyPage = () => {
   const router = useRouter();
@@ -37,10 +38,11 @@ const MyPage = () => {
   const dispatch = useDispatch();
 
   // console.log(upjt[0]);
-  useEffect(() => {
-    getFetchData();
+  useEffect(async () => {
+    dispatch(pageAction.setPageState(0));
+    await getFetchData();
     Aos.init({ duration: 1000 });
-  }, []);
+  }, [dataNone, tempSeq]);
   const getFetchData = async () => {
     await axios({
       method: "get",
@@ -51,18 +53,18 @@ const MyPage = () => {
     })
       .then((res) => {
         setWorkSpaces(res.data.response.workspaceDtoList);
+        if (res.data.response.workspaceDtoList.length === 0) {
+          setDataNone(true);
+          dispatch(projectActions.setProject(undefined));
+        }
         dispatch(projectActions.setProject(res.data.response.workspaceDtoList));
       })
       .catch((error) => {
         console.log(error);
-        if (error.response.status === 404) {
-          setDataNone(true);
-          dispatch(projectActions.setProject(undefined));
-        }
         // console.log(dataNone);
       });
   };
-  // console.log(workspaces);
+  console.log(workspaces);
   const changeHandler = useCallback(async (e) => {
     const {
       target: { id, value },
@@ -90,14 +92,15 @@ const MyPage = () => {
   };
 
   const fetchDeletePjt = async (value) => {
-    axios({
+    await axios({
       method: "delete",
       url: "/api/workspaces/" + value,
     })
       .then(() => {
         console.log("삭제완료");
         setTempSeq();
-        window.location.reload();
+        console.log(tempSeq);
+        // window.location.reload();
       })
       .catch((error) => {
         console.log(error);

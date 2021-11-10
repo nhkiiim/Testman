@@ -3,10 +3,8 @@ package com.henh.testman.tabs;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
 import com.henh.testman.tabs.request.TabInsertReq;
-import com.henh.testman.tabs.response.TabDeleteRes;
-import com.henh.testman.tabs.response.TabInsertRes;
-import com.henh.testman.tabs.response.TabSelectAllRes;
-import com.henh.testman.tabs.response.TabSelectRes;
+import com.henh.testman.tabs.request.TabUpdateReq;
+import com.henh.testman.tabs.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +50,26 @@ public class TabRestController {
         return success(
                 new TabSelectAllRes(
                         tabService.selectTabByWorkspaceSeq(workspaceSeq)
+                )
+        );
+    }
+
+    @GetMapping("collection/{collectionSeq}")
+    public ApiResult<TabSelectAllRes> selectTabByCollectionSeq(@PathVariable Long collectionSeq){
+        return success(
+                new TabSelectAllRes(
+                        tabService.selectTabByCollectionSeq(collectionSeq)
+                )
+        );
+    }
+
+    @PatchMapping
+    public ApiResult<TabUpdateRes> updateTabByCollectionSeq(@Valid @RequestBody TabUpdateReq tabUpdateReq){
+        return success(
+                new TabUpdateRes(
+                        tabService.updateTabByCollectionSeq(tabUpdateReq)
+                                .map(TabDto::new)
+                                .orElseThrow(() -> new IllegalArgumentException("Could not insert tab"))
                 )
         );
     }

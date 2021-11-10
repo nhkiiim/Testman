@@ -6,6 +6,7 @@ import com.henh.testman.common.errors.InvalidMapperException;
 import com.henh.testman.common.utils.BaseEntity;
 import com.henh.testman.results.api_results.request.ApiInsertReq;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
+import com.henh.testman.tabs.request.TabUpdateReq;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -21,6 +22,8 @@ public class Tab extends BaseEntity {
 
     private Long workspaceSeq;
 
+    private Long collectionSeq;
+
     private String address;
 
     private String path;
@@ -32,11 +35,18 @@ public class Tab extends BaseEntity {
     private String headers;
 
     public void updateByApi(ApiInsertReq apiInsertReq) {
+        ObjectMapper mapper = new ObjectMapper();
+
         this.address = apiInsertReq.getAddress();
         this.path = apiInsertReq.getPath();
         this.httpMethod = apiInsertReq.getHttpMethod();
-        if (apiInsertReq.getParams() != null) this.params = apiInsertReq.getParams().toString();
-        if (apiInsertReq.getHeaders() != null) this.headers = apiInsertReq.getHeaders().toString();
+
+        try {
+            this.params = mapper.writeValueAsString(apiInsertReq.getParams());
+            this.headers = mapper.writeValueAsString(apiInsertReq.getHeaders());
+        } catch (JsonProcessingException e) {
+            throw new InvalidMapperException("Mapping failed");
+        }
     }
 
     public void updateByLoad(LoadInsertReq loadInsertReq) {
@@ -53,4 +63,21 @@ public class Tab extends BaseEntity {
             throw new InvalidMapperException("Mapping failed");
         }
     }
+
+    public void updateByCollection(TabUpdateReq tabUpdateReq) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        this.address = tabUpdateReq.getAddress();
+        this.path = tabUpdateReq.getPath();
+        this.httpMethod = tabUpdateReq.getHttpMethod();
+        this.collectionSeq = tabUpdateReq.getCollectionSeq();
+
+        try {
+            this.params = mapper.writeValueAsString(tabUpdateReq.getParams());
+            this.headers = mapper.writeValueAsString(tabUpdateReq.getHeaders());
+        } catch (JsonProcessingException e) {
+            throw new InvalidMapperException("Mapping failed");
+        }
+    }
+
 }

@@ -24,7 +24,7 @@ public class AsyncConfig implements AsyncConfigurer {
 
     private static final String EXECUTOR_SAMPLE_BEAN_NAME = "executorSample";
 
-    @Resource(name = "executorSample")
+    @Resource
     private ThreadPoolTaskExecutor executorSample;
 
     private static final int TASK_ETC_CORE_POOL_SIZE = 5;
@@ -35,7 +35,7 @@ public class AsyncConfig implements AsyncConfigurer {
 
     private static final String EXECUTOR_ETC_BEAN_NAME = "executorEtc";
 
-    @Resource(name = "executorEtc")
+    @Resource
     private ThreadPoolTaskExecutor executorEtc;
 
     /**

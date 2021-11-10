@@ -1,5 +1,6 @@
 package com.henh.testman.results.load_results;
 
+import com.henh.testman.common.config.AsyncConfig;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.histories.History;
 import com.henh.testman.histories.HistoryRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +19,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @Service
 public class LoadResultServiceImpl implements LoadResultService {
+
+    /** 샘플 스레드 */
+    @Resource
+    private LoadTestAsync loadTestAsync;
+
+    /** AsyncConfig */
+    @Resource
+    private AsyncConfig asyncConfig;
 
     private final LoadResultRepository loadResultRepository;
 
@@ -40,7 +50,14 @@ public class LoadResultServiceImpl implements LoadResultService {
         tabRepository.save(tab);
 
         History history = historyRepository.save(new History(loadInsertReq));
-        LoadTest.work(loadInsertReq, loadResultRepository);
+        // LoadTest.work(loadInsertReq, loadResultRepository);
+
+        if (asyncConfig.isSampleTaskExecute()) {
+            loadTestAsync.work(loadInsertReq, loadResultRepository); // 여기서 비동기 처리구나?
+            System.out.println("이게 먼저??");
+        } else {
+            System.out.println("==============>>>>>>>>>>>> THREAD 개수 초과");
+        }
 
         return Optional.of(history.getSeq());
     }

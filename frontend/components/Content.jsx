@@ -56,18 +56,24 @@ const Content = ({ data}) => {
   const [parsingHeaders, setParsingHeaders] = useState({})
   const handleSubmit = () => {
     const paramsJson = request.params
-    paramsJson.forEach(array => {
-      const copied = parsingParams
-      copied[array.paramKey] = array.paramValue
-      setParsingPrams(copied)
-    });
+    console.log(paramsJson.constructor)
+    console.log(Object.keys(paramsJson).length)
+    if (paramsJson.constructor === Array){
+      paramsJson.forEach(array => {
+        const copied = parsingParams
+        copied[array.paramKey] = array.paramValue
+        setParsingPrams(copied)
+      });
+    }
 
-    const paramsHeaders = request.headers
-    paramsHeaders.forEach(array => {
-      const copied = parsingHeaders
-      copied[array.paramKey] = array.paramValue
-      setParsingHeaders(copied)
-    })
+    const headersJson = request.headers
+    if (headersJson.constructor === Array){
+      headersJson.forEach(array => {
+        const copied = parsingHeaders
+        copied[array.paramKey] = array.paramValue
+        setParsingHeaders(copied)
+      })
+    }
     const payload = {
       "address": "http://www.testsman.com:8080",
       "httpMethod": request.payload.httpMethod,

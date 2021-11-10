@@ -1,5 +1,6 @@
 package com.henh.testman.histories;
 
+import com.henh.testman.results.api_results.request.ApiInsertReq;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +49,17 @@ public class History {
         this.params = loadInsertReq.getParams();
         this.headers = loadInsertReq.getHeaders();
         this.createAt = loadInsertReq.getCreateAt();
+    }
+
+    public History(ApiInsertReq apiInsertReqReq) {
+        this.workspaceSeq = apiInsertReqReq.getWorkspaceSeq();;
+        this.tabSeq = apiInsertReqReq.getTabSeq();
+        this.address = apiInsertReqReq.getAddress();
+        this.path = apiInsertReqReq.getPath();
+        this.httpMethod = apiInsertReqReq.getHttpMethod();
+        this.params = apiInsertReqReq.getParams();
+        this.headers = apiInsertReqReq.getHeaders();
+        this.createAt = LocalDateTime.now();
     }
 
 }

@@ -3,6 +3,8 @@ package com.henh.testman.results.api_results;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.henh.testman.common.errors.FailApiTestException;
 import com.henh.testman.common.errors.NotFoundException;
+import com.henh.testman.histories.History;
+import com.henh.testman.histories.HistoryRepository;
 import com.henh.testman.results.api_results.request.ApiInsertReq;
 import com.henh.testman.tabs.Tab;
 import com.henh.testman.tabs.TabRepository;
@@ -26,16 +28,19 @@ public class ApiResultServiceImpl implements ApiResultService {
 
     private final ApiResultRepository apiResultRepository;
 
+    private final HistoryRepository historyRepository;
+
     private final RestTemplate restTemplate;
 
     private final TabRepository tabRepository;
 
     @Autowired
     public ApiResultServiceImpl(ApiResultRepository apiResultRepository,
-                                RestTemplate restTemplate, TabRepository tabRepository) {
+                                RestTemplate restTemplate, TabRepository tabRepository, HistoryRepository historyRepository) {
         this.apiResultRepository = apiResultRepository;
         this.restTemplate = restTemplate;
         this.tabRepository = tabRepository;
+        this.historyRepository = historyRepository;
     }
 
     @Override
@@ -44,6 +49,7 @@ public class ApiResultServiceImpl implements ApiResultService {
                 .orElseThrow(() -> new NotFoundException("Could not found tab seq " + apiInsertReq.getTabSeq()));
         tab.updateByApi(apiInsertReq);
         tabRepository.save(tab);
+        historyRepository.save(new History(apiInsertReq));
 
         ResponseEntity<Map> resultMap = apiTest(apiInsertReq);
         return saveApi(resultMap, apiInsertReq.getTabSeq());

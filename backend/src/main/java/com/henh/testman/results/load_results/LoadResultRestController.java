@@ -55,17 +55,16 @@ public class LoadResultRestController {
 
         LoadInsertRes loadInsertRes = null;
 
-//        if (asyncConfig.isSampleTaskExecute()) {
-            // task 사용
-//            asyncTaskSample.executorSample("ㄱ");
+        if (asyncConfig.isSampleTaskExecute()) {
+            asyncTaskSample.executorSample("ㄱ");
             loadInsertRes = new LoadInsertRes(
                     loadResultService.insertLoad(loadInsertReq)
                             .map(Long::new)
                             .orElseThrow(() -> new NotFoundException("fail insert for load"))
             );
-//        } else {
-//            System.out.println("==============>>>>>>>>>>>> THREAD 개수 초과");
-//        }
+        } else {
+            System.out.println("==============>>>>>>>>>>>> THREAD 개수 초과");
+        }
 
         return success(loadInsertRes);
     }

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import NoneData from "../components/NoneData";
 import axios from "axios";
 
-const HistoryList = ({ index, method, url, historyDataNone}) => {
+const HistoryList = (props) => {
   const getColor = {
     GET: "text-green-600 mr-[24px] text-sm",
     POST: "text-purple-600 mr-[14px] text-sm",
@@ -13,7 +12,7 @@ const HistoryList = ({ index, method, url, historyDataNone}) => {
   const clickHistory = async() => {
     await axios({
       method: "get",
-      url: `/api/histories/${index}`,
+      url: `/api/histories/${props.key}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -28,13 +27,15 @@ const HistoryList = ({ index, method, url, historyDataNone}) => {
   }
   return (
     <>
-    {historyDataNone ? (
-      <NoneData/>
+    {props.historyData==false? (
+      <div>
+        no history
+      </div>
     ):(
       <div className="pt-2 h-10 w-full border-t">
       <div className="text-1xl ml-3" onclick={clickHistory}>
-        <span className={getColor[method]}>{method}</span>
-        <span className="px-[10px] text-gray-600">{url}</span>
+        <span className={getColor[props.method]}>{props.method}</span>
+        <span className="px-[10px] text-gray-600">{props.url}</span>
       </div>
     </div>
     )

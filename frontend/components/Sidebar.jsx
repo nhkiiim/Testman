@@ -23,14 +23,7 @@ const Sidebar = (props) => {
     }
     Aos.init({ duration: 1000 });
   }, []);
-  const [historyData, setHistoryData] = useState([
-    {
-      index:'',
-      method:'',
-      url:''
-    }
-  ]);
-  const [historyDataNone, setHistoryDataNone] = useState(false);
+  const [historyData, setHistoryData] = useState([]);
   const getHistoryData = async(no) => {
     await axios({
       method: "get",
@@ -40,13 +33,14 @@ const Sidebar = (props) => {
       }
     })
       .then((res) => {
+        console.log('getHistoryData', res.data.response)
         setHistoryData(res.data.response)
       })
       .catch((error) => {
-        error.response.status === 404 ? setHistoryDataNone(true) : null
+        console.log(error)
       })
   }
-  const [collectionsData, setCollectionsData] = useState([]);
+  const [collectionsData, setCollectionsData] = useState([])
   const [collectionsDataNone, setCollectionsDataNone] = useState(false);
   const getCollectionsData = async(no) => {
     await axios({
@@ -57,10 +51,11 @@ const Sidebar = (props) => {
       }
     })
       .then((res) => {
+        console.log('getCollectionsData', res.data.response)
         setCollectionsData(res.data.response)
       })
       .catch((error) => {
-        error.response.status === 404 ? setCollectionsDataNone(true) : null
+        console.log(error)
       })
   }
   return (
@@ -100,9 +95,9 @@ const Sidebar = (props) => {
             </>
           ) : (
             <>
-              {historyData?.map(({ index, method, url }) => (
-                <HistoryList key={index} method={method} url={url} historyDataNone={historyDataNone}/>
-              ))}
+              
+              <HistoryList historyData={historyData}/>
+              
             </>
           )}
         </div>

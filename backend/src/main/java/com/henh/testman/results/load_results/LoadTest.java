@@ -55,9 +55,11 @@ public class LoadTest {
     private static HeaderManager makeHeaderManager(Map<String, String> headers) {
         HeaderManager manager = new HeaderManager();
 
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            manager.add(new Header(entry.getKey(), entry.getValue()));
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                manager.add(new Header(entry.getKey(), entry.getValue()));
 //            System.out.println(entry.getKey() + " " + entry.getValue());
+            }
         }
 
         manager.setName(JMeterUtils.getResString("header_manager_title")); // $NON-NLS-1$

@@ -18,6 +18,8 @@ public class TabDto {
 
     private final Long workspaceSeq;
 
+    private final Long collectionSeq;
+
     private final String address;
 
     private final String path;
@@ -33,13 +35,14 @@ public class TabDto {
 
         this.seq = tab.getSeq();
         this.workspaceSeq = tab.getWorkspaceSeq();
+        this.collectionSeq = tab.getCollectionSeq();
         this.address = tab.getAddress();
         this.path = tab.getPath();
         this.httpMethod = tab.getHttpMethod();
 
         try {
-            this.params = mapper.readValue(tab.getParams(), Map.class);
-            this.headers = mapper.readValue(tab.getHeaders(), Map.class);
+            this.params = tab.getParams() != null ? mapper.readValue(tab.getParams(), Map.class) : null;
+            this.headers = tab.getHeaders() != null ? mapper.readValue(tab.getHeaders(), Map.class) : null;
         } catch (JsonProcessingException e) {
             throw new InvalidMapperException("Mapping failed");
         }

@@ -37,13 +37,26 @@ public class GeneralExceptionHandler {
     @ExceptionHandler({
             NoHandlerFoundException.class,
             NotFoundException.class,
-            FailLoadTestException.class,
-            FailApiTestException.class
     })
     public ResponseEntity<?> handleNotFoundException(Exception e) {
         return newResponse(e, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({
+            FailLoadTestException.class,
+    })
+    public ResponseEntity<?> FailLoadTestException(Exception e) {
+        log.warn("Load test failed" + e.getMessage(), e);
+        return newResponse(e, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({
+            FailApiTestException.class
+    })
+    public ResponseEntity<?> FailApiTestException(Exception e) {
+        log.warn("API test failed" + e.getMessage(), e);
+        return newResponse(e, HttpStatus.NOT_FOUND);
+    }
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<?> handleUnauthorizedException(Exception e) {

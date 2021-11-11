@@ -1,5 +1,6 @@
-package com.henh.testman.common.errors;
+package com.henh.testman.common.handler;
 
+import com.henh.testman.common.errors.*;
 import com.henh.testman.common.utils.ApiUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ import static com.henh.testman.common.utils.ApiUtils.error;
 @ControllerAdvice
 public class GeneralExceptionHandler {
 
-    private final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private ResponseEntity<ApiUtils.ApiResult<?>> newResponse(Throwable throwable, HttpStatus status) {
         return newResponse(throwable.getMessage(), status);
@@ -63,7 +64,7 @@ public class GeneralExceptionHandler {
             InvalidMapperException.class
     })
     public ResponseEntity<?> handleBadRequestException(Exception e) {
-        log.debug("Bad request exception occurred: {}", e.getMessage(), e);
+        logger.debug("Bad request exception occurred: {}", e.getMessage(), e);
         if (e instanceof MethodArgumentNotValidException) {
             return newResponse(
                     ((MethodArgumentNotValidException) e).getBindingResult().getAllErrors().get(0).getDefaultMessage(),
@@ -85,7 +86,7 @@ public class GeneralExceptionHandler {
 
     @ExceptionHandler({Exception.class, RuntimeException.class})
     public ResponseEntity<?> handleException(Exception e) {
-        log.error("Unexpected exception occurred: {}", e.getMessage(), e);
+        logger.error("Unexpected exception occurred: {}", e.getMessage(), e);
         return newResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

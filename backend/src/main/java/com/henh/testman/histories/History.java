@@ -1,10 +1,8 @@
 package com.henh.testman.histories;
 
+import com.henh.testman.results.api_results.request.ApiInsertReq;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
@@ -16,6 +14,7 @@ import java.util.Map;
 @Builder
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 @RedisHash(value = "history")
 public class History {
 
@@ -40,7 +39,7 @@ public class History {
     private LocalDateTime createAt;
 
     public History(LoadInsertReq loadInsertReq) {
-        this.workspaceSeq = loadInsertReq.getWorkspaceSeq();;
+        this.workspaceSeq = loadInsertReq.getWorkspaceSeq();
         this.tabSeq = loadInsertReq.getTabSeq();
         this.address = loadInsertReq.getAddress();
         this.path = loadInsertReq.getPath();
@@ -48,6 +47,17 @@ public class History {
         this.params = loadInsertReq.getParams();
         this.headers = loadInsertReq.getHeaders();
         this.createAt = loadInsertReq.getCreateAt();
+    }
+
+    public History(ApiInsertReq apiInsertReqReq) {
+        this.workspaceSeq = apiInsertReqReq.getWorkspaceSeq();
+        this.tabSeq = apiInsertReqReq.getTabSeq();
+        this.address = apiInsertReqReq.getAddress();
+        this.path = apiInsertReqReq.getPath();
+        this.httpMethod = apiInsertReqReq.getHttpMethod();
+        this.params = apiInsertReqReq.getParams();
+        this.headers = apiInsertReqReq.getHeaders();
+        this.createAt = LocalDateTime.now();
     }
 
 }

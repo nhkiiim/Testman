@@ -11,6 +11,8 @@ public interface TabRepository extends JpaRepository<Tab, Long> {
 
     List<Tab> findByWorkspaceSeq(Long workspaceSeq);
 
+    List<Tab> findByCollectionSeq(Long collectionSeq);
+
     Optional<Tab> findBySeq(Long seq);
 
 }

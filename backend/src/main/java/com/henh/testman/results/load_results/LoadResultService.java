@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface LoadResultService {
 
-    Optional<Long> insertLoad(LoadInsertReq loadInsertReq);
+    Optional<LoadResult> insertLoad(LoadInsertReq loadInsertReq);
 
     List<LoadResult> selectLoadByTabSeq(Long tabSeq);
 

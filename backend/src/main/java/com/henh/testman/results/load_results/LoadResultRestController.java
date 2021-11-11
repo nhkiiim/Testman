@@ -28,11 +28,11 @@ public class LoadResultRestController {
     @PostMapping
     public ApiResult<LoadInsertRes> insertLoad(@Valid @RequestBody LoadInsertReq loadInsertReq) {
         return success(
-            new LoadInsertRes(
-                    loadResultService.insertLoad(loadInsertReq)
-                            .map(Long::new)
-                            .orElseThrow(() -> new NotFoundException("fail insert for load"))
-            )
+                new LoadInsertRes(
+                        loadResultService.insertLoad(loadInsertReq)
+                                .map(LoadResultDto::new)
+                                .orElseThrow(() -> new NotFoundException("fail insert for load"))
+                )
         );
     }
 

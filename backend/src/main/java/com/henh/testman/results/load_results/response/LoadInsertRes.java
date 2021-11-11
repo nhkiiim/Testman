@@ -1,5 +1,6 @@
 package com.henh.testman.results.load_results.response;
 
+import com.henh.testman.results.load_results.LoadResultDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -7,6 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class LoadInsertRes {
 
-    private final Long historySeq;
+    private final LoadResultDto loadResult;
 
 }

@@ -10,8 +10,6 @@ import java.util.List;
 
 public class MyResultCollector extends ResultCollector {
 
-    private final LoadResultRepository loadResultRepository;
-
     private final Long tabSeq;
 
     private final LocalDateTime creatAt;
@@ -20,12 +18,10 @@ public class MyResultCollector extends ResultCollector {
 
     private final MySummariser mySummariser;
 
-    public MyResultCollector(LoadResultRepository loadResultRepository,
-                             Long tabSeq, LocalDateTime createAt) {
+    public MyResultCollector(Long tabSeq, LocalDateTime createAt) {
         super();
         this.resultRawList = new ArrayList<>();
         this.mySummariser = new MySummariser();
-        this.loadResultRepository = loadResultRepository;
         this.tabSeq = tabSeq;
         this.creatAt = createAt;
     }
@@ -53,18 +49,15 @@ public class MyResultCollector extends ResultCollector {
     public void testEnded() {
         super.testEnded();
         mySummariser.setEndTime();
+    }
 
-        ResultSummary resultSummary = new ResultSummary(mySummariser);
-        System.out.println(resultSummary.toString());
-
-        loadResultRepository.save(
-                LoadResult.builder()
-                        .tabSeq(tabSeq)
-                        .resultRawList(resultRawList)
-                        .resultSummary(resultSummary)
-                        .createAt(creatAt)
-                        .build()
-        );
+    public LoadResult getResult() {
+        return LoadResult.builder()
+                .tabSeq(tabSeq)
+                .resultRawList(resultRawList)
+                .resultSummary(new ResultSummary(mySummariser))
+                .createAt(creatAt)
+                .build();
     }
 
 }

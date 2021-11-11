@@ -125,6 +125,7 @@ public class ApiResultServiceImpl implements ApiResultService {
                 .orElse(new ApiResults());
         apiResults.update(tabSeq, code, body, header);
 
+        System.out.println(apiResults);
         return Optional.of(
                 apiResultRepository.save(apiResults)
         );

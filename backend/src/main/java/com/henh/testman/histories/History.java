@@ -41,7 +41,7 @@ public class History {
     private LocalDateTime createAt;
 
     public History(LoadInsertReq loadInsertReq) {
-        this.workspaceSeq = loadInsertReq.getWorkspaceSeq();;
+        this.workspaceSeq = loadInsertReq.getWorkspaceSeq();
         this.tabSeq = loadInsertReq.getTabSeq();
         this.address = loadInsertReq.getAddress();
         this.path = loadInsertReq.getPath();
@@ -52,7 +52,7 @@ public class History {
     }
 
     public History(ApiInsertReq apiInsertReqReq) {
-        this.workspaceSeq = apiInsertReqReq.getWorkspaceSeq();;
+        this.workspaceSeq = apiInsertReqReq.getWorkspaceSeq();
         this.tabSeq = apiInsertReqReq.getTabSeq();
         this.address = apiInsertReqReq.getAddress();
         this.path = apiInsertReqReq.getPath();

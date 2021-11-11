@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class ApiResultDto {
 
-    private long tabSeq;
+    private Long tabSeq;
 
     private Integer code;
 

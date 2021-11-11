@@ -21,7 +21,7 @@ import static com.henh.testman.common.utils.ApiUtils.success;
 @RequestMapping("api/workspaces")
 public class WorkspaceRestController {
 
-    private WorkspaceService workspaceService;
+    private final WorkspaceService workspaceService;
 
     @Autowired
     public WorkspaceRestController(WorkspaceService workspaceService) {

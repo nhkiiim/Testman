@@ -35,12 +35,14 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Optional<Workspace> insertWorkspace(WorkspaceInsertReq workspaceInsertReq, String id) {
+    public Optional<Workspace> insertWorkspace(WorkspaceInsertReq workspaceInsertReq, String userId) {
+        checkNotNull(userId, "userId must be provided");
+
         Optional<Workspace> checkWorkspace = workspaceRepository.findByTitle(workspaceInsertReq.getTitle());
         if(checkWorkspace.isPresent()) throw new ExistException("Exist title");
 
-        User user = userRepository.findByUserId(id)
-                .orElseThrow(()-> new NotFoundException("Could not found user for " + id));
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(()-> new NotFoundException("Could not found user for " + userId));
 
         return Optional.of(
                 workspaceRepository.save(

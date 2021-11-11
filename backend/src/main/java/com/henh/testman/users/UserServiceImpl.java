@@ -70,8 +70,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Optional<String> deleteUser(String userId) {
+        checkNotNull(userId, "userId must be provided");
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found user for " + userId));
+
         userRepository.delete(user);
         return Optional.of(user.getUserId());
     }
@@ -79,6 +81,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Optional<User> updateUser(UserUpdateReq userUpdateReq, String userId){
+        checkNotNull(userId, "userId must be provided");
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException("Could not found user for " + userId));
 

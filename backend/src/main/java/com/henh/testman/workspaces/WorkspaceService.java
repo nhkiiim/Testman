@@ -8,13 +8,13 @@ import java.util.Optional;
 
 public interface WorkspaceService {
 
-    Optional<Workspace> insertWorkspace(WorkspaceInsertReq workspaceInsertReq, String id);
+    Optional<Workspace> insertWorkspace(WorkspaceInsertReq workspaceInsertReq, String userId);
 
     Optional<Workspace> selectWorkspace(Long seq);
 
-    List<WorkspaceDto> selectWorkspaceByUserId(String id);
+    List<WorkspaceDto> selectWorkspaceByUserId(String userId);
 
-    Integer countWorkspaceByUserId(String id);
+    Integer countWorkspaceByUserId(String userId);
 
     Optional<Workspace> updateWorkspace(WorkspaceUpdateReq workspaceUpdateReq);
 

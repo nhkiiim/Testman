@@ -47,7 +47,7 @@ public class GeneralExceptionHandler {
             FailLoadTestException.class,
     })
     public ResponseEntity<?> FailLoadTestException(Exception e) {
-        log.warn("Load test failed" + e.getMessage(), e);
+        logger.warn("Load test failed" + e.getMessage(), e);
         return newResponse(e, HttpStatus.NOT_FOUND);
     }
 
@@ -55,7 +55,7 @@ public class GeneralExceptionHandler {
             FailApiTestException.class
     })
     public ResponseEntity<?> FailApiTestException(Exception e) {
-        log.warn("API test failed" + e.getMessage(), e);
+        logger.warn("API test failed" + e.getMessage(), e);
         return newResponse(e, HttpStatus.NOT_FOUND);
     }
 

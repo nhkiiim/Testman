@@ -2,6 +2,7 @@ package com.henh.testman.tabs;
 
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.tabs.request.TabInsertReq;
+import com.henh.testman.tabs.request.TabUpdateReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +52,28 @@ public class TabServiceImpl implements TabService {
                 .map(TabDto::new).collect(Collectors.toList());
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<TabDto> selectTabByCollectionSeq(Long collectionSeq) {
+        checkNotNull(collectionSeq, "collectionSeq must be provided");
+
+        return tabRepository.findByCollectionSeq(collectionSeq).stream()
+                .map(TabDto::new).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Optional<Tab> updateTabByCollectionSeq(TabUpdateReq updateReq) {
+        Tab tab = tabRepository.findById(updateReq.getSeq())
+                .orElseThrow(() -> new NotFoundException("Could not find tab by " + updateReq.getSeq()));
+
+        tab.updateByCollection(updateReq);
+        return Optional.of(
+                tabRepository.save(tab)
+        );
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public Optional<Long> deleteTab(Long seq) {
         checkNotNull(seq, "seq must be provided");

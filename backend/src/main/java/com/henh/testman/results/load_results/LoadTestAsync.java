@@ -22,14 +22,21 @@ import org.apache.jmeter.threads.ThreadGroup;
 import org.apache.jmeter.threads.gui.ThreadGroupGui;
 import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.stereotype.Service;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.concurrent.Future;
 
-public class LoadTest {
+@Service
+public class LoadTestAsync {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoadTestAsync.class);
 
     private static final String slash = System.getProperty("file.separator");
 
@@ -37,37 +44,30 @@ public class LoadTest {
 
     private static final ClassPathResource jmeterProperties = new ClassPathResource("apache-jmeter-5.4.1" + slash + "bin" + slash + "jmeter.properties");
 
-    private static void initialization() {
+    @Async
+    public Future<LoadResult> work(LoadInsertReq loadInsertReq) {
+        /* initialization */
         try {
-            Path homePath = Paths.get(jmeterHome.getURI());
-            Path propertiesPath = Paths.get(jmeterProperties.getURI());
-//            System.out.println(homePath.toString());
-//            System.out.println(propertiesPath.toString());
-
-            JMeterUtils.setJMeterHome(homePath.toString());
-            JMeterUtils.loadJMeterProperties(propertiesPath.toString());
+            JMeterUtils.setJMeterHome(Paths.get(jmeterHome.getURI()).toString());
+            JMeterUtils.loadJMeterProperties(Paths.get(jmeterProperties.getURI()).toString());
         } catch (Exception e) {
             throw new FailLoadTestException("fail jmeter init");
         }
         JMeterUtils.initLocale();
-    }
 
-    private static HeaderManager makeHeaderManager(Map<String, String> headers) {
+        /* makeHeaderManager */
         HeaderManager manager = new HeaderManager();
+        Map<String, String> headers = loadInsertReq.getHeaders();
 
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             manager.add(new Header(entry.getKey(), entry.getValue()));
-//            System.out.println(entry.getKey() + " " + entry.getValue());
         }
 
         manager.setName(JMeterUtils.getResString("header_manager_title")); // $NON-NLS-1$
         manager.setProperty(TestElement.TEST_CLASS, HeaderManager.class.getName());
         manager.setProperty(TestElement.GUI_CLASS, HeaderPanel.class.getName());
 
-        return manager;
-    }
-
-    private static HTTPSamplerProxy makeSampler(LoadInsertReq loadInsertReq) {
+        /* makeSampler */
         HTTPSamplerProxy sampler = new HTTPSamplerProxy();
 
         // address parsing
@@ -106,12 +106,6 @@ public class LoadTest {
         }
         // body end
 
-//        System.out.println("protocol : " + protocol);
-//        System.out.println("domain : " + domain);
-//        System.out.println("port : " + port);
-//        System.out.println("path : " + path);
-//        System.out.println("http method : " + httpMethod);
-
         sampler.setProtocol(protocol);
         sampler.setDomain(domain);
         sampler.setPort(port);
@@ -121,80 +115,57 @@ public class LoadTest {
         sampler.setProperty(TestElement.TEST_CLASS, HTTPSamplerProxy.class.getName());
         sampler.setProperty(TestElement.GUI_CLASS, HttpTestSampleGui.class.getName());
 
-        return sampler;
-    }
-
-    private static LoopController makeLoopController(int loop) {
+        /* makeLoopController */
         LoopController loopController = new LoopController();
 
-        loopController.setLoops(loop);
+        loopController.setLoops(loadInsertReq.getLoop());
         loopController.setFirst(true);
         loopController.setProperty(TestElement.TEST_CLASS, LoopController.class.getName());
         loopController.setProperty(TestElement.GUI_CLASS, LoopControlPanel.class.getName());
         loopController.initialize();
 
-        return loopController;
-    }
-
-    private static ThreadGroup makeThreadGroup(LoopController loopController, int thread) {
+        /* makeThreadGroup */
         ThreadGroup threadGroup = new ThreadGroup();
 
         threadGroup.setName("Thread Group");
-        threadGroup.setNumThreads(thread);
+        threadGroup.setNumThreads(loadInsertReq.getThread());
         threadGroup.setRampUp(1);
         threadGroup.setSamplerController(loopController);
         threadGroup.setProperty(TestElement.TEST_CLASS, ThreadGroup.class.getName());
         threadGroup.setProperty(TestElement.GUI_CLASS, ThreadGroupGui.class.getName());
 
-        return threadGroup;
-    }
-
-    private static TestPlan makeTestPlan() {
+        /* makeTestPlan */
         TestPlan testPlan = new TestPlan("Create JMeter Script From Java Code");
 
         testPlan.setProperty(TestElement.TEST_CLASS, TestPlan.class.getName());
         testPlan.setProperty(TestElement.GUI_CLASS, TestPlanGui.class.getName());
         testPlan.setUserDefinedVariables((Arguments) new ArgumentsPanel().createTestElement());
 
-        return testPlan;
-    }
-
-    private static HashTree makeTestPlanTree(TestPlan testPlan, ThreadGroup threadGroup, HTTPSamplerProxy Sampler, HeaderManager manager) {
+        /* makeTestPlanTree */
         HashTree testPlanTree = new HashTree();
 
         testPlanTree.add(testPlan);
         HashTree threadGroupHashTree = testPlanTree.add(testPlan, threadGroup);
-        threadGroupHashTree.add(Sampler, manager);
+        threadGroupHashTree.add(sampler, manager);
 
-        return testPlanTree;
-    }
+        /* makeCollector */
+        MyResultCollector collector = new MyResultCollector(
+                loadInsertReq.getTabSeq(),
+                loadInsertReq.getCreateAt()
+        );
 
-    private static void makeCollector(HashTree testPlanTree, LoadResultRepository loadResultRepository,
-                                      Long tabSeq, LocalDateTime createAt) {
-        MyResultCollector logger = new MyResultCollector(loadResultRepository, tabSeq, createAt);
+        testPlanTree.add(testPlanTree.getArray()[0], collector);
 
-        testPlanTree.add(testPlanTree.getArray()[0], logger);
-    }
-
-    private static void run(HashTree testPlanTree) {
+        /* run */
         StandardJMeterEngine jmeter = new StandardJMeterEngine();
 
         jmeter.configure(testPlanTree);
         jmeter.run();
 
-        System.out.println("Test completed.");
-    }
+        LoadResult result = collector.getResult();
+        logger.info(result.getResultSummary().toString());
 
-    public static void work(LoadInsertReq loadInsertReq, LoadResultRepository loadResultRepository) {
-        initialization();
-        HeaderManager manager = makeHeaderManager(loadInsertReq.getHeaders());
-        HTTPSamplerProxy sampler = makeSampler(loadInsertReq);
-        LoopController loopController = makeLoopController(loadInsertReq.getLoop());
-        ThreadGroup threadGroup = makeThreadGroup(loopController, loadInsertReq.getThread());
-        TestPlan testPlan = makeTestPlan();
-        HashTree testPlanTree = makeTestPlanTree(testPlan, threadGroup, sampler, manager);
-        makeCollector(testPlanTree, loadResultRepository, loadInsertReq.getTabSeq(), loadInsertReq.getCreateAt());
-        run(testPlanTree);
+        return new AsyncResult<>(result);
     }
 
 }

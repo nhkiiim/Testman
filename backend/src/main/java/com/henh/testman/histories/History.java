@@ -2,10 +2,7 @@ package com.henh.testman.histories;
 
 import com.henh.testman.results.api_results.request.ApiInsertReq;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
@@ -17,6 +14,7 @@ import java.util.Map;
 @Builder
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 @RedisHash(value = "history")
 public class History {
 

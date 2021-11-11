@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import static com.henh.testman.common.utils.ApiUtils.success;
 
 @RestController
-@RequestMapping(path = "api/load-results")
+@RequestMapping(path = "api/load-result")
 public class LoadResultRestController {
 
     private final LoadResultService loadResultService;

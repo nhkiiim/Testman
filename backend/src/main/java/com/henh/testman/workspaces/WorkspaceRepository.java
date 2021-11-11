@@ -12,6 +12,6 @@ public interface WorkspaceRepository extends JpaRepository<Workspace, Long> {
 
     Optional<Workspace> findBySeq(Long seq);
 
-    Integer countByUserUserId(String id);
+    Integer countByUserUserId(String userId);
 
 }

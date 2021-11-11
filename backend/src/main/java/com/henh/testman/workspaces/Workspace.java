@@ -32,15 +32,9 @@ public class Workspace extends BaseEntity {
     private LocalDateTime createDate;
 
     public void update(String title, String url, String description){
-        if(title!=null){
-            this.title = title;
-        }
-        if(url!=null){
-            this.url = url;
-        }
-        if(description!=null){
-            this.description = description;
-        }
+        this.title = title;
+        this.url = url;
+        this.description = description;
     }
 
 }

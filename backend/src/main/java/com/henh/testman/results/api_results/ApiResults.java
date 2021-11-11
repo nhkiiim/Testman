@@ -31,4 +31,5 @@ public class ApiResults {
         this.body = body;
         this.headers = headers;
     }
+
 }

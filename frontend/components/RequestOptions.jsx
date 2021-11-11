@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PlusCircleIcon } from "@heroicons/react/solid";
 import AuthKey from "./AuthKey";
@@ -12,6 +12,14 @@ const RequestOptions = (props) => {
   const inputObj = useSelector(({ api }) => api);
   const { requestTabIndex } = props;
   const [tableCnt, setTableCnt] = useState([0]);
+  const [params, setParams] = useState([
+    {
+      paramCheckbox: "off",
+      paramKey: "",
+      paramValue: "",
+      paramDescription: "",
+    },
+  ]);
   const clickPlusBtn = () => {
     const cntList = [...tableCnt];
     const counter = cntList.slice(-1)[0] + 1;
@@ -35,14 +43,10 @@ const RequestOptions = (props) => {
       params.map((params, idx) => idx==index? { ...params, [name]: value } : params))
     dispatch(setParamsState(params));
   };
-  const [params, setParams] = useState([
-    {
-      paramCheckbox: "off",
-      paramKey: "",
-      paramValue: "",
-      paramDescription: "",
-    },
-  ]);
+  useEffect(() => {
+    console.log(params[0].paramValue)
+  }, )
+
   const render = () => {
     switch (requestTabIndex) {
       case 0:

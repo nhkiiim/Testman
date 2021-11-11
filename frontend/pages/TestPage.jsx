@@ -40,7 +40,7 @@ const TestPage = () => {
     <div>
       <Header2 />
       <Sidebar no={no}/>
-      <Content data={projectData}/>
+      <Content data={projectData} no={no}/>
     </div>
   );
 };

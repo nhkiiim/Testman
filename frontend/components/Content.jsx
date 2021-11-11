@@ -6,7 +6,7 @@ import RequestOptionsSector from "./RequestOptionsSector";
 import TabBar from "./Tabs/TabBar";
 import { useSelector } from "react-redux";
 
-const Content = ({ data}) => {
+const Content = ({ data, no }) => {
   const [tabs, setTabs] = useState([
     {
       index: Math.random(0, 10) * 10,
@@ -56,8 +56,9 @@ const Content = ({ data}) => {
   const [parsingHeaders, setParsingHeaders] = useState({})
   const handleSubmit = () => {
     const paramsJson = request.params
-    console.log(paramsJson.constructor)
-    console.log(Object.keys(paramsJson).length)
+    // console.log(paramsJson.constructor)
+    // console.log(Object.keys(paramsJson).length)
+    // console.log(paramsJson)
     if (paramsJson.constructor === Array){
       paramsJson.forEach(array => {
         const copied = parsingParams
@@ -79,23 +80,29 @@ const Content = ({ data}) => {
       "httpMethod": request.payload.httpMethod,
       "headers": parsingHeaders,
       "params": parsingParams,
-    //   "params": {
-    //     "seq": 1,
-    //     "title": "new project",
-    //     "url": "www.ssafy.com"
-    // },
       "path": request.uri,
       "tabSeq": 0,
       "workspaceSeq": 0
     }
-    console.log(payload)
+    const payload2 = {
+      "workspaceSeq":1,
+      "tabSeq":1,
+      "address":"http://www.testsman.com:8080",
+      "path": "/api/workspaces",
+      "httpMethod": "PATCH",
+      "params": {
+          "seq": 1,
+          "title": "new project",
+          "url": "www.ssafy.com"
+      }
+  }
     axios({
-      method: "post",
+      method: "POST",
       url: "/api/api-result",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      data: payload,
+      data: payload2,
     })
       .then((res) => {
         console.log(res.data.response)
@@ -111,14 +118,63 @@ const Content = ({ data}) => {
     setTabs(tempTabs);
   };
 
+  const [collectionList, setCollectionList] = useState([])
+
+  const getCollectionList = () => {
+    axios({
+      method: "GET",
+      url: `/api/collections/${no}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((res) => {
+        console.log(res.data.response.collectionList)
+        setCollectionList(res.data.response.collectionList)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
   const clickSaveBtn = () => {
     setShowModal(true)
+    getCollectionList()
   }
   const [btnDescription, setBtnDescription] = useState(false);
 
+  const [newBtn, setNewBtn] = useState(false)
+  const [newCollection, setNewCollection] = useState('')
+
+  const handleNewCollection = (e) => {
+    setNewCollection(e.target.value)
+  }
   const clickSaveCollections = () => { 
     axios
     .post('api/collecitons', data)
+  }
+
+  const handleCollectionEnter= (e) => {
+    if (e.key==="Enter") {
+      axios({
+        method:"POST",
+        url: "/api/collections",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          "name":newCollection,
+          "workspaceSeq": no
+        }
+      })
+        .then((res) => {
+          getCollectionList()
+          setNewCollection('')
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
   }
 
   // useEffect(() => {
@@ -173,9 +229,24 @@ const Content = ({ data}) => {
                         <label className="block text-sm font-bold mb-0 ml-3" for="URL">
                           Save to
                         </label>
-                        <button className="bg-white w-full mb-0 ml-3 text-left hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50">
-                          New Collection
-                        </button>
+                        {collectionList.map((item, i) => (
+                          <div>
+                            <button key={i}> {item.name} </button>
+                          </div>
+                        ))}
+                        {!newBtn ?
+                          <div>
+                            <button className="bg-white w-full mb-0 ml-3 text-left hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50" onClick={() => {
+                              setNewBtn(true)
+                            }}>
+                              New Collection
+                            </button>
+                          </div>
+                          :
+                          <div>
+                            <input type="text" placeholder="Enter collection name" onKeyPress={handleCollectionEnter} onChange={handleNewCollection} value={newCollection}/>
+                          </div>
+                        }
                       </div>
                     </form>
                   </div>

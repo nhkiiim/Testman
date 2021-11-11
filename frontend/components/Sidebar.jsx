@@ -14,15 +14,24 @@ const Sidebar = (props) => {
     setTabIndex(index);
   };
   const token = useSelector((state) => state.user.token);
-  useEffect(async () => {
-    if (token === "") {
-      router.push("/Login")
-    } else {
-      getHistoryData(props.no)
-      getCollectionsData(props.no)
-    }
-    Aos.init({ duration: 1000 });
-  }, []);
+  const [collectionList, setCollectionList] = useState([])
+
+  const getCollectionList = () => {
+    axios({
+      method: "GET",
+      url: `/api/collections/${props.no}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+      .then((res) => {
+        console.log(res.data.response.collectionList)
+        setCollectionList(res.data.response.collectionList)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
   const [historyData, setHistoryData] = useState([]);
   const getHistoryData = async(no) => {
     await axios({
@@ -40,24 +49,15 @@ const Sidebar = (props) => {
         console.log(error)
       })
   }
-  const [collectionsData, setCollectionsData] = useState([])
-  const [collectionsDataNone, setCollectionsDataNone] = useState(false);
-  const getCollectionsData = async(no) => {
-    await axios({
-      mehtod:"get",
-      url: `/api/collections/${no}`,
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then((res) => {
-        console.log('getCollectionsData', res.data.response)
-        setCollectionsData(res.data.response)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
+  useEffect(async () => {
+    if (token === "") {
+      router.push("/Login")
+    } else {
+      getHistoryData(props.no)
+      getCollectionList(props.no)
+    }
+    Aos.init({ duration: 1000 });
+  }, []);
   return (
     <div className=" border-r-2 h-[100%] w-[300px] overflow-x-hidden fixed z-10 p-1.5">
       <div className="">
@@ -91,7 +91,7 @@ const Sidebar = (props) => {
                   <DotsHorizontalIcon className="w-5 text-gray-500" />
                 </div>
               </div>
-              <CollectionsList />
+              <CollectionsList collectionList={collectionList}/>
             </>
           ) : (
             <>

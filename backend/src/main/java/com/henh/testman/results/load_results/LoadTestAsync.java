@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.henh.testman.common.errors.FailLoadTestException;
 import com.henh.testman.common.errors.InvalidMapperException;
-import com.henh.testman.common.utils.AsyncTaskSample;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.ArgumentsPanel;
@@ -27,15 +26,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.concurrent.Future;
 
 @Service
 public class LoadTestAsync {
 
-    private static final Logger logger = LoggerFactory.getLogger(AsyncTaskSample.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoadTestAsync.class);
 
     private static final String slash = System.getProperty("file.separator");
 
@@ -44,8 +45,7 @@ public class LoadTestAsync {
     private static final ClassPathResource jmeterProperties = new ClassPathResource("apache-jmeter-5.4.1" + slash + "bin" + slash + "jmeter.properties");
 
     @Async
-    public void work(LoadInsertReq loadInsertReq, LoadResultRepository loadResultRepository) {
-        logger.info("부하테스트 스레드 시작");
+    public Future<LoadResult> work(LoadInsertReq loadInsertReq) {
         /* initialization */
         try {
             JMeterUtils.setJMeterHome(Paths.get(jmeterHome.getURI()).toString());
@@ -106,12 +106,6 @@ public class LoadTestAsync {
         }
         // body end
 
-//        System.out.println("protocol : " + protocol);
-//        System.out.println("domain : " + domain);
-//        System.out.println("port : " + port);
-//        System.out.println("path : " + path);
-//        System.out.println("http method : " + httpMethod);
-
         sampler.setProtocol(protocol);
         sampler.setDomain(domain);
         sampler.setPort(port);
@@ -156,7 +150,6 @@ public class LoadTestAsync {
 
         /* makeCollector */
         MyResultCollector collector = new MyResultCollector(
-                loadResultRepository,
                 loadInsertReq.getTabSeq(),
                 loadInsertReq.getCreateAt()
         );
@@ -169,33 +162,10 @@ public class LoadTestAsync {
         jmeter.configure(testPlanTree);
         jmeter.run();
 
-        logger.info("부하테스트 스레드 완료");
+        LoadResult result = collector.getResult();
+        logger.info(result.getResultSummary().toString());
+
+        return new AsyncResult<>(result);
     }
 
 }
-
-
-//    /** 샘플 스레드 */
-//    @Resource(name = "asyncTaskSample")
-//    private AsyncTaskSample asyncTaskSample;
-//
-//    /** 기타 스레드 */
-//    @Resource(name = "asyncTaskEtc")
-//    private AsyncTaskEtc asyncTaskEtc;
-//
-//    /** AsyncConfig */
-//    @Resource(name = "asyncConfig")
-//    private AsyncConfig asyncConfig;
-
-//        try {
-//            if (asyncConfig.isSampleTaskExecute()) {
-//                asyncTaskSample.executorSample("ㄱ"); // 여기서 비동기 처리구나?
-//            } else {
-//                System.out.println("==============>>>>>>>>>>>> THREAD 개수 초과");
-//            }
-//        } catch (TaskRejectedException e) {
-//            // TaskRejectedException : 개수 초과시 발생
-//            System.out.println("==============>>>>>>>>>>>> THREAD ERROR");
-//            System.out.println("TaskRejectedException : 등록 개수 초과");
-//            System.out.println("==============>>>>>>>>>>>> THREAD END");
-//        }

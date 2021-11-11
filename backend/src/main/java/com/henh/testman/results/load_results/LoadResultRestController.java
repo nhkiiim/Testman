@@ -30,7 +30,7 @@ public class LoadResultRestController {
         return success(
                 new LoadInsertRes(
                         loadResultService.insertLoad(loadInsertReq)
-                                .map(Long::new)
+                                .map(LoadResultDto::new)
                                 .orElseThrow(() -> new NotFoundException("fail insert for load"))
                 )
         );

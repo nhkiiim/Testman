@@ -22,7 +22,7 @@ public class ApiInsertReq {
     @NotBlank(message = "address must be provided")
     private String address;
 
-    @NotBlank(message = "port must be provided")
+    @NotBlank(message = "path must be provided")
     private String path;
 
     @NotBlank(message = "httpMethod must be provided")

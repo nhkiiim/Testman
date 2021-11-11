@@ -76,18 +76,17 @@ public class ApiResultServiceImpl implements ApiResultService {
         try {
             String url = apiInsertReq.getAddress() + apiInsertReq.getPath();
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
-            System.out.println(uri.toString());
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            if(apiInsertReq.getHeaders()!=null){
+            if(apiInsertReq.getHeaders() != null){
                 for(Map.Entry<String,String> map : apiInsertReq.getHeaders().entrySet()){
                     headers.add(map.getKey(),map.getValue());
                 }
             }
 
             JSONObject request = new JSONObject();
-            if(apiInsertReq.getParams()!=null){
+            if(apiInsertReq.getParams() != null){
                 for(Map.Entry<String,Object> map : apiInsertReq.getParams().entrySet()){
                    request.put(map.getKey(),map.getValue());
                 }
@@ -125,7 +124,6 @@ public class ApiResultServiceImpl implements ApiResultService {
                 .orElse(new ApiResults());
         apiResults.update(tabSeq, code, body, header);
 
-        System.out.println(apiResults);
         return Optional.of(
                 apiResultRepository.save(apiResults)
         );

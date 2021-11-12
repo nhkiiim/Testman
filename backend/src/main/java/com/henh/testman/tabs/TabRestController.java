@@ -90,7 +90,7 @@ public class TabRestController {
                 new TabUpdateRes(
                         tabService.deleteCollectionSeq(seq)
                                 .map(TabDto::new)
-                                .orElseThrow(() -> new IllegalArgumentException("Could not insert tab"))
+                                .orElseThrow(() -> new IllegalArgumentException("Could not delete collection seq"))
                 )
         );
     }

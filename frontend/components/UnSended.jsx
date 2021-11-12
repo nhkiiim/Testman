@@ -14,13 +14,13 @@ const UnSended = ({ onLoading }) => {
             <h1 className="font-bold text-2xl">
               <Typical
                 steps={[
-                  "Analysis results are being loaded..",
+                  "분석 정보를 받아오는 중입니다.. 🤖",
                   2000,
-                  "How about waiting a little bit ? ",
+                  "조금만 기다려주시겠어요 ? 👀",
                   2000,
-                  "Almost Done.. !",
+                  "거의 다 되어갑니다.. ! 🔥",
                   2000,
-                  "Bee..Beeep.. ",
+                  "삐..삐빅.. ",
                   2000,
                 ]}
                 wrapper="p"

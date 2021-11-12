@@ -16,6 +16,7 @@ import UnSended from "../components/UnSended";
 import withAuth from "../HOC/withAuth";
 import * as processAction from "../store/modules/process";
 import Footer from "../components/Footer";
+import { useAlert } from "react-alert";
 
 const Performance = () => {
   const router = useRouter();
@@ -38,7 +39,7 @@ const Performance = () => {
   const [layout, setLayout] = useState("");
   const [onLoading, setOnLoading] = useState(false);
   const [settingUrl, setSettingUrl] = useState("");
-
+  const alert = useAlert();
   const circleStyle = {
     good: {
       pathTransition: "none",
@@ -71,15 +72,27 @@ const Performance = () => {
     setSettingUrl(pageUrl);
     setOnLoading(true);
     const url = setUpQuery();
-    const processData = await fetch(url).then((res) => res.json());
-    const parseData = processData.lighthouseResult.audits.metrics.details.items[0];
-    setData(processData.lighthouseResult.audits.metrics.details.items[0]);
-    console.log(data);
-    dispatch(processAction.setProcessData(parseData));
-    console.log("done");
-    getRate(parseData);
-    setSended(true);
-    setOnLoading(false);
+    await fetch(url)
+      .then((res) => {
+        if (!res.ok) {
+          throw Error(res.statusText);
+        }
+        return res.json();
+      })
+      .then((res) => {
+        const parseData = res.lighthouseResult.audits.metrics.details.items[0];
+        setData(res.lighthouseResult.audits.metrics.details.items[0]);
+        console.log(data);
+        dispatch(processAction.setProcessData(parseData));
+        console.log("done");
+        getRate(parseData);
+        setSended(true);
+        setOnLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert.show("error");
+      });
   });
   const getRate = (props) => {
     setRealDataSec({
@@ -678,7 +691,7 @@ const Performance = () => {
                     <p className="ml-3">90 - 100</p>
                   </div>
                   <div
-                    className="flex"
+                    className="flex cursor-pointer"
                     onClick={() => {
                       window.open(`https://web.dev/performance-scoring/`, "_blank");
                     }}
@@ -789,7 +802,7 @@ const Performance = () => {
 
                 <div className="w-[350px] h-[120px] mx-auto lg:mr-[30%] xl:mr-[40%] 2xl:mr-[52%]">
                   <hr className="mb-2" />
-                  {firstStat === "good" ? (
+                  {inter === "good" ? (
                     <>
                       <div className="flex mr-5 justify-between ">
                         <div className="flex">
@@ -811,7 +824,7 @@ const Performance = () => {
                     </>
                   ) : (
                     <>
-                      {firstStat === "soso" ? (
+                      {inter === "soso" ? (
                         <>
                           <div className="flex mr-5 justify-between">
                             <div className="flex">
@@ -857,7 +870,7 @@ const Performance = () => {
                 </div>
                 <div className="w-[350px] h-[120px] mx-auto lg:ml-[30%] xl:ml-[40%] 2xl:ml-[52%]">
                   <hr className="mb-2" />
-                  {firstStat === "good" ? (
+                  {speed === "good" ? (
                     <>
                       <div className="flex mr-5 justify-between ">
                         <div className="flex">
@@ -876,7 +889,7 @@ const Performance = () => {
                     </>
                   ) : (
                     <>
-                      {firstStat === "soso" ? (
+                      {speed === "soso" ? (
                         <>
                           <div className="flex mr-5 justify-between">
                             <div className="flex">
@@ -916,7 +929,7 @@ const Performance = () => {
                 </div>
                 <div className="w-[350px] h-[120px] mx-auto lg:mr-[30%] xl:mr-[40%] 2xl:mr-[52%]">
                   <hr className="mb-2" />
-                  {firstStat === "good" ? (
+                  {block === "good" ? (
                     <>
                       <div className="flex mr-5 justify-between ">
                         <div className="flex">
@@ -938,7 +951,7 @@ const Performance = () => {
                     </>
                   ) : (
                     <>
-                      {firstStat === "soso" ? (
+                      {block === "soso" ? (
                         <>
                           <div className="flex mr-5 justify-between">
                             <div className="flex">
@@ -984,7 +997,7 @@ const Performance = () => {
                 </div>
                 <div className="w-[350px] h-[120px] mx-auto lg:ml-[30%] xl:ml-[40%] 2xl:ml-[52%]">
                   <hr className="mb-2" />
-                  {firstStat === "good" ? (
+                  {largest === "good" ? (
                     <>
                       <div className="flex mr-5 justify-between ">
                         <div className="flex">
@@ -1006,7 +1019,7 @@ const Performance = () => {
                     </>
                   ) : (
                     <>
-                      {firstStat === "soso" ? (
+                      {largest === "soso" ? (
                         <>
                           <div className="flex mr-5 justify-between">
                             <div className="flex">
@@ -1049,11 +1062,10 @@ const Performance = () => {
                       )}
                     </>
                   )}
-                  <hr className="mt-3" />
                 </div>
                 <div className="w-[350px] h-[120px] mx-auto lg:mr-[30%] xl:mr-[40%] 2xl:mr-[52%]">
                   <hr className="mb-2" />
-                  {firstStat === "good" ? (
+                  {layout === "good" ? (
                     <>
                       <div className="flex mr-5 justify-between ">
                         <div className="flex">
@@ -1072,7 +1084,7 @@ const Performance = () => {
                     </>
                   ) : (
                     <>
-                      {firstStat === "soso" ? (
+                      {layout === "soso" ? (
                         <>
                           <div className="flex mr-5 justify-between">
                             <div className="flex">
@@ -1107,13 +1119,13 @@ const Performance = () => {
                           <div className="w-[228px] ml-9 mt-2">
                             <p>
                               누적 레이아웃 변경은 표시 영역 안에 보이는 요소의 이동을 측정합니다.
+                              <br />
                             </p>
                           </div>
                         </>
                       )}
                     </>
                   )}
-                  <hr className="mt-3" />
                 </div>
               </div>
             </div>

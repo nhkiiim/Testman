@@ -20,4 +20,6 @@ public interface TabService {
 
     Optional<Long> deleteTab(Long seq);
 
+    Optional<Tab> deleteCollectionSeq(Long seq);
+
 }

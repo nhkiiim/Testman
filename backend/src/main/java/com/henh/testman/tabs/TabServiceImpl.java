@@ -80,7 +80,7 @@ public class TabServiceImpl implements TabService {
         Tab tab = tabRepository.findById(seq)
                 .orElseThrow(() -> new NotFoundException("Could not find tab by " + seq));
 
-        tabRepository.delete(tab);
+        if(tab.getCollectionSeq()==null) tabRepository.delete(tab);
         return Optional.of(tab.getSeq());
     }
 

@@ -24,12 +24,12 @@ import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
-import java.nio.file.Paths;
+import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -40,16 +40,25 @@ public class LoadTestAsync {
 
     private static final String slash = System.getProperty("file.separator");
 
-    private static final ClassPathResource jmeterHome = new ClassPathResource("apache-jmeter-5.4.1");
+    private static final String home;
 
-    private static final ClassPathResource jmeterProperties = new ClassPathResource("apache-jmeter-5.4.1" + slash + "bin" + slash + "jmeter.properties");
+    private static final String properties;
+
+    static {
+        try {
+            home = ResourceUtils.getFile("classpath:apache-jmeter-5.4.1").getAbsolutePath();
+            properties = ResourceUtils.getFile("classpath:apache-jmeter-5.4.1" + slash + "bin" + slash + "jmeter.properties").getAbsolutePath();
+        } catch (FileNotFoundException e) {
+            throw new FailLoadTestException("could not found jmeter path");
+        }
+    }
 
     @Async
     public Future<LoadResult> work(LoadInsertReq loadInsertReq) {
         /* initialization */
         try {
-            JMeterUtils.setJMeterHome(Paths.get(jmeterHome.getURI()).toString());
-            JMeterUtils.loadJMeterProperties(Paths.get(jmeterProperties.getURI()).toString());
+            JMeterUtils.setJMeterHome(home);
+            JMeterUtils.loadJMeterProperties(properties);
         } catch (Exception e) {
             throw new FailLoadTestException("fail jmeter init");
         }

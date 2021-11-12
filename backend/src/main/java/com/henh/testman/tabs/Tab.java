@@ -80,4 +80,8 @@ public class Tab extends BaseEntity {
         }
     }
 
+    public void deleteCollection() {
+        this.collectionSeq = null;
+    }
+
 }

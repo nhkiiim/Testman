@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.henh.testman.common.errors.FailLoadTestException;
 import com.henh.testman.common.errors.InvalidMapperException;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
+import org.apache.commons.io.FileUtils;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.control.LoopController;
@@ -24,12 +25,13 @@ import org.apache.jmeter.util.JMeterUtils;
 import org.apache.jorphan.collections.HashTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
-import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -40,25 +42,19 @@ public class LoadTestAsync {
 
     private static final String slash = System.getProperty("file.separator");
 
-    private static final String home;
-
-    private static final String properties;
-
-    static {
-        try {
-            home = ResourceUtils.getFile("classpath:apache-jmeter-5.4.1").getAbsolutePath();
-            properties = ResourceUtils.getFile("classpath:apache-jmeter-5.4.1" + slash + "bin" + slash + "jmeter.properties").getAbsolutePath();
-        } catch (FileNotFoundException e) {
-            throw new FailLoadTestException("could not found jmeter path");
-        }
-    }
+    private static final ClassPathResource properties = new ClassPathResource("apache-jmeter-5.4.1" + slash + "bin" + slash + "jmeter.properties");
 
     @Async
     public Future<LoadResult> work(LoadInsertReq loadInsertReq) {
         /* initialization */
         try {
-            JMeterUtils.setJMeterHome(home);
-            JMeterUtils.loadJMeterProperties(properties);
+            InputStream inputStream = properties.getInputStream();
+
+            File file = File.createTempFile("jmeter", "properties");
+
+            FileUtils.copyInputStreamToFile(inputStream, file);
+
+            JMeterUtils.loadJMeterProperties(file.getAbsolutePath());
         } catch (Exception e) {
             throw new FailLoadTestException("fail jmeter init");
         }

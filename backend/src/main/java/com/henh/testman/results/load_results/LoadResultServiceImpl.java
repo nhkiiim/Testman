@@ -56,10 +56,9 @@ public class LoadResultServiceImpl implements LoadResultService {
                         .orElseThrow(() -> new NotFoundException("could not found tab"));
                 tab.updateByLoad(loadInsertReq);
                 tabRepository.save(tab);
+                historyRepository.save(new History(loadInsertReq));
 
                 Future<LoadResult> future = loadTestAsync.work(loadInsertReq);
-
-                historyRepository.save(new History(loadInsertReq));
 
                 return Optional.of(future.get());
             } else {

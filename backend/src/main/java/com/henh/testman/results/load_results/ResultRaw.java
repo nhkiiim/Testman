@@ -1,7 +1,14 @@
 package com.henh.testman.results.load_results;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.apache.jmeter.samplers.SampleResult;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.TimeZone;
 
 @Getter
 @Setter
@@ -9,7 +16,7 @@ import org.apache.jmeter.samplers.SampleResult;
 @NoArgsConstructor
 public class ResultRaw {
 
-    private Long timeStamp;
+    private LocalDateTime dateTime;
 
     private Long elapsed;
 
@@ -42,7 +49,10 @@ public class ResultRaw {
     private Long connect;
 
     public ResultRaw(SampleResult result) {
-        this.timeStamp = result.getTimeStamp();
+        this.dateTime = LocalDateTime.ofInstant(
+                Instant.ofEpochMilli(result.getTimeStamp()),
+                TimeZone.getDefault().toZoneId()
+        );
         this.elapsed = result.getTime();
         this.responseCode = result.getResponseCode();
         this.responseMessage = result.getResponseMessage();

@@ -22,5 +22,4 @@ COPY --from=builder /my-project/node_modules ./node_modules
 COPY --from=builder /my-project/package.json ./package.json
 
 EXPOSE 3000
-RUN rm -r /my-project/node_modules/@next/swc-linux-x64-gnu
 CMD ["yarn", "start"]

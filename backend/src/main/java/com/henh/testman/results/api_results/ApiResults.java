@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.index.Indexed;
 @Getter
 @Setter
 @ToString
-@RedisHash(value = "apiResult")
+@RedisHash(value = "apiResult", timeToLive = 86400)
 public class ApiResults {
 
     @Id

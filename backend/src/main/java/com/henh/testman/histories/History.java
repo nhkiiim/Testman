@@ -15,7 +15,7 @@ import java.util.Map;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@RedisHash(value = "history")
+@RedisHash(value = "history", timeToLive = 1296000)
 public class History {
 
     @Id

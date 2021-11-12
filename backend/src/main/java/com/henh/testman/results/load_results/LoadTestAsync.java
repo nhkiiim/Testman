@@ -49,11 +49,7 @@ public class LoadTestAsync {
         /* initialization */
         try {
             System.out.println("jmeterHome : " + jmeterHome.getURI().toString());
-            System.out.println("jmeterProperties : " + jmeterHome.getURI().toString());
-            logger.info("jmeterHome : " + jmeterHome.getURI().toString());
-            logger.info("jmeterProperties : " + jmeterHome.getURI().toString());
-            logger.debug("jmeterHome : " + jmeterHome.getURI().toString());
-            logger.debug("jmeterProperties : " + jmeterHome.getURI().toString());
+            System.out.println("jmeterProperties : " + jmeterProperties.getURI().toString());
 
             JMeterUtils.setJMeterHome(Paths.get(jmeterHome.getURI()).toString());
             JMeterUtils.loadJMeterProperties(Paths.get(jmeterProperties.getURI()).toString());

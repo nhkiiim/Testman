@@ -48,12 +48,15 @@ public class LoadTestAsync {
     public Future<LoadResult> work(LoadInsertReq loadInsertReq) {
         /* initialization */
         try {
-            JMeterUtils.setJMeterHome(Paths.get(jmeterHome.getURI()).toString());
-            JMeterUtils.loadJMeterProperties(Paths.get(jmeterProperties.getURI()).toString());
             System.out.println("jmeterHome : " + jmeterHome.getURI().toString());
             System.out.println("jmeterProperties : " + jmeterHome.getURI().toString());
+            logger.info("jmeterHome : " + jmeterHome.getURI().toString());
+            logger.info("jmeterProperties : " + jmeterHome.getURI().toString());
             logger.debug("jmeterHome : " + jmeterHome.getURI().toString());
             logger.debug("jmeterProperties : " + jmeterHome.getURI().toString());
+
+            JMeterUtils.setJMeterHome(Paths.get(jmeterHome.getURI()).toString());
+            JMeterUtils.loadJMeterProperties(Paths.get(jmeterProperties.getURI()).toString());
         } catch (Exception e) {
             throw new FailLoadTestException("fail jmeter init");
         }

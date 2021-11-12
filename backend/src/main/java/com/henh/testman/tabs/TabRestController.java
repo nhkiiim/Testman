@@ -84,4 +84,15 @@ public class TabRestController {
         );
     }
 
+    @DeleteMapping("collection/{seq}")
+    public ApiResult<TabUpdateRes> deleteCollectionSeq(@PathVariable Long seq){
+        return success(
+                new TabUpdateRes(
+                        tabService.deleteCollectionSeq(seq)
+                                .map(TabDto::new)
+                                .orElseThrow(() -> new IllegalArgumentException("Could not delete collection seq"))
+                )
+        );
+    }
+
 }

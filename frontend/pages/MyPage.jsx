@@ -17,6 +17,8 @@ import { easeQuadInOut } from "d3-ease";
 import NoneData from "../components/NoneData";
 import withAuth from "../HOC/withAuth";
 import * as pageAction from "../store/modules/page";
+import * as processAction from "../store/modules/process";
+import Footer from "../components/Footer";
 
 const MyPage = () => {
   const router = useRouter();
@@ -40,6 +42,7 @@ const MyPage = () => {
   // console.log(upjt[0]);
   useEffect(async () => {
     dispatch(pageAction.setPageState(0));
+    dispatch(processAction.setProcessData({}));
     await getFetchData();
     Aos.init({ duration: 1000 });
   }, [dataNone, tempSeq]);
@@ -55,7 +58,7 @@ const MyPage = () => {
         setWorkSpaces(res.data.response.workspaceDtoList);
         if (res.data.response.workspaceDtoList.length === 0) {
           setDataNone(true);
-          dispatch(projectActions.setProject(undefined));
+          dispatch(projectActions.setProject([]));
         }
         dispatch(projectActions.setProject(res.data.response.workspaceDtoList));
       })
@@ -64,7 +67,7 @@ const MyPage = () => {
         // console.log(dataNone);
       });
   };
-  console.log(workspaces);
+  // console.log(workspaces);
   const changeHandler = useCallback(async (e) => {
     const {
       target: { id, value },
@@ -95,6 +98,9 @@ const MyPage = () => {
     await axios({
       method: "delete",
       url: "/api/workspaces/" + value,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then(() => {
         console.log("삭제완료");
@@ -121,6 +127,7 @@ const MyPage = () => {
   };
 
   const handlerAddSubmit = useCallback(async (e) => {
+    e.preventDefault();
     await axios({
       method: "post",
       url: "/api/workspaces",
@@ -145,10 +152,10 @@ const MyPage = () => {
   });
 
   return (
-    <div className="bg-gray-200 h-[100%] ">
+    <div className="bg-custom-100 ">
       {/* <Header /> */}
       <Header2 />
-      <main className="max-w-7xl mx-auto px-16 sm:px-32 bg-gray-200  ">
+      <main className="max-w-7xl mx-auto px-16 sm:px-32">
         <section className="mt-5">
           <div className="flex justify-between">
             <h2 className="text-2xl font-semibold py-8 items-center md:mx-2 ">
@@ -341,6 +348,8 @@ const MyPage = () => {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
+
+      <Footer />
     </div>
   );
 };

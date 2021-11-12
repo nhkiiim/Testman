@@ -1,3 +1,14 @@
+const { colors: defaultColors } = require("tailwindcss/defaultTheme");
+
+const colors = {
+  ...defaultColors,
+  ...{
+    custom: {
+      100: "#f0f0f0",
+    },
+  },
+};
+
 module.exports = {
   mode: "jit",
   purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
@@ -9,6 +20,11 @@ module.exports = {
         bgb: "url('https://c4.wallpaperflare.com/wallpaper/399/42/347/astronaut-space-wallpaper-preview.jpg')",
       },
     },
+    placeholderColor: (theme) => theme("colors"),
+    placeholderColor: {
+      hello: "text-gray-400",
+    },
+    colors: colors,
   },
   variants: {
     extend: {},

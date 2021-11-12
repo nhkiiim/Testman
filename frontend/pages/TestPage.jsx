@@ -8,12 +8,14 @@ import Header2 from "../components/Header2";
 import Sidebar from "../components/Sidebar";
 import withAuth from "../HOC/withAuth";
 import * as pageAction from "../store/modules/page";
+import * as processAction from "../store/modules/process";
 
 const TestPage = () => {
   const dispatch = useDispatch();
   const current = useSelector((state) => state.current);
   useEffect(() => {
     dispatch(pageAction.setPageState(1));
+    dispatch(processAction.setProcessData({}));
   });
 
   return (

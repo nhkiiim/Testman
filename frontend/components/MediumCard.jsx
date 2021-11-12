@@ -49,8 +49,8 @@ const MediumCard = ({ seq, title, url, description, img, createDate }) => {
   return (
     <>
       <div
-        data-aos="fade-zoom-in"
-        className="mb-8 cursor-pointer hover:scale-105 transform transition duration-300 ease-out shadow-md rounded-sm sm:mx-2 md:mx-3 bg-white"
+        // data-aos="fade-zoom-in"
+        className="mb-8 cursor-pointer hover:scale-105 transform transition duration-500 ease-out shadow-md rounded-sm sm:mx-2 md:mx-3 bg-white"
         onClick={pageRouting}
       >
         {/* <img className="w-full bg-gray-200" src="${bg}" /> */}

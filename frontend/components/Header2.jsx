@@ -18,12 +18,18 @@ const Header2 = () => {
   const [project, setproject] = useState(false);
   const [profile, setProfile] = useState(false);
   const [dtProject, setDtProject] = useState(false);
+  const [noPjt, setNoPjt] = useState(false);
 
   const uid = useSelector((state) => state.user.user.userId);
   const cPage = useSelector((state) => state.page.category);
 
   // console.log(uid);
   const pjtList = useSelector((state) => state.project[0]);
+  const pjt = useSelector((state) => state.project);
+
+  useEffect(() => {
+    pjtList[0]?.seq === undefined ? setNoPjt(true) : setNoPjt(false);
+  }, [pjtList[0]]);
 
   const handlerSelect = (value) => {
     if (value === 1) {
@@ -260,7 +266,7 @@ const Header2 = () => {
               <div className="relative flex items-center h-16 w-16 cursor-pointer my-auto">
                 <Image src={icon} layout="fill" objectFit="contain" objectPosition="left" />
               </div>
-              <h3 className="text-base text-gray-800 font-bold tracking-normal leading-tight ml-3 hidden lg:block">
+              <h3 className="text-base text-gray-800 font-bold tracking-normal leading-tight ml-3 hidden lg:block pb-8">
                 TESTSMAN
               </h3>
             </div>
@@ -339,7 +345,7 @@ const Header2 = () => {
               </li>
               <li
                 className={
-                  pjtList.length === 0
+                  noPjt
                     ? "hidden"
                     : cPage === 1
                     ? "cursor-pointer h-full flex items-center text-sm text-indigo-700 tracking-normal border-b-2 border-indigo-700 ml-8"

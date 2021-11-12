@@ -1,4 +1,5 @@
 HELP.md
+testman-web.log*
 .gradle
 build/
 src/test/*

@@ -50,6 +50,10 @@ public class LoadTestAsync {
         try {
             JMeterUtils.setJMeterHome(Paths.get(jmeterHome.getURI()).toString());
             JMeterUtils.loadJMeterProperties(Paths.get(jmeterProperties.getURI()).toString());
+            System.out.println("jmeterHome : " + jmeterHome.getURI().toString());
+            System.out.println("jmeterProperties : " + jmeterHome.getURI().toString());
+            logger.debug("jmeterHome : " + jmeterHome.getURI().toString());
+            logger.debug("jmeterProperties : " + jmeterHome.getURI().toString());
         } catch (Exception e) {
             throw new FailLoadTestException("fail jmeter init");
         }

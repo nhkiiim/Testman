@@ -35,7 +35,7 @@ const Sidebar = (props) => {
   const [historyData, setHistoryData] = useState([]);
   const getHistoryData = async(no) => {
     await axios({
-      method: "get",
+      method: "GET",
       url: `/api/histories/list/${no}`,
       headers: {
         Authorization: `Bearer ${token}`,

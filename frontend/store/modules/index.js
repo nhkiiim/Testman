@@ -7,6 +7,7 @@ import storageSession from "redux-persist/lib/storage/session";
 import api from "./api";
 import project from "./project";
 import page from "./page";
+import tab from "./tab";
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -18,6 +19,7 @@ const rootReducer = (state, action) => {
         api,
         project,
         page,
+        tab
       });
       return combineReducer(state, action);
     }

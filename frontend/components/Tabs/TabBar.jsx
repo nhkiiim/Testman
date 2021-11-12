@@ -2,6 +2,7 @@ import React from "react";
 import { FaTimes, FaPlus } from "react-icons/fa";
 const TabBar = (props) => {
   const { tabs, tabIndex, handleTabChange, handleNewTab, handleRemoveTab } = props;
+  console.log(props)
 
   return (
     <div>
@@ -9,7 +10,7 @@ const TabBar = (props) => {
         <div className="grid grid-cols-1 h-[55px]">
           <div className="self-end">
             <div className="w-[100%]">
-              {tabs.map((tab, index) => {
+              {tabs.length >0 && tabs.map((tab, index) => {
                 return (
                   <div
                     key={index}

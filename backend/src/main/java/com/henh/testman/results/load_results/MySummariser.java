@@ -8,7 +8,7 @@ import java.text.DecimalFormat;
 @ToString
 public class MySummariser {
 
-    private final DecimalFormat dfDouble = new DecimalFormat("#0.0");
+    private final DecimalFormat dfDouble = new DecimalFormat("#0.00");
 
     private final DecimalFormat errorFormatter = new DecimalFormat("#0%");
 
@@ -101,13 +101,13 @@ public class MySummariser {
     }
 
     // 처리량
-    public double getThroughput() {
+    public String getThroughput() {
         long howLongRunning = getElapsed();
 
         if (howLongRunning == 0) {
-            return Double.MAX_VALUE;
+            return dfDouble.format(Double.MAX_VALUE);
         }
-        return (double) counter / howLongRunning * 1000.0;
+        return dfDouble.format((double) counter / howLongRunning * 1000.0);
     }
 
     // 초당 받은 바이트

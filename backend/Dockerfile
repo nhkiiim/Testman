@@ -1,17 +1,21 @@
-FROM java:8
+
+FROM openjdk:8-jdk
 
 LABEL maintainer="lsyeup1206@naver.com"
 
-VOLUME /tmp
-
 EXPOSE 8080
+
+# CMD rm -rf build/libs/*.jar
+
+# CMD chmod +x gradlew
+
+# CMD gradlew clean build
 
 ARG JAR_FILE=build/libs/testman-0.0.1-SNAPSHOT.jar
 
-ADD ${JAR_FILE} testman.jar
+COPY ${JAR_FILE} testman.jar
 
-ENTRYPOINT [ "java", "-jar", "testman.jar" ]
-
+ENTRYPOINT ["java","-jar","/testman.jar"]
 
 # This file is a template, and might need editing before it works on your project.
 # FROM maven:3.5-jdk-11 as BUILD
@@ -26,3 +30,4 @@ ENTRYPOINT [ "java", "-jar", "testman.jar" ]
 # WORKDIR /opt/target
 
 # CMD ["/bin/bash", "-c", "find -type f -name '*-with-dependencies.jar' | xargs java -jar"]
+# docker main branch build-test

@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @ToString
 @AllArgsConstructor
-@RedisHash(value = "loadResult")
+@RedisHash(value = "loadResult", timeToLive = 86400)
 public class LoadResult {
 
     @Id

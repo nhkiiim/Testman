@@ -20,7 +20,7 @@ public class ResultSummary {
 
     private String errorRate;
 
-    private Double throughput;
+    private String throughput;
 
     private String receivedPerSec;
 

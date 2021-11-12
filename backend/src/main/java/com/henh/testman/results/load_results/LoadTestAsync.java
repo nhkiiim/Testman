@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.henh.testman.common.errors.FailLoadTestException;
 import com.henh.testman.common.errors.InvalidMapperException;
 import com.henh.testman.results.load_results.request.LoadInsertReq;
+import org.apache.commons.io.FileUtils;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.config.gui.ArgumentsPanel;
 import org.apache.jmeter.control.LoopController;
@@ -29,7 +30,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -40,16 +42,19 @@ public class LoadTestAsync {
 
     private static final String slash = System.getProperty("file.separator");
 
-    private static final ClassPathResource jmeterHome = new ClassPathResource("apache-jmeter-5.4.1");
-
-    private static final ClassPathResource jmeterProperties = new ClassPathResource("apache-jmeter-5.4.1" + slash + "bin" + slash + "jmeter.properties");
+    private static final ClassPathResource properties = new ClassPathResource("apache-jmeter-5.4.1" + slash + "bin" + slash + "jmeter.properties");
 
     @Async
     public Future<LoadResult> work(LoadInsertReq loadInsertReq) {
         /* initialization */
         try {
-            JMeterUtils.setJMeterHome(Paths.get(jmeterHome.getURI()).toString());
-            JMeterUtils.loadJMeterProperties(Paths.get(jmeterProperties.getURI()).toString());
+            InputStream inputStream = properties.getInputStream();
+
+            File file = File.createTempFile("jmeter", "properties");
+
+            FileUtils.copyInputStreamToFile(inputStream, file);
+
+            JMeterUtils.loadJMeterProperties(file.getAbsolutePath());
         } catch (Exception e) {
             throw new FailLoadTestException("fail jmeter init");
         }

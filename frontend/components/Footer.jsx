@@ -19,23 +19,22 @@ const Footer = () => {
         </a>
         <p>How we works</p>
         <p>Notice</p>
+        <p>HENH</p>
       </div>
-
       <div className="space-y-4 text-xs text-gray-800">
-        <h5 className="font-bold">COMMUNITY</h5>
-
-        <p>Fishing Tips</p>
+        <h5 className="font-bold">TOOLS</h5>
+        <p>Dashboard</p>
+        <p>Performance</p>
+        <p>Projects</p>
       </div>
-
       <div className="space-y-4 text-xs text-gray-800">
-        <h5 className="font-bold">POINTS</h5>
-        <p>By Location</p>
-        <p>By User Ratings</p>
+        <h5 className="font-bold">DOCS</h5>
+        <p>How to use</p>
       </div>
 
       <div className="space-y-4 text-xs text-gray-800">
         <h5 className="font-bold">API</h5>
-        <p>Map by google</p>
+        <p>PageSpeed Insight API by google</p>
       </div>
     </div>
   );

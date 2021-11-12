@@ -1,7 +1,7 @@
 package com.henh.testman.common.config;
 
 import com.henh.testman.common.auth.JwtAuthenticationFilter;
-import com.henh.testman.common.auth.SsafyUserDetailService;
+import com.henh.testman.common.auth.TestmanUserDetailService;
 import com.henh.testman.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,13 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	private final SsafyUserDetailService ssafyUserDetailService;
+	private final TestmanUserDetailService testmanUserDetailService;
 
 	private final UserService userService;
 
 	@Autowired
-	public SecurityConfig(SsafyUserDetailService ssafyUserDetailService, UserService userService) {
-		this.ssafyUserDetailService = ssafyUserDetailService;
+	public SecurityConfig(TestmanUserDetailService testmanUserDetailService, UserService userService) {
+		this.testmanUserDetailService = testmanUserDetailService;
 		this.userService = userService;
 	}
 
@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 		daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
 		daoAuthenticationProvider
-				.setUserDetailsService(this.ssafyUserDetailService);
+				.setUserDetailsService(this.testmanUserDetailService);
 		return daoAuthenticationProvider;
 	}
 
@@ -59,8 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.addFilter(new JwtAuthenticationFilter(authenticationManager(), userService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
 			.authorizeRequests()
-			.antMatchers("/api/v1/users/regist").access("permitAll")
-			.antMatchers("/api/v1/users/me", "/api/v2/concert/regist", "/api/v2/ticket/buy").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
+			.antMatchers("/api/users/login", "/api/users/regist").access("permitAll")
+			.antMatchers("/api/users/me", "/api/histories/*", "/api/collections/*",
+					"/api/tabs/*", "/api/load-result/*", "/api/workspaces/*", "/api/api-results/*").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
 			.anyRequest().permitAll()
 			.and().cors();
     }

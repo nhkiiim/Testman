@@ -1,11 +1,19 @@
 package com.henh.testman.workspaces;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@ToString
 public class WorkspaceDto {
+
+    private Long seq;
+
+    private String userId;
 
     private String title;
 
@@ -15,9 +23,11 @@ public class WorkspaceDto {
 
     private String img;
 
-    private LocalTime createDate;
+    private LocalDateTime createDate;
 
     public WorkspaceDto(Workspace workspace) {
+        this.seq = workspace.getSeq();
+        this.userId = workspace.getUser().getUserId();
         this.title = workspace.getTitle();
         this.url = workspace.getUrl();
         this.description = workspace.getDescription();
@@ -25,15 +35,14 @@ public class WorkspaceDto {
         this.createDate = workspace.getCreateDate();
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("title", title)
-                .append("url", url)
-                .append("description", description)
-                .append("img", img)
-                .append("createDate", createDate)
-                .toString();
+    public WorkspaceDto(Long seq, String id, String title, String url, String description, String img, LocalDateTime createDate) {
+        this.seq = seq;
+        this.userId = id;
+        this.title = title;
+        this.url = url;
+        this.description = description;
+        this.img = img;
+        this.createDate = createDate;
     }
 
 }

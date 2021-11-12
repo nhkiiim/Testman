@@ -1,12 +1,9 @@
 package com.henh.testman.workspaces;
 
-import com.henh.testman.users.User;
 import com.henh.testman.common.utils.BaseEntity;
+import com.henh.testman.users.User;
 import lombok.*;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -33,5 +30,11 @@ public class Workspace extends BaseEntity {
     private String img;
 
     private LocalDateTime createDate;
+
+    public void update(String title, String url, String description){
+        this.title = title;
+        this.url = url;
+        this.description = description;
+    }
 
 }

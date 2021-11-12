@@ -1,51 +1,63 @@
 package com.henh.testman.histories;
 
-import com.henh.testman.collections.Collection;
-import com.henh.testman.common.utils.BaseEntity;
-import com.henh.testman.workspaces.Workspace;
-import lombok.Getter;
-import lombok.Setter;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import com.henh.testman.results.api_results.request.ApiInsertReq;
+import com.henh.testman.results.load_results.request.LoadInsertReq;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Map;
 
-@Entity
 @Getter
-@Setter
-public class History extends BaseEntity {
+@Builder
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@RedisHash(value = "history")
+public class History {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Workspace workspace;
+    @Id
+    private Long seq;
+
+    @Indexed
+    private Long workspaceSeq;
+
+    private Long tabSeq;
+
+    private String address;
 
     private String path;
 
     private String httpMethod;
 
-    private Integer port;
+    private Map<String, Object> params;
 
-    private String params;
+    private Map<String, String> headers;
 
-    private String headers;
+    private LocalDateTime createAt;
 
-    private String authorization;
+    public History(LoadInsertReq loadInsertReq) {
+        this.workspaceSeq = loadInsertReq.getWorkspaceSeq();
+        this.tabSeq = loadInsertReq.getTabSeq();
+        this.address = loadInsertReq.getAddress();
+        this.path = loadInsertReq.getPath();
+        this.httpMethod = loadInsertReq.getHttpMethod();
+        this.params = loadInsertReq.getParams();
+        this.headers = loadInsertReq.getHeaders();
+        this.createAt = loadInsertReq.getCreateAt();
+    }
 
-    private LocalDateTime creatDate;
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("seq", seq)
-                .append("workspace", workspace)
-                .append("path", path)
-                .append("httpMethod", httpMethod)
-                .append("port", port)
-                .append("params", params)
-                .append("headers", headers)
-                .append("authorization", authorization)
-                .append("creatDate", creatDate)
-                .toString();
+    public History(ApiInsertReq apiInsertReqReq) {
+        this.workspaceSeq = apiInsertReqReq.getWorkspaceSeq();
+        this.tabSeq = apiInsertReqReq.getTabSeq();
+        this.address = apiInsertReqReq.getAddress();
+        this.path = apiInsertReqReq.getPath();
+        this.httpMethod = apiInsertReqReq.getHttpMethod();
+        this.params = apiInsertReqReq.getParams();
+        this.headers = apiInsertReqReq.getHeaders();
+        this.createAt = LocalDateTime.now();
     }
 
 }

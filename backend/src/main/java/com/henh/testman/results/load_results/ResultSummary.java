@@ -33,7 +33,7 @@ public class ResultSummary {
         this.max = mySummariser.getMax();
         this.errorCount = mySummariser.getErrorCount();
         this.errorRate = mySummariser.getErrorPercentageString();
-        this.throughput = mySummariser.getRate();
+        this.throughput = mySummariser.getThroughput();
         this.receivedPerSec = mySummariser.getReceivePerSec();
         this.sentPerSec = mySummariser.getSentPerSec();
     }

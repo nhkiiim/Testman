@@ -4,7 +4,7 @@ import com.henh.testman.common.errors.ExistException;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.users.User;
 import com.henh.testman.users.UserRepository;
-import com.henh.testman.workspaces.request.WorkspaceRegistReq;
+import com.henh.testman.workspaces.request.WorkspaceInsertReq;
 import com.henh.testman.workspaces.request.WorkspaceUpdateReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,30 +28,34 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     @Autowired
     public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository,
                                 WorkspaceRepositorySupport workspaceRepositorySupport, UserRepository userRepository){
-        this.workspaceRepository=workspaceRepository;
-        this.workspaceRepositorySupport=workspaceRepositorySupport;
-        this.userRepository=userRepository;
+        this.workspaceRepository = workspaceRepository;
+        this.workspaceRepositorySupport = workspaceRepositorySupport;
+        this.userRepository = userRepository;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Optional<Workspace> insertWorkspace(WorkspaceRegistReq workspaceRegistReq, String id) {
-        Optional<Workspace> checkWorkspace = workspaceRepository.findByTitle(workspaceRegistReq.getTitle());
+    public Optional<Workspace> insertWorkspace(WorkspaceInsertReq workspaceInsertReq, String userId) {
+        checkNotNull(userId, "userId must be provided");
+
+        Optional<Workspace> checkWorkspace = workspaceRepository.findByTitle(workspaceInsertReq.getTitle());
         if(checkWorkspace.isPresent()) throw new ExistException("Exist title");
 
-        User user = userRepository.findByUserId(id)
-                .orElseThrow(()-> new NotFoundException("Could not found user for " + id));
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(()-> new NotFoundException("Could not found user for " + userId));
 
-        Workspace workspace = Workspace.builder()
-                .user(user)
-                .url(workspaceRegistReq.getUrl())
-                .title(workspaceRegistReq.getTitle())
-                .description(workspaceRegistReq.getDescription())
-                .createDate(LocalDateTime.now())
-                .img(workspaceRegistReq.getImg())
-                .build();
-        workspaceRepository.save(workspace);
-        return Optional.of(workspace);
+        return Optional.of(
+                workspaceRepository.save(
+                        Workspace.builder()
+                        .user(user)
+                        .url(workspaceInsertReq.getUrl())
+                        .title(workspaceInsertReq.getTitle())
+                        .description(workspaceInsertReq.getDescription())
+                        .createDate(LocalDateTime.now())
+                        .img(workspaceInsertReq.getImg())
+                        .build()
+                )
+        );
     }
 
     @Override
@@ -63,18 +67,16 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<WorkspaceDto> selectWorkspaceById(String id) {
-        checkNotNull(id, "id must be provided");
-        List<WorkspaceDto> workspaceDtoList = workspaceRepositorySupport.findByUserId(id);
-        if(workspaceDtoList.isEmpty()) throw new NotFoundException("Could not found workspace for "+ id);
-        return workspaceDtoList;
+    public List<WorkspaceDto> selectWorkspaceByUserId(String userId) {
+        checkNotNull(userId, "userId must be provided");
+        return workspaceRepositorySupport.findByUserId(userId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public int countWorkspaceById(String id) {
-        checkNotNull(id, "id must be provided");
-        return workspaceRepository.countByUserUserId(id);
+    public Integer countWorkspaceByUserId(String userId) {
+        checkNotNull(userId, "userId must be provided");
+        return workspaceRepository.countByUserUserId(userId);
     }
 
     @Override
@@ -83,11 +85,10 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         Workspace workspace = workspaceRepository.findBySeq(workspaceUpdateReq.getSeq())
                 .orElseThrow(()-> new NotFoundException("Could not found workspace seq "+ workspaceUpdateReq.getSeq()));
 
-        workspace.setUrl(workspaceUpdateReq.getUrl());
-        workspace.setTitle(workspaceUpdateReq.getTitle());
-        workspace.setDescription(workspaceUpdateReq.getDescription());
-        workspaceRepository.save(workspace);
-        return Optional.of(workspace);
+        workspace.update(workspaceUpdateReq.getTitle(), workspaceUpdateReq.getUrl(), workspaceUpdateReq.getDescription());
+        return Optional.of(
+                workspaceRepository.save(workspace)
+        );
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.henh.testman.results.load_results;
 
 import org.apache.jmeter.reporters.ResultCollector;
-import org.apache.jmeter.reporters.Summariser;
 import org.apache.jmeter.samplers.SampleEvent;
 import org.apache.jmeter.samplers.SampleResult;
 
@@ -11,11 +10,7 @@ import java.util.List;
 
 public class MyResultCollector extends ResultCollector {
 
-    private final LoadResultRepository loadResultRepository;
-
-    private final String userId;
-
-    private final Long historySeq;
+    private final Long tabSeq;
 
     private final LocalDateTime creatAt;
 
@@ -23,13 +18,11 @@ public class MyResultCollector extends ResultCollector {
 
     private final MySummariser mySummariser;
 
-    public MyResultCollector(Summariser summariser, LoadResultRepository loadResultRepository, String userId, Long historySeq, LocalDateTime createAt) {
-        super(summariser);
+    public MyResultCollector(Long tabSeq, LocalDateTime createAt) {
+        super();
         this.resultRawList = new ArrayList<>();
         this.mySummariser = new MySummariser();
-        this.loadResultRepository = loadResultRepository;
-        this.userId = userId;
-        this.historySeq = historySeq;
+        this.tabSeq = tabSeq;
         this.creatAt = createAt;
     }
 
@@ -56,18 +49,15 @@ public class MyResultCollector extends ResultCollector {
     public void testEnded() {
         super.testEnded();
         mySummariser.setEndTime();
+    }
 
-        ResultSummary resultSummary = new ResultSummary(mySummariser);
-
-        loadResultRepository.save(
-                LoadResult.builder()
-                        .userId(userId)
-                        .historySeq(historySeq)
-                        .resultRawList(resultRawList)
-                        .resultSummary(resultSummary)
-                        .createAt(creatAt)
-                        .build()
-        );
+    public LoadResult getResult() {
+        return LoadResult.builder()
+                .tabSeq(tabSeq)
+                .resultRawList(resultRawList)
+                .resultSummary(new ResultSummary(mySummariser))
+                .createAt(creatAt)
+                .build();
     }
 
 }

@@ -3,13 +3,11 @@ package com.henh.testman.workspaces;
 import com.henh.testman.common.errors.ExistException;
 import com.henh.testman.common.errors.NotFoundException;
 import com.henh.testman.common.utils.ApiUtils.ApiResult;
-import com.henh.testman.users.UserService;
-import com.henh.testman.workspaces.request.WorkspaceRegistReq;
+import com.henh.testman.workspaces.request.WorkspaceInsertReq;
 import com.henh.testman.workspaces.request.WorkspaceUpdateReq;
 import com.henh.testman.workspaces.response.WorkspaceCountRes;
 import com.henh.testman.workspaces.response.WorkspaceDeleteRes;
 import com.henh.testman.workspaces.response.WorkspaceGetAllRes;
-import org.hibernate.hql.internal.classic.AbstractParameterInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -23,26 +21,24 @@ import static com.henh.testman.common.utils.ApiUtils.success;
 @RequestMapping("api/workspaces")
 public class WorkspaceRestController {
 
-    private WorkspaceService workspaceService;
-
-    private UserService userService;
+    private final WorkspaceService workspaceService;
 
     @Autowired
     public WorkspaceRestController(WorkspaceService workspaceService) {
         this.workspaceService = workspaceService;
     }
 
-    @PostMapping("regist")
-    public ApiResult<WorkspaceDto> registWorkspace(@Valid @RequestBody WorkspaceRegistReq workspaceRegistReq, Authentication authentication) {
+    @PostMapping
+    public ApiResult<WorkspaceDto> insertWorkspace(@Valid @RequestBody WorkspaceInsertReq workspaceInsertReq, Authentication authentication) {
         return success(
-                workspaceService.insertWorkspace(workspaceRegistReq, authentication.getName())
+                workspaceService.insertWorkspace(workspaceInsertReq, authentication.getName())
                         .map(WorkspaceDto::new)
-                        .orElseThrow(() -> new ExistException("Exist title " + workspaceRegistReq.getTitle()))
+                        .orElseThrow(() -> new ExistException("Exist title " + workspaceInsertReq.getTitle()))
         );
     }
 
     @GetMapping("{seq}")
-    public ApiResult<WorkspaceDto> getWorkspace(@PathVariable Long seq) {
+    public ApiResult<WorkspaceDto> selectWorkspace(@PathVariable Long seq) {
         return success(
                 workspaceService.selectWorkspace(seq)
                         .map(WorkspaceDto::new)
@@ -51,25 +47,25 @@ public class WorkspaceRestController {
     }
 
     @GetMapping
-    public ApiResult<WorkspaceGetAllRes> getAllWorkspaceByUser(Authentication authentication) {
+    public ApiResult<WorkspaceGetAllRes> selectWorkspaceByUserId(Authentication authentication) {
         return success(
                 new WorkspaceGetAllRes(
-                        workspaceService.selectWorkspaceById(authentication.getName())
+                        workspaceService.selectWorkspaceByUserId(authentication.getName())
                 )
         );
     }
 
     @GetMapping("count")
-    public ApiResult<WorkspaceCountRes> countWorkspaceByUser(Authentication authentication) {
+    public ApiResult<WorkspaceCountRes> countWorkspaceByUserId(Authentication authentication) {
         return success(
                 new WorkspaceCountRes(
-                        workspaceService.countWorkspaceById(authentication.getName())
+                        workspaceService.countWorkspaceByUserId(authentication.getName())
                 )
         );
     }
 
     @PatchMapping
-    public ApiResult<WorkspaceDto> countWorkspaceByUser(@RequestBody WorkspaceUpdateReq workspaceUpdateReq) {
+    public ApiResult<WorkspaceDto> updateWorkspace(@Valid @RequestBody WorkspaceUpdateReq workspaceUpdateReq) {
         return success(
                 workspaceService.updateWorkspace(workspaceUpdateReq)
                         .map(WorkspaceDto::new)
@@ -78,7 +74,7 @@ public class WorkspaceRestController {
     }
 
     @DeleteMapping("{seq}")
-    public ApiResult<WorkspaceDeleteRes> deleteUser(@PathVariable Long seq){
+    public ApiResult<WorkspaceDeleteRes> deleteWorkspace(@PathVariable Long seq){
         return success(
             new WorkspaceDeleteRes(
                 workspaceService.deleteWorkspace(seq)
@@ -86,4 +82,5 @@ public class WorkspaceRestController {
             )
         );
     }
+
 }

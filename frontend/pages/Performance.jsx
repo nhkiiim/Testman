@@ -91,7 +91,7 @@ const Performance = () => {
       })
       .catch((error) => {
         console.log(error);
-        alert.show("error");
+        alert.error("URL을 다시한번 확인해주세요.");
       });
   });
   const getRate = (props) => {

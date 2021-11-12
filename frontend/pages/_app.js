@@ -12,11 +12,10 @@ import { transitions, positions, Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 
 const options = {
-  position: positions.MIDDLE,
-  timeout: 5000,
-  offset: "30px",
+  position: positions.TOP_CENTER,
+  timeout: 6000,
+  offset: "330px",
   transition: transitions.FADE,
-  type: "error",
 };
 
 axios.defaults.baseURL = "http://www.testsman.com:8080";
@@ -36,9 +35,11 @@ const persistor = persistStore(store);
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Provider store={store} template={AlertTemplate} {...options}>
+    <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Component {...pageProps} />
+        <AlertProvider template={AlertTemplate} {...options}>
+          <Component {...pageProps} />
+        </AlertProvider>
       </PersistGate>
     </Provider>
   );

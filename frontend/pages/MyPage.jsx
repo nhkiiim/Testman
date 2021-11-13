@@ -15,12 +15,13 @@ import "react-circular-progressbar/dist/styles.css";
 import AnimatedProgressProvider from "../components/Modals/AnimatedProgressProvider";
 import { easeQuadInOut } from "d3-ease";
 import NoneData from "../components/NoneData";
+import withAuth from "../HOC/withAuth";
+import * as pageAction from "../store/modules/page";
+import * as processAction from "../store/modules/process";
+import Footer from "../components/Footer";
 
 const MyPage = () => {
   const router = useRouter();
-  const query = router.query;
-  // console.log(query.category);
-  const [dataCnt, setDataCnt] = useState(4);
   const [addObj, setAddObj] = useState({
     title: "",
     url: "",
@@ -36,14 +37,15 @@ const MyPage = () => {
   const [dataNone, setDataNone] = useState(false);
   const token = useSelector((state) => state.user.token);
   const uid = useSelector((state) => state.user.user.userId);
-  const utoken = sessionStorage.getItem("token");
   const dispatch = useDispatch();
+
+  // console.log(upjt[0]);
   useEffect(async () => {
-    {
-      token === "" ? router.push("/Login") : await getFetchData();
-    }
+    dispatch(pageAction.setPageState(0));
+    dispatch(processAction.setProcessData({}));
+    await getFetchData();
     Aos.init({ duration: 1000 });
-  }, []);
+  }, [dataNone, tempSeq]);
   const getFetchData = async () => {
     await axios({
       method: "get",
@@ -53,15 +55,16 @@ const MyPage = () => {
       },
     })
       .then((res) => {
-        // console.log(res.data.response.workspaceDtoList);
         setWorkSpaces(res.data.response.workspaceDtoList);
-
+        if (res.data.response.workspaceDtoList.length === 0) {
+          setDataNone(true);
+          dispatch(projectActions.setProject([]));
+        }
         dispatch(projectActions.setProject(res.data.response.workspaceDtoList));
       })
       .catch((error) => {
         console.log(error);
-        error.response.status === 404 ? setDataNone(true) : null;
-        console.log(dataNone);
+        // console.log(dataNone);
       });
   };
   // console.log(workspaces);
@@ -80,9 +83,9 @@ const MyPage = () => {
   };
 
   const handlerClickNHold = (seq) => {
-    console.log("Click and Hold");
+    // console.log("Click and Hold");
     setShowAlertModal(true);
-    console.log(seq);
+    // console.log(seq);
     setTempSeq(seq);
   };
 
@@ -92,22 +95,29 @@ const MyPage = () => {
   };
 
   const fetchDeletePjt = async (value) => {
-    axios({
+    await axios({
       method: "delete",
       url: "/api/workspaces/" + value,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then(() => {
         console.log("삭제완료");
-
         setTempSeq();
-        window.location.reload();
+        console.log(tempSeq);
+        // window.location.reload();
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const handlerCloseBtn = (value) => {
+  const handlerCloseBtn = () => {
+    setShowAlertModal(false);
+  };
+
+  const handlerDelete = (value) => {
     setShowAlertModal(false);
     fetchDeletePjt(value);
   };
@@ -117,6 +127,7 @@ const MyPage = () => {
   };
 
   const handlerAddSubmit = useCallback(async (e) => {
+    e.preventDefault();
     await axios({
       method: "post",
       url: "/api/workspaces",
@@ -141,32 +152,30 @@ const MyPage = () => {
   });
 
   return (
-    <div className="bg-gray-200 ">
+    <div className="bg-custom-100 ">
       {/* <Header /> */}
       <Header2 />
-
-      <main className="max-w-7xl mx-auto px-16 sm:px-32 bg-gray-200 ">
+      <main className="max-w-7xl mx-auto px-16 sm:px-32">
         <section className="mt-5">
           <div className="flex justify-between">
             <h2 className="text-2xl font-semibold py-8 items-center md:mx-2 ">
               {uid}'s Project List
             </h2>
             <button
-              className="bg-indigo-600  text-white  rounded  md:mx-3 h-[45px] w-[80px] cursor-pointer mt-8"
+              className="bg-indigo-600  text-white  rounded  md:mx-3 h-[45px] w-[80px] cursor-pointer mt-7"
               onClick={handlerAdd}
             >
               ADD
             </button>
           </div>
-
-          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8 ">
-            {dataNone ? (
-              <NoneData />
-            ) : (
+          {dataNone ? (
+            <NoneData />
+          ) : (
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8 ">
               <>
                 {workspaces?.map(({ seq, title, url, description, img, createDate }) => (
                   <ClickNHold
-                    time={2}
+                    time={1.5}
                     onStart={handlerStart}
                     onClickNHold={() => handlerClickNHold(seq)}
                     onEnd={handlerEnd}
@@ -183,8 +192,8 @@ const MyPage = () => {
                   </ClickNHold>
                 ))}
               </>
-            )}
-          </div>
+            </div>
+          )}
         </section>
       </main>
       {showAlertModal ? (
@@ -195,20 +204,20 @@ const MyPage = () => {
           >
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none h-72">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none h-[400px]">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">Success on Delete !</h3>
+                  <h3 className="text-3xl font-semibold">I'm Ready For Delete !</h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-3 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                    onClick={() => handlerCloseBtn(tempSeq)}
+                    onClick={handlerCloseBtn}
                   >
                     <XIcon className="w-7 ml-16 text-indigo-600  " />
                   </button>
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <div style={{ width: 100, height: 30 }} className="mx-auto py-5">
+                  <div style={{ width: 120, height: 120 }} className="mx-auto py-5">
                     <AnimatedProgressProvider
                       valueStart={0}
                       valueEnd={100}
@@ -226,6 +235,24 @@ const MyPage = () => {
                         );
                       }}
                     </AnimatedProgressProvider>
+                  </div>
+                  <div className="ml-[130px] justify-center mt-10">
+                    <p className="text-gray-500 text-sm">삭제할 준비가 끝났어요.</p>
+                    <p className="text-gray-500 ml-4 text-sm">정말 삭제할까요 ?</p>
+                  </div>
+                  <div className="flex justify-between">
+                    <button
+                      className="bg-transparent text-gray-500  rounded  md:mx-3 h-[45px] w-[80px] cursor-pointer mt-7 opacity-30 hover:opacity-80 transition duration-300 ease-out"
+                      onClick={handlerCloseBtn}
+                    >
+                      CLOSE
+                    </button>
+                    <button
+                      className="bg-transparent  text-red-600  rounded  md:mx-3 h-[45px] w-[80px] cursor-pointer mt-7 opacity-30 hover:opacity-80 transition duration-300 ease-out"
+                      onClick={() => handlerDelete(tempSeq)}
+                    >
+                      DELETE
+                    </button>
                   </div>
                 </div>
                 {/*footer*/}
@@ -321,8 +348,10 @@ const MyPage = () => {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
+
+      <Footer />
     </div>
   );
 };
 
-export default MyPage;
+export default withAuth(MyPage);

@@ -1,61 +1,45 @@
 package com.henh.testman.histories;
 
-import com.henh.testman.collections.Collection;
-import com.henh.testman.workspaces.Workspace;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.ToString;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 @Getter
 @Setter
+@ToString
 public class HistoryDto {
 
-    private Workspace workspace;
+    private final Long seq;
 
-    private Collection collection;
+    private final Long workspaceSeq;
 
-    private String path;
+    private final Long tabSeq;
 
-    private String httpMethod;
+    private final String address;
 
-    private Integer port;
+    private final String path;
 
-    private String params;
+    private final String httpMethod;
 
-    private String headers;
+    private final Map<String, Object> params;
 
-    private String authorization;
+    private final Map<String, String> headers;
 
-    private LocalTime creatDate;
+    private final LocalDateTime createAt;
 
     public HistoryDto(History history) {
-        this.workspace = history.getWorkspace();
-        this.collection = history.getCollection();
+        this.seq = history.getSeq();
+        this.workspaceSeq = history.getWorkspaceSeq();
+        this.tabSeq = history.getTabSeq();
+        this.address = history.getAddress();
         this.path = history.getPath();
         this.httpMethod = history.getHttpMethod();
-        this.port = history.getPort();
         this.params = history.getParams();
         this.headers = history.getHeaders();
-        this.authorization = history.getAuthorization();
-        this.creatDate = history.getCreatDate();
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("workspace", workspace)
-                .append("collection", collection)
-                .append("path", path)
-                .append("httpMethod", httpMethod)
-                .append("port", port)
-                .append("params", params)
-                .append("headers", headers)
-                .append("authorization", authorization)
-                .append("creatDate", creatDate)
-                .toString();
+        this.createAt = history.getCreateAt();
     }
 
 }

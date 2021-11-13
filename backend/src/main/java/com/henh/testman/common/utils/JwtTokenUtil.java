@@ -18,6 +18,7 @@ import java.util.Date;
  */
 @Component
 public class JwtTokenUtil {
+
     private static String secretKey;
     private static Integer expirationTime;
 

@@ -8,6 +8,10 @@ import api from "./api";
 import project from "./project";
 import page from "./page";
 import tab from "./tab";
+import seq from "./seq";
+import current from "./current";
+import process from "./process";
+import "semantic-ui-css/semantic.min.css";
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -19,7 +23,10 @@ const rootReducer = (state, action) => {
         api,
         project,
         page,
-        tab
+        tab,
+        seq,
+        current,
+        process,
       });
       return combineReducer(state, action);
     }
@@ -29,7 +36,7 @@ const rootReducer = (state, action) => {
 const persistConfig = {
   key: "root",
   storage: storageSession,
-  whitelist: ["user"],
+  whitelist: ["user", "seq", "project", "current", "page", "process"],
 };
 
 export default persistReducer(persistConfig, rootReducer);

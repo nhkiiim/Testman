@@ -3,11 +3,14 @@ import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
 import { wrapper } from "../store/configureStore";
 import axios from "axios";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { createStore } from "redux";
 import rootReducer from "../store/modules";
+import { useEffect, useState } from "react";
+import { getCookie } from "../util/cookie";
+import NeedAuth from "./NeedAuth";
 
 axios.defaults.baseURL = "http://www.testsman.com:8080";
 axios.defaults.withCredentials = true;

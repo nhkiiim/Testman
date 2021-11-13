@@ -54,7 +54,7 @@ const MediumCard = ({ seq, title, url, description, img, createDate }) => {
         onClick={pageRouting}
       >
         {/* <img className="w-full bg-gray-200" src="${bg}" /> */}
-        <div className="relative h-[248px] sm:h-[310px] md:h-[250px] lg:h-[310px] xl:h-[312px] bg-gray-200 ">
+        <div className="relative h-[330px] sm:h-[340px] md:h-[240px] lg:h-[260px] xl:h-[280px] bg-custom-100 ">
           <Image src={bg} layout="fill" objectFit="contain" />
         </div>
         <div className="py-2 px-4 w-full flex justify-between bg-indigo-700">

@@ -19,6 +19,8 @@ import withAuth from "../HOC/withAuth";
 import * as pageAction from "../store/modules/page";
 import * as processAction from "../store/modules/process";
 import Footer from "../components/Footer";
+import { ViewGridAddIcon } from "@heroicons/react/solid";
+import { CogIcon } from "@heroicons/react/solid";
 
 const MyPage = () => {
   const router = useRouter();
@@ -40,10 +42,10 @@ const MyPage = () => {
   const dispatch = useDispatch();
 
   // console.log(upjt[0]);
-  useEffect(async () => {
+  useEffect(() => {
     dispatch(pageAction.setPageState(0));
     dispatch(processAction.setProcessData({}));
-    await getFetchData();
+    getFetchData();
     Aos.init({ duration: 1000 });
   }, [dataNone, tempSeq]);
   const getFetchData = async () => {
@@ -161,12 +163,19 @@ const MyPage = () => {
             <h2 className="text-2xl font-semibold py-8 items-center md:mx-2 ">
               {uid}'s Project List
             </h2>
-            <button
+            <div className="flex mt-[36px]">
+              <ViewGridAddIcon
+                className="h-7 mr-4 cursor-pointer hover:text-indigo-600"
+                onClick={handlerAdd}
+              />
+              <CogIcon className="h-7 cursor-pointer mr-3 hover:text-indigo-600" />
+            </div>
+            {/* <button
               className="bg-indigo-600  text-white  rounded  md:mx-3 h-[45px] w-[80px] cursor-pointer mt-7"
               onClick={handlerAdd}
             >
               ADD
-            </button>
+            </button> */}
           </div>
           {dataNone ? (
             <NoneData />
@@ -275,7 +284,7 @@ const MyPage = () => {
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-3 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={() => setShowAddModal(false)}
                   >
-                    <XIcon className="w-8 text-indigo-500 opacity-20 hover:opacity-100" />
+                    <XIcon className="w-8  opacity-20 hover:opacity-100" />
                   </button>
                 </div>
                 {/*body*/}

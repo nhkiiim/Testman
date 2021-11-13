@@ -40,9 +40,7 @@ public class LoadTestAsync {
 
     private static final Logger logger = LoggerFactory.getLogger(LoadTestAsync.class);
 
-    private static final String slash = System.getProperty("file.separator");
-
-    private static final ClassPathResource properties = new ClassPathResource("apache-jmeter-5.4.1" + slash + "bin" + slash + "jmeter.properties");
+    private static final ClassPathResource properties = new ClassPathResource("jmeter.properties");
 
     @Async
     public Future<LoadResult> work(LoadInsertReq loadInsertReq) {
@@ -55,6 +53,8 @@ public class LoadTestAsync {
             FileUtils.copyInputStreamToFile(inputStream, file);
 
             JMeterUtils.loadJMeterProperties(file.getAbsolutePath());
+
+            file.deleteOnExit();
         } catch (Exception e) {
             throw new FailLoadTestException("fail jmeter init");
         }

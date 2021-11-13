@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import * as apiActions from "../store/modules/api";
 
 const RequestInput = (props) => {
-  const dispatch = useDispatch()
-  const selector = useSelector((state) => state.api.request)
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => state.api.request);
   const { tabs, handleURLChange, handleSubmit, url } = props;
   const [testBtn, setTestBtn] = useState(false);
   const clickTestBtn = () => {
@@ -17,22 +17,22 @@ const RequestInput = (props) => {
     }
   };
   const [payload, setPayload] = useState({
-    httpMethod:"GET"
-  })
+    httpMethod: "GET",
+  });
 
   const handlePayload = (e) => {
-    const { value, name } = e.target
+    const { value, name } = e.target;
     setPayload({
-        ...payload,
-        [name]: value
-    })
-    dispatch(apiActions.setPayloadState(payload))
-}
-  const [uri, setUri] = useState('')
+      ...payload,
+      [name]: value,
+    });
+    dispatch(apiActions.setPayloadState(payload));
+  };
+  const [uri, setUri] = useState("");
   const handleUriChange = (e) => {
-    setUri(e.target.value)
-    dispatch(apiActions.setUriState(uri))
-  }
+    setUri(e.target.value);
+    dispatch(apiActions.setUriState(uri));
+  };
   // useEffect(() => {
   //     console.log(selector)
   //   });
@@ -94,18 +94,24 @@ const RequestInput = (props) => {
               className="border-r border-b border-gray-300 bg-gray-200 p-[8px] w-[60%] border-t rounded-sm"
               disabled
             />
-            <input 
+            <input
               type="text"
               placeholder=""
               value={uri}
               onChange={handleUriChange}
               className="border-r border-b border-gray-300 bg-gray-200 rounded-sm"
-             />
-            <button className="flex bg-blue-500 text-white p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm " onClick={handleSubmit}>
+            />
+            <button
+              className="flex bg-blue-500 text-white p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm "
+              onClick={handleSubmit}
+            >
               SEND
               <FaCaretDown className="ml-[10px] mt-[2px]" />
             </button>
-            <button className="flex bg-gray-300 border-0 p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm" onClick={props.clickSaveBtn}>
+            <button
+              className="flex bg-gray-300 border-0 p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm"
+              onClick={props.clickSaveBtn}
+            >
               SAVE
               <FaCaretDown className="ml-[10px] mt-[2px]" />
             </button>

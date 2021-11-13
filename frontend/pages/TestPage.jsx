@@ -13,6 +13,7 @@ import * as processAction from "../store/modules/process";
 const TestPage = () => {
   const dispatch = useDispatch();
   const current = useSelector((state) => state.current);
+  console.log(current);
   useEffect(() => {
     dispatch(pageAction.setPageState(1));
     dispatch(processAction.setProcessData({}));
@@ -22,7 +23,7 @@ const TestPage = () => {
     <div>
       <Header2 />
       <Sidebar />
-      <Content data={current} />
+      <Content current={current} />
     </div>
   );
 };

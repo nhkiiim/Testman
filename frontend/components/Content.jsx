@@ -17,6 +17,7 @@ const Content = ({ current }) => {
   //     response: "test",
   //   },
   // ]);
+  const { title, description, seq, url, userId, img } = current;
   const tabs = useSelector((state) => state.tab.tabs);
   const [showModal, setShowModal] = useState(false);
   const [requestTabs] = useState(["Params", "Authorization", "Headers", "Body", "Settings"]);
@@ -127,7 +128,7 @@ const Content = ({ current }) => {
   const getCollectionList = () => {
     axios({
       method: "GET",
-      url: `/api/collections/${current.seq}`,
+      url: `/api/collections/${seq}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -212,7 +213,7 @@ const Content = ({ current }) => {
         },
         data: {
           name: newCollection,
-          workspaceSeq: current.seq,
+          workspaceSeq: seq,
         },
       })
         .then((res) => {
@@ -233,9 +234,9 @@ const Content = ({ current }) => {
   useEffect(async () => {
     const initTab = {
       index: Math.random(0, 10) * 10,
-      name: current.title,
+      name: title,
       type: "GET",
-      URL: current.url,
+      URL: url,
       response: {},
     };
     dispatch(tabActions.setTabs(initTab));
@@ -316,9 +317,9 @@ const Content = ({ current }) => {
       ) : null}
       <div className="ml-[312px]">
         <p className="mt-5 font-bold text-xl">
-          {current.title} ({current.url})
+          {title} ({url})
         </p>
-        <p className="mt-2 text-gray-400 text-xs">{current.description}</p>
+        <p className="mt-2 text-gray-400 text-xs">{description}</p>
         <TabBar
           tabs={tabs}
           tabIndex={tabIndex}
@@ -330,7 +331,7 @@ const Content = ({ current }) => {
           tabs={tabs[tabIndex]}
           handleURLChange={handleURLChange}
           handleSubmit={handleSubmit}
-          url={current.url}
+          url={url}
           clickSaveBtn={clickSaveBtn}
         />
         <RequestOptionsSector

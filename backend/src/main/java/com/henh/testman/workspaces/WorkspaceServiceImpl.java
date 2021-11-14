@@ -2,14 +2,22 @@ package com.henh.testman.workspaces;
 
 import com.henh.testman.common.errors.ExistException;
 import com.henh.testman.common.errors.NotFoundException;
+import com.henh.testman.results.load_results.LoadResultServiceImpl;
 import com.henh.testman.users.User;
 import com.henh.testman.users.UserRepository;
 import com.henh.testman.workspaces.request.WorkspaceInsertReq;
 import com.henh.testman.workspaces.request.WorkspaceUpdateReq;
+import org.apache.xpath.operations.Bool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +26,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @Service
 public class WorkspaceServiceImpl implements WorkspaceService {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoadResultServiceImpl.class);
 
     private final WorkspaceRepository workspaceRepository;
 
@@ -44,6 +54,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(()-> new NotFoundException("Could not found user for " + userId));
 
+        String imgPath = saveFile(workspaceInsertReq.getImg());
+
         return Optional.of(
                 workspaceRepository.save(
                         Workspace.builder()
@@ -52,7 +64,8 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                         .title(workspaceInsertReq.getTitle())
                         .description(workspaceInsertReq.getDescription())
                         .createDate(LocalDateTime.now())
-                        .img(workspaceInsertReq.getImg())
+                        .imgName(workspaceInsertReq.getImg().getOriginalFilename())
+                        .imgPath(imgPath)
                         .build()
                 )
         );
@@ -85,7 +98,13 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         Workspace workspace = workspaceRepository.findBySeq(workspaceUpdateReq.getSeq())
                 .orElseThrow(()-> new NotFoundException("Could not found workspace seq "+ workspaceUpdateReq.getSeq()));
 
-        workspace.update(workspaceUpdateReq.getTitle(), workspaceUpdateReq.getUrl(), workspaceUpdateReq.getDescription());
+        String filePath = null;
+        if (workspaceUpdateReq.getImg() != null) {
+            filePath = saveFile(workspaceUpdateReq.getImg());
+        }
+
+        workspace.update(workspaceUpdateReq, filePath);
+
         return Optional.of(
                 workspaceRepository.save(workspace)
         );
@@ -98,6 +117,27 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                 .orElseThrow(()-> new NotFoundException("Could not found workspace seq " + seq));
         workspaceRepository.delete(workspace);
         return Optional.of(workspace.getTitle());
+    }
+
+    private String saveFile(MultipartFile img) {
+        String imgName = img.getOriginalFilename();
+        String imgPath = "/images/" + imgName;
+
+        try {
+            File file = new File(imgPath);
+            if (!file.exists()) {
+                if (file.mkdirs()) {
+                    logger.info("succeed to create folder");
+                } else {
+                    logger.info("Failed to create folder");
+                }
+            }
+            img.transferTo(file);
+            return imgPath;
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            throw new NotFoundException("failed to save img");
+        }
     }
 
 }

@@ -29,7 +29,7 @@ public class WorkspaceRestController {
     }
 
     @PostMapping
-    public ApiResult<WorkspaceDto> insertWorkspace(@Valid @RequestBody WorkspaceInsertReq workspaceInsertReq, Authentication authentication) {
+    public ApiResult<WorkspaceDto> insertWorkspace(@Valid WorkspaceInsertReq workspaceInsertReq, Authentication authentication) {
         return success(
                 workspaceService.insertWorkspace(workspaceInsertReq, authentication.getName())
                         .map(WorkspaceDto::new)
@@ -65,7 +65,7 @@ public class WorkspaceRestController {
     }
 
     @PatchMapping
-    public ApiResult<WorkspaceDto> updateWorkspace(@Valid @RequestBody WorkspaceUpdateReq workspaceUpdateReq) {
+    public ApiResult<WorkspaceDto> updateWorkspace(@Valid WorkspaceUpdateReq workspaceUpdateReq) {
         return success(
                 workspaceService.updateWorkspace(workspaceUpdateReq)
                         .map(WorkspaceDto::new)

@@ -11,8 +11,9 @@ import rootReducer from "../store/modules";
 import { useEffect, useState } from "react";
 import { getCookie } from "../util/cookie";
 import NeedAuth from "./NeedAuth";
+import { CookiesProvider } from "react-cookie";
 
-axios.defaults.baseURL = "http://www.testsman.com:8080";
+axios.defaults.baseURL = "http://15.165.250.204:8080";
 axios.defaults.withCredentials = true;
 const progress = new ProgressBar({
   size: 4,
@@ -29,11 +30,13 @@ const persistor = persistStore(store);
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Component {...pageProps} />
-      </PersistGate>
-    </Provider>
+    <CookiesProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Component {...pageProps} />
+        </PersistGate>
+      </Provider>
+    </CookiesProvider>
   );
 }
 

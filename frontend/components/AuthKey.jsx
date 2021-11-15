@@ -58,16 +58,18 @@ const AuthKey = () => {
   return (
     <div className="w-full mt-3 h-10 flex ml-5 border-t">
       <div className=" flex border-r h-[100vh]">
-        <p className="mr-36 mt-6 text-gray-500">Type</p>
+        <div className="mt-6">
+          <p className="mr-36 text-gray-500">Type</p>
+        </div>
+
         <select
           name="method"
           id=""
+          defaultValue="No Auth"
           onChange={handleAuthType}
           className="bg-gray-200 border border-gray-300 h-9 pr-[30px] mr-8 rounded-sm mt-5"
         >
-          <option value="noAuth" selected>
-            No Auth
-          </option>
+          <option value="noAuth">No Auth</option>
           <option value="apiKey">API Key</option>
           <option value="bearerToken">Bearer Token</option>
           <option value="basicAuth">Basic Auth</option>

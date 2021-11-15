@@ -6,54 +6,85 @@ import RequestOptionsSector from "./RequestOptionsSector";
 import TabBar from "./Tabs/TabBar";
 import { useDispatch, useSelector } from "react-redux";
 import * as tabActions from "../store/modules/tab";
+import ctab, * as ctabActions from "../store/modules/ctab";
 
 const Content = ({ current }) => {
-  // const [tabs, setTabs] = useState([
-  //   {
-  //     index: Math.random(0, 10) * 10,
-  //     name: "Test 01",
-  //     type: "GET",
-  //     URL: "http://testsman.com:8080/api/users/me",
-  //     response: "test",
-  //   },
-  // ]);
   const { title, description, seq, url, userId, img } = current;
   const tabs = useSelector((state) => state.tab.tabs);
   const [showModal, setShowModal] = useState(false);
   const [requestTabs] = useState(["Params", "Authorization", "Headers", "Body", "Settings"]);
-  const tabIndex = useSelector((state) => state.tab.tabIndex);
   const [requestTabIndex, setRequestTabIndex] = useState(0);
   const [selectItem, setSelectItem] = useState("");
+  const [currentTab, setCurrentTab] = useState(0);
+  const [selectTabSeq, setSelectTabSeq] = useState(0);
   const dispatch = useDispatch();
-  const handleTabChange = (index) => {
+
+  const handleTabChange = async (index) => {
+    await axios({
+      method: "GET",
+      url: "/api/tabs/" + tabs[index].seq,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch(ctabActions.setCtabs(res.data.response.tabDto));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
     console.log("handletabchange", index);
-    dispatch(tabActions.setTabIndexState(index));
+    console.log(tabs[index]);
+    setSelectTabSeq(tabs[index].seq);
+    setCurrentTab(index);
+    // dispatch(tabActions.setTabIndexState(index));
   };
   const handleRequestTabChange = (index) => {
     setRequestTabIndex(index);
   };
-  const handleNewTab = () => {
+  const handleNewTab = async () => {
     if (tabs.length >= 5) {
       alert("Tabs already fulls... delete another tabs..");
       return;
     }
-    const payload = {
-      index: Math.random(0, 10) * 10,
-      name: "Untitled Tab",
-      type: "GET",
-      URL: "",
-      response: {},
-    };
-    dispatch(tabActions.setTabs(payload));
-    dispatch(tabActions.setTabIndexState(tabs.length));
+    await axios({
+      method: "POST",
+      url: "/api/tabs",
+      data: {
+        workspaceSeq: current.seq,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        dispatch(tabActions.setTabs(res.data.response.tab));
+      })
+      .catch((error) => console.error(error));
   };
 
-  const handleRemoveTab = (selectTab) => {
-    var tempTabs = tabs.filter((tab) => {
-      tab.index !== selectTab.index;
-    });
+  const handleRemoveTab = async (selectTab) => {
+    // console.log(selectTab.seq);
+    await axios({
+      method: "DELETE",
+      url: "/api/tabs/" + selectTab.seq,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        window.location.reload();
+        console.log(res.data);
+      })
+
+      .catch((error) => console.error(error));
+    // var tempTabs = tabs.filter((tab) => {
+    //   tab.index !== selectTab.index;
+    // });
     // console.log(tempTabs)
-    dispatch(tabActions.setTabs(tempTabs));
+    // dispatch(tabActions.setTabs(tempTabs));
   };
   const [parsingParams, setParsingPrams] = useState({});
   const request = useSelector((state) => state.api.request);
@@ -115,12 +146,6 @@ const Content = ({ current }) => {
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  const handleURLChange = (e) => {
-    const tempTabs = tabs;
-    tempTabs[tabIndex].URL = e.target.value;
-    dispatch(tabActions.setTabs(tempTabs));
   };
 
   const [collectionList, setCollectionList] = useState([]);
@@ -232,15 +257,15 @@ const Content = ({ current }) => {
   };
 
   useEffect(async () => {
-    const initTab = {
-      index: Math.random(0, 10) * 10,
-      name: title,
-      type: "GET",
-      URL: url,
-      response: {},
-    };
-    dispatch(tabActions.setTabs(initTab));
-    dispatch(tabActions.setTabIndexState(tabs.length));
+    // const initTab = {
+    //   index: Math.random(0, 10) * 10,
+    //   name: title,
+    //   type: "GET",
+    //   URL: url,
+    //   response: {},
+    // };
+    // dispatch(tabActions.setTabs(initTab));
+    // dispatch(tabActions.setTabIndexState(tabs.length));
   }, []);
   return (
     <div>
@@ -259,7 +284,7 @@ const Content = ({ current }) => {
                 <div className="relative p-6 flex-auto">
                   <form className="flex flex-col w-[350px]" method="POST" action="#">
                     <div className="mb-6 pt-3 rounded">
-                      <label className="block text-sm font-bold mb-0 ml-3" for="URL">
+                      <label className="block text-sm font-bold mb-0 ml-3" htmlFor="URL">
                         Save to {selectItem.name}
                       </label>
                       {collectionList.map((item, i) => (
@@ -315,21 +340,25 @@ const Content = ({ current }) => {
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>)
         </>
       ) : null}
-      <div className="ml-[312px]">
-        <p className="mt-5 font-bold text-xl">
-          {title} ({url})
-        </p>
-        <p className="mt-2 text-gray-400 text-xs">{description}</p>
+      <div className="ml-[312px] mt-5">
+        <div>
+          <p className=" font-bold text-3xl">
+            {title} ({url})
+          </p>
+        </div>
+        <div>
+          <p className="mt-2 text-gray-400 text-xs">{description}</p>
+        </div>
+
         <TabBar
           tabs={tabs}
-          tabIndex={tabIndex}
+          tabIndex={currentTab}
           handleTabChange={handleTabChange}
           handleNewTab={handleNewTab}
           handleRemoveTab={handleRemoveTab}
         />
         <RequestInput
-          tabs={tabs[tabIndex]}
-          handleURLChange={handleURLChange}
+          tabs={selectTabSeq}
           handleSubmit={handleSubmit}
           url={url}
           clickSaveBtn={clickSaveBtn}

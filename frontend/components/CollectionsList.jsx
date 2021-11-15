@@ -11,11 +11,11 @@ const CollectionsList = (props) => {
     PUT: "text-blue-600 mr-[23px] text-sm",
     DELETE: "text-red-600 text-sm",
   };
-  const collectionList = props.collectionList
+  const collectionList = props.collectionList;
   const token = useSelector((state) => state.user.token);
-  const tabs = useSelector((state) => state.tab.tabs)
-  const dispatch = useDispatch()
-  const tabIndex = useSelector((state) => state.tab.tabIndex)
+  const tabs = useSelector((state) => state.tab.tabs);
+  const dispatch = useDispatch();
+  const tabIndex = useSelector((state) => state.tab.tabIndex);
   const openCollectionTab = (tabInfo) => {
     if (tabs.length >= 5) {
       alert("Tabs already fulls... delete another tabs..");
@@ -34,7 +34,7 @@ const CollectionsList = (props) => {
     dispatch(tabActions.setTabIndexState(tabs.length));
   };
   const clickCollections = (item) => async () => {
-    const seq = item.seq
+    const seq = item.seq;
     await axios({
       method: "GET",
       url: `/api/tabs/collection/${seq}`,
@@ -44,14 +44,13 @@ const CollectionsList = (props) => {
     })
       .then((res) => {
         if (res.data.response.tabList.length > 0) {
-          openCollectionTab(res.data.response.tabList)
+          openCollectionTab(res.data.response.tabList);
         }
       })
       .catch((error) => {
-        console.log(error)
-      })
-
-  }
+        console.log(error);
+      });
+  };
 
   // useEffect(() => {
   //   console.log(tabList)
@@ -59,23 +58,20 @@ const CollectionsList = (props) => {
 
   return (
     <>
-    {!props ? (
-      <div>
-        no collections
-      </div>
-    ):(
-      <div className="pt-2 h-10 w-full border-t">
-      <div className="text-1xl ml-3">
-        {collectionList.map((item, i) => (
+      {!props ? (
+        <div>no collections</div>
+      ) : (
+        <div className="pt-2 h-10 w-full border-t">
+          <div className="text-1xl ml-3">
+            {/* {collectionList.map((item, i) => (
           <div key={i} className="hover:bg-gray-200 w-[100%] text-left" onClick={clickCollections(item)}>
             {item.name}
           </div>
-        ))}
-      </div>
-    </div>
-    )
-  }
-  </>
+        ))} */}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

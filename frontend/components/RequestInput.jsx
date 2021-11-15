@@ -2,11 +2,21 @@ import React, { useEffect, useState } from "react";
 import { FaCaretRight, FaCaretDown, FaToggleOn, FaToggleOff } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import * as apiActions from "../store/modules/api";
+import * as ctabActions from "../store/modules/ctab";
 
 const RequestInput = (props) => {
   const dispatch = useDispatch();
-  const selector = useSelector((state) => state.api.request);
-  const { tabs, handleURLChange, handleSubmit, url } = props;
+  const ctab = useSelector((state) => state.ctab);
+  console.log(ctab);
+  const selector = useSelector((state) => state.api);
+  const { tabs, handleSubmit, url } = props;
+  console.log(selector.request);
+  const [inputUrl, setInputUrl] = useState(ctab.address);
+  const handleURLChange = (e) => {
+    setInputUrl(e.target.value);
+    dispatch(ctabActions.setCurl(inputUrl));
+    dispatch(apiActions.setUriState(inputUrl));
+  };
   const [testBtn, setTestBtn] = useState(false);
   const clickTestBtn = () => {
     console.log(testBtn);
@@ -36,13 +46,13 @@ const RequestInput = (props) => {
   // useEffect(() => {
   //     console.log(selector)
   //   });
-  if (tabs !== undefined) {
+  if (ctab !== undefined) {
     return (
       <div>
         <div className="grid grid-cols-2 text-gray-500 pb-[10px] border-b border-gray-200 pl-[15px] pr-[15px] pt-[10px]">
           <div className="flex">
             <FaCaretRight />
-            <span className="text-xs font-normal ml-[10px]">{tabs.name}</span>
+            <span className="text-xs font-normal ml-[10px]">{ctab.name}</span>
           </div>
           <div className=" inline-flex ml-[45%]">
             <p
@@ -89,18 +99,11 @@ const RequestInput = (props) => {
             <input
               type="text"
               placeholder=""
-              value={`${url}/`}
+              value={inputUrl || ""}
               onChange={handleURLChange}
               className="border-r border-b border-gray-300 bg-gray-200 p-[8px] w-[60%] border-t rounded-sm"
-              disabled
             />
-            <input
-              type="text"
-              placeholder=""
-              value={uri}
-              onChange={handleUriChange}
-              className="border-r border-b border-gray-300 bg-gray-200 rounded-sm"
-            />
+
             <button
               className="flex bg-blue-500 text-white p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm "
               onClick={handleSubmit}

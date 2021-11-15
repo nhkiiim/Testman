@@ -7,55 +7,35 @@ import HistoryList from "../components/HistoryList";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import router from "next/router";
-const Sidebar = (props) => {
+const Sidebar = ({ current }) => {
   const [tabs] = useState(["History", "Collections"]);
   const [tabIndex, setTabIndex] = useState(1);
   const handleTabChange = (index) => {
     setTabIndex(index);
   };
   const token = useSelector((state) => state.user.token);
-  const [collectionList, setCollectionList] = useState([])
+  const [collectionList, setCollectionList] = useState([]);
 
-  const getCollectionList = () => {
-    axios({
-      method: "GET",
-      url: `/api/collections/${props.no}`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    })
-      .then((res) => {
-        console.log(res.data.response.collectionList)
-        setCollectionList(res.data.response.collectionList)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
   const [historyData, setHistoryData] = useState([]);
-  const getHistoryData = async(no) => {
+  const getHistoryData = async () => {
     await axios({
       method: "GET",
-      url: `/api/histories/list/${no}`,
+      url: "/api/histories/list/" + current.seq,
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     })
       .then((res) => {
-        console.log('getHistoryData', res.data.response)
-        setHistoryData(res.data.response)
+        console.log("getHistoryData", res.data.response);
+        setHistoryData(res.data.response);
       })
       .catch((error) => {
-        console.log(error)
-      })
-  }
-  useEffect(async () => {
-    if (token === "") {
-      router.push("/Login")
-    } else {
-      getHistoryData(props.no)
-      getCollectionList(props.no)
-    }
+        console.log(error);
+      });
+  };
+  useEffect(() => {
+    getHistoryData();
+
     Aos.init({ duration: 1000 });
   }, []);
   return (
@@ -91,13 +71,11 @@ const Sidebar = (props) => {
                   <DotsHorizontalIcon className="w-5 text-gray-500" />
                 </div>
               </div>
-              <CollectionsList collectionList={collectionList}/>
+              <CollectionsList collectionList={collectionList} />
             </>
           ) : (
             <>
-              
-              <HistoryList historyData={historyData}/>
-              
+              <HistoryList historyData={historyData} />
             </>
           )}
         </div>

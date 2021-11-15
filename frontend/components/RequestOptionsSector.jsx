@@ -11,6 +11,7 @@ const RequestOptionsSector = (props) => {
             {requestTabs.map((tab, index) => {
               return (
                 <span
+                  key={index}
                   className={
                     index === tabIndex
                       ? "pl-[15px] pr-[15px] pb-[8px] ml-[8px] mr-[8px] cursor-pointer border-b-2 border-indigo-500"

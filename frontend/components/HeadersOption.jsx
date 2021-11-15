@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setHeadersState } from "../store/modules/api";
 
 const HeadersOption = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [tableCnt, setTableCnt] = useState([0]);
 
   const [params, setParams] = useState([
@@ -36,18 +36,24 @@ const HeadersOption = () => {
 
   const handleParam = (index) => (e) => {
     const { value, name } = e.target;
-    setParams(
-      params.map((params, idx) => idx==index? { ...params, [name]: value } : params))
+    setParams(params.map((params, idx) => (idx == index ? { ...params, [name]: value } : params)));
     dispatch(setHeadersState(params));
   };
 
   return (
     <div className="mt-5 ml-2">
       Headers
-      <table className="border w-[84%]  border-gray-300 mt-2">
+      <table className="border w-[82%]  border-gray-300 mt-2">
         <thead>
           <tr>
-            <th></th>
+            <th>
+              {" "}
+              <div className="">
+                <button onClick={clickPlusBtn} className="mt-2">
+                  <PlusCircleIcon className="w-5 text-indigo-500" />
+                </button>
+              </div>
+            </th>
             <th>key</th>
             <th>value</th>
             <th>description</th>
@@ -71,13 +77,7 @@ const HeadersOption = () => {
                 </th>
               </tr>
             ))}
-          <tr>
-            <div>
-              <button onClick={clickPlusBtn} className="lg:ml-[5%] xl:ml-[28%]">
-                <PlusCircleIcon className="w-5 text-indigo-500" />
-              </button>
-            </div>
-          </tr>
+          <tr></tr>
         </tbody>
       </table>
     </div>

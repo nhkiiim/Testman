@@ -11,6 +11,7 @@ import rootReducer from "../store/modules";
 import { useEffect, useState } from "react";
 import { getCookie } from "../util/cookie";
 import NeedAuth from "./NeedAuth";
+import { CookiesProvider } from "react-cookie";
 
 axios.defaults.baseURL = "http://www.testsman.com:8080";
 axios.defaults.withCredentials = true;
@@ -29,11 +30,13 @@ const persistor = persistStore(store);
 
 function MyApp({ Component, pageProps }) {
   return (
+    <CookiesProvider>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <Component {...pageProps} />
       </PersistGate>
     </Provider>
+    </CookiesProvider>
   );
 }
 

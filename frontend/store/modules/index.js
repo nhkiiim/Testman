@@ -10,7 +10,6 @@ import page from "./page";
 import seq from "./seq";
 import current from "./current";
 import process from "./process";
-import "semantic-ui-css/semantic.min.css";
 
 const rootReducer = (state, action) => {
   switch (action.type) {

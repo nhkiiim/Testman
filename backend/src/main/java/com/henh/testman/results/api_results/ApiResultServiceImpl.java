@@ -36,7 +36,6 @@ public class ApiResultServiceImpl implements ApiResultService {
     private final TabRepository tabRepository;
 
     @Autowired
-    @Transactional(readOnly = true)
     public ApiResultServiceImpl(ApiResultRepository apiResultRepository,
                                 RestTemplate restTemplate, TabRepository tabRepository, HistoryRepository historyRepository) {
         this.apiResultRepository = apiResultRepository;
@@ -59,6 +58,7 @@ public class ApiResultServiceImpl implements ApiResultService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<ApiResults> selectApi(Long tabSeq) {
         checkNotNull(tabSeq,"tabSeq must be provided");
         return apiResultRepository.findByTabSeq(tabSeq);

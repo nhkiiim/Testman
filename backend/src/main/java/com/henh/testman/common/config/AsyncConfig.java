@@ -19,11 +19,11 @@ public class AsyncConfig implements AsyncConfigurer {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private static final int TASK_CORE_POOL_SIZE = 10;
+    private static final int TASK_CORE_POOL_SIZE = 5;
 
-    private static final int TASK_MAX_POOL_SIZE = 100;
+    private static final int TASK_MAX_POOL_SIZE = 40;
 
-    private static final int TASK_QUEUE_CAPACITY = 50;
+    private static final int TASK_QUEUE_CAPACITY = 20;
 
     private static final String EXECUTOR_BEAN_NAME = "executor";
 

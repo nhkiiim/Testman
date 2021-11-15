@@ -1,6 +1,4 @@
 HELP.md
-ssafy-web.log*
-testman-web.log*
 .gradle
 build/
 src/test/*

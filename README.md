@@ -71,14 +71,14 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **김나현** - *팀원-BE* - [nhkiiim](https://github.com/nhkiiim)
+* **안진흥** - *팀원-BE* - [heung27](https://github.com/heung27)
+* **이승엽** - *팀원-BE* - [Seungyeup](https://github.com/Seungyeup)
+* **이재민** - *팀장-FE* - [edenist-x-x](https://github.com/edenist-x-x)
+* **장진호** - *팀장-FE* - [Jinhoss](https://github.com/Jinhoss)
 
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/henh-testman/TESTMAN/contributors) who participated in this project.
 
 ## License
 

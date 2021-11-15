@@ -52,7 +52,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(()-> new NotFoundException("Could not found user for " + userId));
 
-        String imgPath = saveFile(workspaceInsertReq.getImg());
+        String imgName = saveFile(workspaceInsertReq.getImg(), workspaceInsertReq.getTitle(), userId);
 
         return Optional.of(
                 workspaceRepository.save(
@@ -62,8 +62,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                         .title(workspaceInsertReq.getTitle())
                         .description(workspaceInsertReq.getDescription())
                         .createDate(LocalDateTime.now())
-                        .imgName(workspaceInsertReq.getImg().getOriginalFilename())
-                        .imgPath(imgPath)
+                        .imgName(imgName)
                         .build()
                 )
         );
@@ -92,16 +91,16 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Optional<Workspace> updateWorkspace(WorkspaceUpdateReq workspaceUpdateReq){
+    public Optional<Workspace> updateWorkspace(WorkspaceUpdateReq workspaceUpdateReq, String userId){
         Workspace workspace = workspaceRepository.findBySeq(workspaceUpdateReq.getSeq())
                 .orElseThrow(()-> new NotFoundException("Could not found workspace seq "+ workspaceUpdateReq.getSeq()));
 
-        String filePath = null;
+        String fileName = null;
         if (workspaceUpdateReq.getImg() != null) {
-            filePath = saveFile(workspaceUpdateReq.getImg());
+            fileName = saveFile(workspaceUpdateReq.getImg(), workspaceUpdateReq.getTitle(), userId);
         }
 
-        workspace.update(workspaceUpdateReq, filePath);
+        workspace.update(workspaceUpdateReq, fileName);
 
         return Optional.of(
                 workspaceRepository.save(workspace)
@@ -117,9 +116,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         return Optional.of(workspace.getTitle());
     }
 
-    private String saveFile(MultipartFile img) {
-        String imgName = img.getOriginalFilename();
-        String imgPath = "/static/images/" + imgName;
+    private String saveFile(MultipartFile img, String title, String userId) {
+        String imgName = title + "_" + img.getOriginalFilename();
+        String imgPath = "/static/images/" + userId + "/" + imgName;
 
         try {
             File file = new File(imgPath);
@@ -131,7 +130,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                 }
             }
             img.transferTo(file);
-            return imgPath;
+            return imgName;
         } catch (IOException e) {
             System.out.println(e.getMessage());
             throw new NotFoundException("failed to save img");

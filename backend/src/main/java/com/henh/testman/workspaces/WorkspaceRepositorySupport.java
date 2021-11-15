@@ -22,7 +22,7 @@ public class WorkspaceRepositorySupport {
     List<WorkspaceDto> findByUserId(String userId){
         return jpaQueryFactory
                 .select(Projections.constructor(WorkspaceDto.class, qWorkspace.seq, qWorkspace.user.userId, qWorkspace.title,
-                        qWorkspace.url, qWorkspace.description, qWorkspace.imgName, qWorkspace.imgPath, qWorkspace.createDate))
+                        qWorkspace.url, qWorkspace.description, qWorkspace.imgName, qWorkspace.createDate))
                 .from(qWorkspace)
                 .where(qWorkspace.user.userId.eq(userId))
                 .fetch();

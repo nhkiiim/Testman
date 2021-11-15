@@ -30,16 +30,15 @@ public class Workspace extends BaseEntity {
 
     private String imgName;
 
-    private String imgPath;
-
     private LocalDateTime createDate;
 
-    public void update(WorkspaceUpdateReq workspaceUpdateReq, String imgPath){
+    public void update(WorkspaceUpdateReq workspaceUpdateReq, String imgName){
         this.title = workspaceUpdateReq.getTitle();
         this.url = workspaceUpdateReq.getUrl();
         this.description = workspaceUpdateReq.getDescription();
-        this.imgName = workspaceUpdateReq.getImg().getOriginalFilename();
-        if (imgPath != null) this.imgPath = imgPath;
+        if (imgName != null) {
+            this.imgName = imgName;
+        }
     }
 
 }

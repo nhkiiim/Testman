@@ -2,6 +2,7 @@ package com.henh.testman.workspaces;
 
 import com.henh.testman.common.errors.ExistException;
 import com.henh.testman.common.errors.NotFoundException;
+import com.henh.testman.common.utils.S3Uploader;
 import com.henh.testman.results.load_results.LoadResultServiceImpl;
 import com.henh.testman.users.User;
 import com.henh.testman.users.UserRepository;
@@ -33,12 +34,15 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     private final UserRepository userRepository;
 
+    private final S3Uploader s3Uploader;
+
     @Autowired
     public WorkspaceServiceImpl(WorkspaceRepository workspaceRepository,
-                                WorkspaceRepositorySupport workspaceRepositorySupport, UserRepository userRepository){
+                                WorkspaceRepositorySupport workspaceRepositorySupport, UserRepository userRepository, S3Uploader s3Uploader){
         this.workspaceRepository = workspaceRepository;
         this.workspaceRepositorySupport = workspaceRepositorySupport;
         this.userRepository = userRepository;
+        this.s3Uploader = s3Uploader;
     }
 
     @Override
@@ -117,19 +121,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         if (img == null) {
             return null;
         }
+
         String imgName = title + "_" + img.getOriginalFilename();
-        String imgPath = "/static/images/" + userId + "/" + imgName;
+        String imgPath = "images/" + userId;
 
         try {
-            File file = new File(imgPath);
-            if (!file.exists()) {
-                if (file.mkdirs()) {
-                    logger.info("succeed to create folder");
-                } else {
-                    logger.info("Failed to create folder");
-                }
-            }
-            img.transferTo(file);
+            s3Uploader.upload(img, imgPath, imgName);
             return imgName;
         } catch (IOException e) {
             throw new NotFoundException("failed to save img");

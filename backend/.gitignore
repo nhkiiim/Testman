@@ -1,5 +1,6 @@
 HELP.md
 .gradle
+testman-web.log
 build/
 src/test/*
 !gradle/wrapper/gradle-wrapper.jar

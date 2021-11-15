@@ -1,4 +1,4 @@
-# TESTMAN
+# Welcome to TESTMAN
 
 Testman에 오신 걸 환영합니다!
 
@@ -6,7 +6,7 @@ Testman에 오신 걸 환영합니다!
 
 테스트는 Workspace별로 관리되어 한번의 URL 입력으로 다양한 테스트를 경험할 수 있어요!
 
-### 개발 환경 
+## Environment
 
 프로젝트 개발시 환경과 동일합니다.
 
@@ -35,15 +35,16 @@ Database :
     - pw : d202
 - redis version : alpine
 ```
-## Getting Started
+## How to Run
 
-배포는 docker-compose로 이루어집니다. 다만 image 컨트롤을 위한 공유 폴더를 만들어야 합니다!
+Testman의 실행은 docker-compose로 이루어집니다. 다만 image 컨트롤을 위한 공유 폴더를 만들어야 합니다!
+
+### Docker, Docker-compose version!
 
 ```
 - Docker version 20.10.8
 - Docker-compose version 1.29.2
 ```
-
 
 ### Simply Install with docker!
 

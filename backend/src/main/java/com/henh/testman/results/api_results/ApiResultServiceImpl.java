@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -35,6 +36,7 @@ public class ApiResultServiceImpl implements ApiResultService {
     private final TabRepository tabRepository;
 
     @Autowired
+    @Transactional(readOnly = true)
     public ApiResultServiceImpl(ApiResultRepository apiResultRepository,
                                 RestTemplate restTemplate, TabRepository tabRepository, HistoryRepository historyRepository) {
         this.apiResultRepository = apiResultRepository;
@@ -44,6 +46,7 @@ public class ApiResultServiceImpl implements ApiResultService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Optional<ApiResults> insertApi(ApiInsertReq apiInsertReq) throws JsonProcessingException {
         Tab tab = tabRepository.findBySeq(apiInsertReq.getTabSeq())
                 .orElseThrow(() -> new NotFoundException("Could not found tab seq " + apiInsertReq.getTabSeq()));
@@ -62,6 +65,7 @@ public class ApiResultServiceImpl implements ApiResultService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long deleteApi(Long tapSeq) {
         checkNotNull(tapSeq, "tabSeq must be provided");
         ApiResults apiResults = apiResultRepository.findByTabSeq(tapSeq)

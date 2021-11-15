@@ -29,7 +29,7 @@ public class WorkspaceRestController {
     }
 
     @PostMapping
-    public ApiResult<WorkspaceDto> insertWorkspace(@Valid WorkspaceInsertReq workspaceInsertReq, Authentication authentication) {
+    public ApiResult<WorkspaceDto> insertWorkspace(WorkspaceInsertReq workspaceInsertReq, Authentication authentication) {
         return success(
                 workspaceService.insertWorkspace(workspaceInsertReq, authentication.getName())
                         .map(WorkspaceDto::new)

@@ -7,11 +7,9 @@ import com.henh.testman.users.User;
 import com.henh.testman.users.UserRepository;
 import com.henh.testman.workspaces.request.WorkspaceInsertReq;
 import com.henh.testman.workspaces.request.WorkspaceUpdateReq;
-import org.apache.xpath.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -121,7 +119,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     private String saveFile(MultipartFile img) {
         String imgName = img.getOriginalFilename();
-        String imgPath = "/images/" + imgName;
+        String imgPath = "/static/images/" + imgName;
 
         try {
             File file = new File(imgPath);

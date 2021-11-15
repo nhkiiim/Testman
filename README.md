@@ -6,9 +6,9 @@ Testman에 오신 걸 환영합니다!
 
 테스트는 Workspace별로 관리되어 한번의 URL 입력으로 다양한 테스트를 경험할 수 있어요!
 
-### Prerequisites for repository
+### 개발 환경 
 
-What things you need to install the software and how to install them
+프로젝트 개발시 환경과 동일합니다.
 
 Backend :
 ```

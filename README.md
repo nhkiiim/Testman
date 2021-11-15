@@ -6,11 +6,7 @@ Testman에 오신 걸 환영합니다!
 
 테스트는 Workspace별로 관리되어 한번의 URL 입력으로 다양한 테스트를 경험할 수 있어요!
 
-## Getting Started
-
-배포는 docker-compose로 이루어집니다. 다만 image 컨트롤을 위한 공유 폴더를 만들어야 합니다!
-
-### Prerequisites
+### Prerequisites for repository
 
 What things you need to install the software and how to install them
 
@@ -39,8 +35,17 @@ Database :
     - pw : d202
 - redis version : alpine
 ```
+## Getting Started
 
-### Installing
+배포는 docker-compose로 이루어집니다. 다만 image 컨트롤을 위한 공유 폴더를 만들어야 합니다!
+
+```
+- Docker version 20.10.8
+- Docker-compose version 1.29.2
+```
+
+
+### Simply Install with docker!
 
 프로젝프를 pull 합니다.
 
@@ -54,20 +59,6 @@ docker-compose up
 ```
 
 + mysql, redis 스토리지가 추가로 필요합니다!
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 

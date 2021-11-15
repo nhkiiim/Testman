@@ -95,10 +95,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
         Workspace workspace = workspaceRepository.findBySeq(workspaceUpdateReq.getSeq())
                 .orElseThrow(()-> new NotFoundException("Could not found workspace seq "+ workspaceUpdateReq.getSeq()));
 
-        String fileName = null;
-        if (workspaceUpdateReq.getImg() != null) {
-            fileName = saveFile(workspaceUpdateReq.getImg(), workspaceUpdateReq.getTitle(), userId);
-        }
+        String fileName = saveFile(workspaceUpdateReq.getImg(), workspaceUpdateReq.getTitle(), userId);
 
         workspace.update(workspaceUpdateReq, fileName);
 
@@ -117,6 +114,9 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     }
 
     private String saveFile(MultipartFile img, String title, String userId) {
+        if (img == null) {
+            return null;
+        }
         String imgName = title + "_" + img.getOriginalFilename();
         String imgPath = "/static/images/" + userId + "/" + imgName;
 
@@ -132,7 +132,6 @@ public class WorkspaceServiceImpl implements WorkspaceService {
             img.transferTo(file);
             return imgName;
         } catch (IOException e) {
-            System.out.println(e.getMessage());
             throw new NotFoundException("failed to save img");
         }
     }

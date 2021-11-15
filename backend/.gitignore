@@ -2,6 +2,8 @@ HELP.md
 testman-web.log*
 .gradle
 build/
+ssafy-web.log*
+testman-web.log*
 src/test/*
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/

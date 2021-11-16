@@ -137,7 +137,7 @@ public class MySummariser {
 
     // 에러율 (퍼센트)
     public String getErrorPercentageString() {
-        return errorFormatter.format(getErrorPercentage() * 100);
+        return errorFormatter.format(getErrorPercentage());
     }
 
     // 에러율 (소수)

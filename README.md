@@ -15,8 +15,8 @@ Backend :
 - java version : 8
 - jmeter version : 5.4.1
 - gradle : 7.1.1
-- prometheous
-- grafana
+<!-- - prometheous -->
+<!-- - grafana -->
 ```
 
 Frontend :
@@ -48,7 +48,7 @@ Testman의 실행은 docker-compose로 이루어집니다. 다만 image 컨트�
 
 ### Simply Install with docker!
 
-프로젝프를 pull 합니다.
+프로젝트를 pull 합니다.
 
 ```
 git pull https://github.com/henh-testman/TESTMAN.git

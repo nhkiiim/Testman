@@ -3,9 +3,7 @@ package com.henh.testman.common.utils;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.henh.testman.results.load_results.LoadResultServiceImpl;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,8 +16,9 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+
 @Component
+@RequiredArgsConstructor
 public class S3Uploader {
 
     private static final Logger logger = LoggerFactory.getLogger(S3Uploader.class);
@@ -29,23 +28,24 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String upload(MultipartFile multipartFile, String dirName, String fileName) throws IOException {
+    public void upload(MultipartFile multipartFile, String dirName, String fileName) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
-        return upload(uploadFile, dirName, fileName);
+        upload(uploadFile, dirName, fileName);
     }
 
-    private String upload(File uploadFile, String dirName, String fileName) {
+    private void upload(File uploadFile, String dirName, String fileName) {
         String filePath = dirName + "/" + fileName;
-        String uploadImageUrl = putS3(uploadFile, filePath);
+        putS3(uploadFile, filePath);
         removeNewFile(uploadFile);
-        return uploadImageUrl;
     }
 
-    private String putS3(File uploadFile, String fileName) {
-        amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket, fileName).toString();
+    private void putS3(File uploadFile, String fileName) {
+        amazonS3Client.putObject(
+                new PutObjectRequest(bucket, fileName, uploadFile)
+                        .withCannedAcl(CannedAccessControlList.PublicRead)
+        );
     }
 
     private void removeNewFile(File targetFile) {
@@ -64,7 +64,6 @@ public class S3Uploader {
             }
             return Optional.of(convertFile);
         }
-
         return Optional.empty();
     }
 }

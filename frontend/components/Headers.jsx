@@ -9,7 +9,7 @@ import HeaderOpt from "./HeaderOpt";
 const Headers = () => {
   const dispatch = useDispatch();
   const headerData = useSelector((state) => state.api.request.headers);
-  console.log(headerData);
+  // console.log(headerData);
 
   const rawData = {
     seq: Math.random(0, 10) * 10,

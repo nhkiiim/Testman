@@ -24,7 +24,7 @@ const ParamsOption = () => {
 
   // console.log(paramData);
   // console.log(thisParam);
-  console.log(tmp);
+  // console.log(tmp);
   useEffect(() => {
     dispatch(setParamDatas(inputParam));
   }, [inputParam]);
@@ -83,7 +83,7 @@ const ParamsOption = () => {
     // dispatch(setParamsState(params));
   };
 
-  console.log(inputParam);
+  // console.log(inputParam);
 
   return (
     <div className="mt-5 ml-2">

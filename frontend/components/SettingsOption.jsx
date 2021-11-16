@@ -6,7 +6,7 @@ const SettingsOption = () => {
   const [sslBtn, setSslBtn] = useState(true);
 
   const clickSslBtn = () => {
-    console.log(sslBtn);
+    // console.log(sslBtn);
     if (sslBtn) {
       return setSslBtn(false);
     } else {
@@ -15,7 +15,7 @@ const SettingsOption = () => {
   };
 
   useEffect(() => {
-    console.log(sslBtn);
+    // console.log(sslBtn);
   });
 
   return (

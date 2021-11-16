@@ -16,17 +16,17 @@ const Sidebar = ({ current }) => {
   const [tabIndex, setTabIndex] = useState(1);
   const [historyData, setHistoryData] = useState([]);
   const colList = useSelector((state) => state.collections.list);
-  console.log(cseq);
-  console.log(colList);
+  // console.log(cseq);
+  // console.log(colList);
   const dispatch = useDispatch();
   const hisData = useSelector((state) => state.history.response);
-  console.log(hisData);
+  // console.log(hisData);
   useEffect(() => {
     getHistoryData();
     getCollectionList();
   }, [cseq]);
   const handleTabChange = (index) => {
-    console.log(index);
+    // console.log(index);
     setTabIndex(index);
   };
   const token = useSelector((state) => state.user.token);
@@ -41,11 +41,11 @@ const Sidebar = ({ current }) => {
       },
     })
       .then((res) => {
-        console.log(res.data.response.historyList);
+        // console.log(res.data.response.historyList);
         dispatch(historyAction.fetchHistoryState(res.data.response.historyList));
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   }, []);
   const getCollectionList = useCallback(async () => {
@@ -57,11 +57,11 @@ const Sidebar = ({ current }) => {
       },
     })
       .then((res) => {
-        console.log(res.data.response.collectionList);
+        // console.log(res.data.response.collectionList);
         dispatch(collectionAction.setCollections(res.data.response.collectionList));
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   }, []);
 

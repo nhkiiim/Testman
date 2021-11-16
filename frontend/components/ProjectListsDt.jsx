@@ -22,14 +22,9 @@ const ProjectListsDt = ({ title, seq }) => {
         dispatch(currentActions.setCurrentProject(res.data.response));
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
-    router.push({
-      pathname: "/TestPage",
-      query: {
-        no: seq,
-      },
-    });
+    router.push("/TestPage");
     dispatch(seqActions.setSeqState(seq));
   };
   return (

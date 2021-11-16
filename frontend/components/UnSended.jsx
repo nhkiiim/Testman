@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import img from "../img/icon2.png";
 import load from "../img/loading.gif";
+import loadimg from "../img/loadimg.gif";
 import Typical from "react-typical";
 import SyncLoader from "react-spinners/SyncLoader";
 

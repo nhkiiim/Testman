@@ -67,7 +67,13 @@ const ParamOpt = ({ seq, params, index, saved }) => {
 
   return (
     <div className="">
-      <div className="border-t border-gray-200  w-[100%] bg-gray-100">
+      <div
+        className={
+          saved
+            ? "border-t border-gray-200  w-[100%] bg-gray-100"
+            : "border-t border-gray-200  w-[100%] bg-gray-50"
+        }
+      >
         <div className="flex flex-wrap overflow-hidden ">
           <div className="overflow-hidden my-2 px-2 w-[4%] border-r border-gray-300">
             <div onClick={() => fetchData(seq)}>
@@ -80,7 +86,11 @@ const ParamOpt = ({ seq, params, index, saved }) => {
             <div className="mx-auto w-[360px] pl-2 ">
               <input
                 id="paramKey"
-                className="h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                className={
+                  saved
+                    ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                    : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
+                }
                 placeholder="KEY"
                 onChange={handleKeyChange}
               />
@@ -92,7 +102,11 @@ const ParamOpt = ({ seq, params, index, saved }) => {
               <div className="mx-auto w-[360px] pl-2 ">
                 <input
                   id="paramValue"
-                  className="h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                  className={
+                    saved
+                      ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                      : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
+                  }
                   placeholder="VALUE"
                   onChange={handleKeyChange}
                 />
@@ -105,7 +119,11 @@ const ParamOpt = ({ seq, params, index, saved }) => {
               <div className="mx-auto w-[360px] pl-2 ">
                 <input
                   id="paramDescription"
-                  className="h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                  className={
+                    saved
+                      ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                      : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
+                  }
                   placeholder="DESCRIPTION"
                   onChange={handleKeyChange}
                 />

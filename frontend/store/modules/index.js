@@ -16,6 +16,7 @@ import collections from "./collections";
 import ctab from "./ctab";
 import history from "./history";
 import apiresult from "./apiresult";
+import teststat from "./teststat";
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -35,6 +36,7 @@ const rootReducer = (state, action) => {
         ctab,
         history,
         apiresult,
+        teststat,
       });
       return combineReducer(state, action);
     }
@@ -44,7 +46,17 @@ const rootReducer = (state, action) => {
 const persistConfig = {
   key: "root",
   storage: storageSession,
-  whitelist: ["user", "seq", "project", "current", "page", "process", "api", "apiresult"],
+  whitelist: [
+    "user",
+    "seq",
+    "project",
+    "current",
+    "page",
+    "process",
+    "api",
+    "apiresult",
+    "teststat",
+  ],
 };
 
 export default persistReducer(persistConfig, rootReducer);

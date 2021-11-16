@@ -8,8 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as tabActions from "../store/modules/tab";
 import * as ctabActions from "../store/modules/ctab";
 import * as apiActions from "../store/modules/api";
-import * as resultActions from "../store/modules/apiresult";
-import ReactJson from "react-json-view";
+import apiresult, * as resultActions from "../store/modules/apiresult";
 
 const Content = ({ current }) => {
   const { title, description, seq, url, userId, img } = current;
@@ -17,18 +16,19 @@ const Content = ({ current }) => {
   const request = useSelector((state) => state.api.request);
   const token = useSelector((state) => state.user.token);
   const ctab = useSelector((state) => state.ctab);
+  const tstat = useSelector((state) => state.teststat.stat);
 
-  // console.log(result);
+  // console.log(tstat);
 
   const dispatch = useDispatch();
   const [requestTabs] = useState(["Params", "Authorization", "Headers", "Body", "Settings"]);
   const [requestTabIndex, setRequestTabIndex] = useState(0);
-  const [selectItem, setSelectItem] = useState("");
   const [currentTab, setCurrentTab] = useState(0);
   const [selectTabSeq, setSelectTabSeq] = useState(0);
   const [parsingHeaders, setParsingHeaders] = useState({});
   const [parsingParams, setParsingPrams] = useState({});
-  console.log("tabs", tabs);
+  // console.log(ctab);
+  // console.log(tabs);
 
   // console.log("ctab", ctab);
   // const [collectionList, setCollectionList] = useState([]);
@@ -46,7 +46,7 @@ const Content = ({ current }) => {
     })
       .then((res) => {
         // console.log(res.data);
-
+        dispatch(resultActions.setResultState([]));
         if (res.data.response.tabDto.params === null) {
           dispatch(apiActions.resetParamDatas([]));
         } else {
@@ -83,7 +83,7 @@ const Content = ({ current }) => {
       },
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         dispatch(tabActions.setTabs(res.data.response.tab));
       })
       .catch((error) => console.error(error));
@@ -99,13 +99,13 @@ const Content = ({ current }) => {
     })
       .then((res) => {
         window.location.reload();
-        console.log(res.data);
+        // console.log(res.data);
       })
 
       .catch((error) => console.error(error));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const paramsJson = request.params;
     if (paramsJson.constructor === Array) {
       paramsJson.forEach((array) => {
@@ -123,37 +123,68 @@ const Content = ({ current }) => {
         setParsingHeaders(copied);
       });
     }
-    const payload = {
-      address: current.url,
-      httpMethod: ctab.httpMethod,
-      headers: {},
-      params: parsingParams,
-      path: request.uri,
-      tabSeq: ctab.seq,
-      workspaceSeq: current.seq,
-    };
-    console.log("payload", payload);
 
-    axios({
-      method: "POST",
-      url: "/api/api-result",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: payload,
-    })
-      .then((res) => {
-        console.log(res);
-        console.log(res.data.response);
-        let a = JSON.parse(res.data.response.body);
-        dispatch(resultActions.setResultState(a));
-        console.log(a);
+    if (tstat === "api") {
+      const payload = {
+        address: current.url,
+        httpMethod: ctab.httpMethod,
+        headers: {},
+        params: parsingParams,
+        path: request.uri,
+        tabSeq: ctab.seq,
+        workspaceSeq: current.seq,
+      };
+      // console.log("payload", payload);
+
+      await axios({
+        method: "POST",
+        url: "/api/api-result",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: payload,
       })
-      .catch((error) => {
-        // console.log(payload);
-        // console.error(error);
-        console.log(error.response.data.error);
-      });
+        .then((res) => {
+          // console.log(res);
+          // console.log(res.data.response);
+          let a = JSON.parse(res.data.response.body);
+          dispatch(resultActions.setResultState(a));
+          // console.log(a);
+        })
+        .catch((error) => {
+          // console.log(payload);
+          // console.error(error);
+          // console.log(error.response.data.error);
+        });
+    } else {
+      const payload = {
+        address: current.url,
+        httpMethod: ctab.httpMethod,
+        headers: {},
+        params: parsingParams,
+        path: request.uri,
+        tabSeq: ctab.seq,
+        workspaceSeq: current.seq,
+        loop: request.loop,
+        thread: request.thread,
+      };
+      // console.log("payload", payload);
+
+      await axios({
+        method: "POST",
+        url: "/api/load-result",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: payload,
+      })
+        .then((res) => {
+          // console.log(res);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   };
 
   const [btnDescription, setBtnDescription] = useState(false);
@@ -250,8 +281,8 @@ const Content = ({ current }) => {
             {title} ({url})
           </p>
         </div>
-        <div>
-          <p className="mt-2 text-gray-400 text-xs">{description}</p>
+        <div className="mt-1">
+          <p className=" text-gray-400 text-sm">{description}</p>
         </div>
 
         <TabBar

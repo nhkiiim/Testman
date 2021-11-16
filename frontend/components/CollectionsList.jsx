@@ -5,7 +5,7 @@ import * as tabActions from "../store/modules/tab";
 
 const CollectionsList = ({ data, current }) => {
   const { name, seq } = data;
-  console.log(seq);
+  // console.log(seq);
   const getColor = {
     GET: "text-green-600 mr-[24px] text-sm",
     POST: "text-purple-600 mr-[14px] text-sm",
@@ -47,13 +47,13 @@ const CollectionsList = ({ data, current }) => {
       },
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.response.tabList.length > 0) {
           openCollectionTab(res.data.response.tabList);
         }
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 

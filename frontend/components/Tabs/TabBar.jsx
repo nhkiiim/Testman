@@ -3,7 +3,7 @@ import { FaTimes, FaPlus } from "react-icons/fa";
 import tab from "../../store/modules/tab";
 const TabBar = (props) => {
   const { tabs, tabIndex, handleTabChange, handleNewTab, handleRemoveTab } = props;
-  console.log(tabs);
+  // console.log(tabs.length);
 
   return (
     <div>
@@ -31,7 +31,9 @@ const TabBar = (props) => {
                       <span>{tab.path ? tab.path : "UNTITLED"}</span>
 
                       <div
-                        className="float-right mr-[10px]  cursor-pointer"
+                        className={
+                          tabs.length === 1 ? "hidden" : "float-right mr-[10px]  cursor-pointer"
+                        }
                         onClick={() => handleRemoveTab(tab)}
                       >
                         <FaTimes />

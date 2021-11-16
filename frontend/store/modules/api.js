@@ -19,6 +19,8 @@ const initialState = {
     body: {},
     settings: {},
     uri: "",
+    loop: 0,
+    thread: 0,
   },
   list: [],
 };
@@ -31,6 +33,12 @@ const requestSlice = createSlice({
       const payload = action.payload;
 
       state.request.payload.httpMethod = payload.httpMethod;
+    },
+    setLoopState: (state, action) => {
+      state.request.loop = action.payload;
+    },
+    setThreadState: (state, action) => {
+      state.request.thread = action.payload;
     },
     deleteAllParams: (state, action) => {
       state.request.params = action.payload;
@@ -106,5 +114,7 @@ export const {
   deleteHeaderDatas,
   resetParamDatas,
   deleteAllParams,
+  setLoopState,
+  setThreadState,
 } = requestSlice.actions;
 export default requestSlice.reducer;

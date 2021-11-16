@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { PlusCircleIcon } from "@heroicons/react/solid";
 import AuthKey from "./AuthKey";
-import HeadersOption from "./HeadersOption";
 import BodyOption from "./BodyOption";
 import SettingsOption from "./SettingsOption";
-import { setParamsState, setPayloadState } from "../store/modules/api";
-import ParamsOption from "./ParamsOption";
 import Params from "./Params";
 import Headers from "./Headers";
 
@@ -18,7 +13,6 @@ const RequestOptions = (props) => {
       case 0:
         return (
           <div>
-            {/* <ParamsOption /> */}
             <Params />
           </div>
         );
@@ -31,7 +25,6 @@ const RequestOptions = (props) => {
       case 2:
         return (
           <div>
-            {/* <HeadersOption /> */}
             <Headers />
           </div>
         );

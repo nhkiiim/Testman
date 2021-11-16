@@ -9,6 +9,7 @@ import ProjectListsDt from "./ProjectListsDt";
 import * as pageAction from "../store/modules/page";
 import { LogoutIcon } from "@heroicons/react/solid";
 import { useCookies } from "react-cookie";
+import * as apiAction from "../store/modules/api";
 
 const Header2 = () => {
   const router = useRouter();
@@ -29,6 +30,7 @@ const Header2 = () => {
 
   useEffect(() => {
     pjtList[0]?.seq === undefined ? setNoPjt(true) : setNoPjt(false);
+    dispatch(apiAction.deleteAllParams([]));
   }, [pjtList[0]]);
 
   const handlerSelect = (value) => {

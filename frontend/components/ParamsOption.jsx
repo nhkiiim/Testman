@@ -22,8 +22,8 @@ const ParamsOption = () => {
     paramDescription: "",
   });
 
-  console.log(paramData);
-  console.log(thisParam);
+  // console.log(paramData);
+  // console.log(thisParam);
   console.log(tmp);
   useEffect(() => {
     dispatch(setParamDatas(inputParam));

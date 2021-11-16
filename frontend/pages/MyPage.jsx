@@ -28,6 +28,7 @@ const MyPage = () => {
     description: "",
     img: null,
   });
+  const [file, setFile] = useState(null);
 
   const { title, url, description, img } = addObj;
   const [workspaces, setWorkSpaces] = useState([]);
@@ -44,6 +45,7 @@ const MyPage = () => {
     dispatch(pageAction.setPageState(0));
     dispatch(processAction.setProcessData({}));
     await getFetchData();
+    // console.log(workspaces);
     Aos.init({ duration: 1000 });
   }, [dataNone, tempSeq]);
   const getFetchData = async () => {
@@ -79,7 +81,7 @@ const MyPage = () => {
   });
 
   const handlerStart = (e) => {
-    console.log("START");
+    // console.log("START");
   };
 
   const handlerClickNHold = (seq) => {
@@ -90,8 +92,8 @@ const MyPage = () => {
   };
 
   const handlerEnd = (seq, enough) => {
-    console.log("END");
-    console.log(enough ? "click released after enough time" : "click released too soon");
+    // console.log("END");
+    // console.log(enough ? "click released after enough time" : "click released too soon");
   };
 
   const fetchDeletePjt = async (value) => {
@@ -103,9 +105,9 @@ const MyPage = () => {
       },
     })
       .then(() => {
-        console.log("삭제완료");
+        // console.log("삭제완료");
         setTempSeq();
-        console.log(tempSeq);
+        // console.log(tempSeq);
         // window.location.reload();
       })
       .catch((error) => {
@@ -126,23 +128,39 @@ const MyPage = () => {
     setShowAddModal(true);
   };
 
+  const handleFile = (e) => {
+    setFile(e.target.files[0]);
+  };
+
   const handlerAddSubmit = useCallback(async (e) => {
     e.preventDefault();
+    let formData = new FormData();
+    const header = {
+      "content-type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    };
+    const data = {
+      title: title,
+      url: url,
+      description: description,
+    };
+
+    formData.append("img", file);
+    formData.append("title", title);
+    formData.append("url", url);
+    formData.append("description", description);
+    console.log(formData);
     await axios({
       method: "post",
       url: "/api/workspaces",
+      data: formData,
       headers: {
+        "content-type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
-      },
-      data: {
-        title: title,
-        url: url,
-        description: description,
-        img: null,
       },
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setShowAddModal(false);
         window.location.reload();
       })
@@ -152,7 +170,7 @@ const MyPage = () => {
   });
 
   return (
-    <div className="bg-custom-100 ">
+    <div className="bg-custom-100 h-[100%]">
       {/* <Header /> */}
       <Header2 />
       <main className="max-w-7xl mx-auto px-16 sm:px-32">
@@ -174,22 +192,24 @@ const MyPage = () => {
             <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8 ">
               <>
                 {workspaces?.map(({ seq, title, url, description, img, createDate }) => (
-                  <ClickNHold
-                    time={1.5}
-                    onStart={handlerStart}
-                    onClickNHold={() => handlerClickNHold(seq)}
-                    onEnd={handlerEnd}
-                  >
-                    <MediumCard
-                      key={seq}
-                      seq={seq}
-                      title={title}
-                      url={url}
-                      description={description}
-                      img={img}
-                      createDate={createDate}
-                    />
-                  </ClickNHold>
+                  <div key={seq}>
+                    <ClickNHold
+                      time={1.5}
+                      onStart={handlerStart}
+                      onClickNHold={() => handlerClickNHold(seq)}
+                      onEnd={handlerEnd}
+                    >
+                      <MediumCard
+                        key={seq}
+                        seq={seq}
+                        title={title}
+                        url={url}
+                        description={description}
+                        img={img}
+                        createDate={createDate}
+                      />
+                    </ClickNHold>
+                  </div>
                 ))}
               </>
             </div>
@@ -323,6 +343,15 @@ const MyPage = () => {
                         onChange={changeHandler}
                       />
                     </div>
+                    <div>
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-0 ml-3"
+                        htmlFor="Pic"
+                      >
+                        Pic
+                        <input type="file" name="file" onChange={(e) => handleFile(e)} />
+                      </label>
+                    </div>
                   </form>
                 </div>
                 {/*footer*/}
@@ -349,7 +378,7 @@ const MyPage = () => {
         </>
       ) : null}
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

@@ -56,13 +56,18 @@ const AuthKey = () => {
   //     });
 
   return (
-    <div className="w-full mt-3 h-10 flex ml-5 border-t">
-      <div className=" flex border-r h-[100vh]">
-        <div className="mt-6">
-          <p className="mr-36 text-gray-500">Type</p>
+    <div className="w-full mt-5">
+      Authorization
+      <div className=" flex ">
+        <div className="mt-6 flex">
+          <p className="mr-20 text-gray-500">Type</p>
+          <p className="mr-20 text-gray-500">:</p>
         </div>
+        <button className="w-[120px] h-[35px] bg-gray-200 rounded-md mt-[16px]">
+          Bearer Token
+        </button>
 
-        <select
+        {/* <select
           name="method"
           id=""
           defaultValue="No Auth"
@@ -74,9 +79,19 @@ const AuthKey = () => {
           <option value="bearerToken">Bearer Token</option>
           <option value="basicAuth">Basic Auth</option>
           <option value="awsSignature">AWS Signature</option>
-        </select>
+        </select> */}
       </div>
       <div>
+        <input
+          type="text"
+          name="key"
+          onChange={handleApiKey}
+          value={apiKey.key}
+          className="border w-full h-9 pl-3 mt-5 rounded-sm"
+          placeholder="Key"
+        />
+      </div>
+      {/* <div>
         {(function () {
           switch (authType) {
             case "noAuth":
@@ -188,7 +203,7 @@ const AuthKey = () => {
               );
           }
         })()}
-      </div>
+      </div> */}
     </div>
   );
 };

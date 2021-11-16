@@ -14,8 +14,11 @@ const tabSlice = createSlice({
     getAllTabs: (state, action) => {
       state.tabs = action.payload;
     },
+    pushTabs: (state, action) => {
+      [...state.tabs, state.tabs.push(action.payload)];
+    },
   },
 });
 
-export const { setTabs, getAllTabs } = tabSlice.actions;
+export const { setTabs, getAllTabs, pushTabs } = tabSlice.actions;
 export default tabSlice.reducer;

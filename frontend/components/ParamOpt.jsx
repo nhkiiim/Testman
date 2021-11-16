@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { TrashIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import * as apiActions from "../store/modules/api";
@@ -11,7 +11,27 @@ const ParamOpt = ({ seq, params, index, saved }) => {
   const [inputObj, setInputObj] = useState(dataIndex);
   const { paramKey, paramValue, paramDescription } = inputObj;
   const [save, setSave] = useState(false);
+  const [d, setD] = useState([]);
+  useEffect(() => {
+    cals();
+  }, []);
+  // console.log(Object.keys(params));
+  // console.log(params);
+  const hasValue = Object.values(params);
+  const hasKey = Object.keys(params);
+  // console.log(hasKey[0], hasValue[0]);
 
+  const cals = () => {
+    let tmp = [];
+    for (let i = 0; i < hasKey.length; i++) {
+      tmp.push({
+        key: hasKey[i],
+        value: hasValue[i],
+      });
+    }
+    return setD(tmp);
+  };
+  // console.log(d);
   const fetchData = (idx) => {
     setSave(true);
     let datas = {
@@ -28,7 +48,7 @@ const ParamOpt = ({ seq, params, index, saved }) => {
     // window.location.reload();
   };
 
-  console.log(dataIndex);
+  // console.log(dataIndex);
   const handleDelete = (idx) => {
     let filtered = paramData.filter((data) => data.seq !== idx);
 
@@ -56,14 +76,12 @@ const ParamOpt = ({ seq, params, index, saved }) => {
               />
             </div>
           </div>
-
           <div className="w-full overflow-hidden xl:my-2 xl:px-2 xl:w-[31%] border-r border-gray-300">
             <div className="mx-auto w-[360px] pl-2 ">
               <input
                 id="paramKey"
                 className="h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
                 placeholder="KEY"
-                value={paramKey}
                 onChange={handleKeyChange}
               />
             </div>
@@ -76,7 +94,6 @@ const ParamOpt = ({ seq, params, index, saved }) => {
                   id="paramValue"
                   className="h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
                   placeholder="VALUE"
-                  value={paramValue}
                   onChange={handleKeyChange}
                 />
               </div>
@@ -90,7 +107,6 @@ const ParamOpt = ({ seq, params, index, saved }) => {
                   id="paramDescription"
                   className="h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
                   placeholder="DESCRIPTION"
-                  value={paramDescription}
                   onChange={handleKeyChange}
                 />
               </div>

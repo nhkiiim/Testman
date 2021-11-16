@@ -9,7 +9,7 @@ const collectionsSlice = createSlice({
   initialState,
   reducers: {
     setCollections: (state, action) => {
-      state.list = [action.payload];
+      state.list = action.payload;
     },
   },
 });

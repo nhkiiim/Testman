@@ -563,7 +563,7 @@ const Performance = () => {
   };
 
   return (
-    <div className="h-[100%] bg-custom-100">
+    <div className="h-[100vh] bg-custom-100">
       <Header2 />
       <nav className="flex-col w-full  bg-gray-500 shadow-lg">
         <div
@@ -789,7 +789,7 @@ const Performance = () => {
 
                 <div className="w-[350px] h-[120px] mx-auto lg:mr-[30%] xl:mr-[40%] 2xl:mr-[52%]">
                   <hr className="mb-2" />
-                  {firstStat === "good" ? (
+                  {inter === "good" ? (
                     <>
                       <div className="flex mr-5 justify-between ">
                         <div className="flex">
@@ -811,7 +811,7 @@ const Performance = () => {
                     </>
                   ) : (
                     <>
-                      {firstStat === "soso" ? (
+                      {inter === "soso" ? (
                         <>
                           <div className="flex mr-5 justify-between">
                             <div className="flex">
@@ -857,7 +857,7 @@ const Performance = () => {
                 </div>
                 <div className="w-[350px] h-[120px] mx-auto lg:ml-[30%] xl:ml-[40%] 2xl:ml-[52%]">
                   <hr className="mb-2" />
-                  {firstStat === "good" ? (
+                  {speed === "good" ? (
                     <>
                       <div className="flex mr-5 justify-between ">
                         <div className="flex">
@@ -876,7 +876,7 @@ const Performance = () => {
                     </>
                   ) : (
                     <>
-                      {firstStat === "soso" ? (
+                      {speed === "soso" ? (
                         <>
                           <div className="flex mr-5 justify-between">
                             <div className="flex">
@@ -916,7 +916,7 @@ const Performance = () => {
                 </div>
                 <div className="w-[350px] h-[120px] mx-auto lg:mr-[30%] xl:mr-[40%] 2xl:mr-[52%]">
                   <hr className="mb-2" />
-                  {firstStat === "good" ? (
+                  {block === "good" ? (
                     <>
                       <div className="flex mr-5 justify-between ">
                         <div className="flex">
@@ -938,7 +938,7 @@ const Performance = () => {
                     </>
                   ) : (
                     <>
-                      {firstStat === "soso" ? (
+                      {block === "soso" ? (
                         <>
                           <div className="flex mr-5 justify-between">
                             <div className="flex">
@@ -984,7 +984,7 @@ const Performance = () => {
                 </div>
                 <div className="w-[350px] h-[120px] mx-auto lg:ml-[30%] xl:ml-[40%] 2xl:ml-[52%]">
                   <hr className="mb-2" />
-                  {firstStat === "good" ? (
+                  {largest === "good" ? (
                     <>
                       <div className="flex mr-5 justify-between ">
                         <div className="flex">
@@ -1006,7 +1006,7 @@ const Performance = () => {
                     </>
                   ) : (
                     <>
-                      {firstStat === "soso" ? (
+                      {largest === "soso" ? (
                         <>
                           <div className="flex mr-5 justify-between">
                             <div className="flex">
@@ -1053,7 +1053,7 @@ const Performance = () => {
                 </div>
                 <div className="w-[350px] h-[120px] mx-auto lg:mr-[30%] xl:mr-[40%] 2xl:mr-[52%]">
                   <hr className="mb-2" />
-                  {firstStat === "good" ? (
+                  {layout === "good" ? (
                     <>
                       <div className="flex mr-5 justify-between ">
                         <div className="flex">
@@ -1072,7 +1072,7 @@ const Performance = () => {
                     </>
                   ) : (
                     <>
-                      {firstStat === "soso" ? (
+                      {layout === "soso" ? (
                         <>
                           <div className="flex mr-5 justify-between">
                             <div className="flex">
@@ -1125,7 +1125,7 @@ const Performance = () => {
         </section>
       )}
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

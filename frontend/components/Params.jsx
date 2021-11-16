@@ -9,7 +9,7 @@ import * as apiActions from "../store/modules/api";
 const Params = () => {
   const dispatch = useDispatch();
   const paramData = useSelector((state) => state.api.request.params);
-  console.log(paramData);
+  console.log("paramData", paramData);
 
   const rawData = {
     seq: Math.random(0, 10) * 10,
@@ -22,9 +22,9 @@ const Params = () => {
     dispatch(apiActions.setParamDatas(rawData));
   };
   return (
-    <div className="mt-5 ml-2">
+    <div className="mt-5 ">
       Query Params
-      <div className="border border-gray-300 mt-3 w-[85%]">
+      <div className="border border-gray-300 mt-3 w-full">
         <div className="flex flex-wrap overflow-hidden h-[30px] ">
           <div className="overflow-hidden my-2 px-2 w-[4%] border-r border-gray-300">
             <div className="mx-auto flex justify-center" onClick={handleAddRow}>
@@ -33,26 +33,30 @@ const Params = () => {
           </div>
 
           <div className="overflow-hidden my-2 px-2 w-[31%] border-r border-gray-300">
-            <div className="mx-auto pl-[13px]">
+            <div className="mx-auto ml-2">
               <p className="text-sm font-bold">KEY</p>
             </div>
           </div>
 
           <div className="overflow-hidden my-2 px-2 w-[31%] border-r border-gray-300">
-            <div className="mx-auto pl-[13px]">
+            <div className="mx-auto ml-2">
               <p className="text-sm font-bold">VALUE</p>
             </div>
           </div>
 
           <div className="overflow-hidden my-2 px-2 w-[31%] border-r border-gray-300">
-            <div className="mx-auto pl-[13px]">
+            <div className="mx-auto ml-2">
               <p className="text-sm font-bold">DESCRIPTION</p>
             </div>
           </div>
         </div>
-        {paramData.map((rows, index) => (
-          <ParamOpt key={rows.seq} seq={rows.seq} params={rows} index={index} saved={rows.saved} />
-        ))}
+        {paramData ? (
+          paramData.map((rows, index) => (
+            <ParamOpt key={index} seq={rows.seq} params={rows} index={index} saved={rows.saved} />
+          ))
+        ) : (
+          <ParamOpt />
+        )}
       </div>
     </div>
   );

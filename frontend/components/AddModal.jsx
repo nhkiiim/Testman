@@ -3,7 +3,7 @@ import { XCircleIcon } from "@heroicons/react/solid";
 
 const AddModal = (modal) => {
   const [showModal, setShowModal] = useState(modal);
-  useEffect(() => {}, [showModal]);
+  // useEffect(() => {}, [showModal]);
   return (
     <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

@@ -22,9 +22,9 @@ const Headers = () => {
     dispatch(apiActions.setHeaderDatas(rawData));
   };
   return (
-    <div className="mt-5 ml-2">
+    <div className="mt-5 ">
       Headers
-      <div className="border border-gray-300 mt-3 w-[85%]">
+      <div className="border border-gray-300 mt-3 w-full">
         <div className="flex flex-wrap overflow-hidden h-[30px] ">
           <div className="overflow-hidden my-2 px-2 w-[4%] border-r border-gray-300">
             <div className="mx-auto flex justify-center" onClick={handleAddRow}>
@@ -33,19 +33,19 @@ const Headers = () => {
           </div>
 
           <div className="overflow-hidden my-2 px-2 w-[31%] border-r border-gray-300">
-            <div className="mx-auto pl-[13px]">
+            <div className="mx-auto ml-2">
               <p className="text-sm font-bold">KEY</p>
             </div>
           </div>
 
           <div className="overflow-hidden my-2 px-2 w-[31%] border-r border-gray-300">
-            <div className="mx-auto pl-[13px]">
+            <div className="mx-auto ml-2">
               <p className="text-sm font-bold">VALUE</p>
             </div>
           </div>
 
           <div className="overflow-hidden my-2 px-2 w-[31%] border-r border-gray-300">
-            <div className="mx-auto pl-[13px]">
+            <div className="mx-auto ml-2">
               <p className="text-sm font-bold">DESCRIPTION</p>
             </div>
           </div>

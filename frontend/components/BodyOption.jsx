@@ -58,9 +58,6 @@ const BodyOption = () => {
     setUploadFile(e.targe.files);
   };
 
-  useEffect(() => {
-    console.log(bodyOption);
-  });
   return (
     <div className="mt-5 ml-5">
       <form>

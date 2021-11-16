@@ -10,7 +10,7 @@ const ProjectListsDt = ({ title, seq }) => {
   const token = useSelector((state) => state.user.token);
   // console.log(title);
   const handlerPjtList = () => {
-    console.log(seq);
+    // console.log(seq);
     axios({
       method: "get",
       url: "/api/workspaces/" + seq,
@@ -26,6 +26,9 @@ const ProjectListsDt = ({ title, seq }) => {
       });
     router.push({
       pathname: "/TestPage",
+      query: {
+        no: seq,
+      },
     });
     dispatch(seqActions.setSeqState(seq));
   };

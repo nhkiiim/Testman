@@ -9,14 +9,15 @@ const RequestInput = (props) => {
   const ctab = useSelector((state) => state.ctab);
   console.log(ctab);
   const selector = useSelector((state) => state.api);
-  const { tabs, handleSubmit, url } = props;
-  console.log(selector.request);
-  const [inputUrl, setInputUrl] = useState(ctab.address);
-  const handleURLChange = (e) => {
-    setInputUrl(e.target.value);
-    dispatch(ctabActions.setCurl(inputUrl));
-    dispatch(apiActions.setUriState(inputUrl));
+  const handleUriChange = (e) => {
+    setInputUri(e.target.value);
+    dispatch(ctabActions.setCurl(inputUri));
+    dispatch(apiActions.setUriState(inputUri));
   };
+
+  const { tabs, handleSubmit, url } = props;
+  // console.log(selector.request);
+  const [inputUri, setInputUri] = useState(ctab.address);
   const [testBtn, setTestBtn] = useState(false);
   const clickTestBtn = () => {
     console.log(testBtn);
@@ -26,33 +27,45 @@ const RequestInput = (props) => {
       return setTestBtn(true);
     }
   };
-  const [payload, setPayload] = useState({
-    httpMethod: "GET",
-  });
+  const [payload, setPayload] = useState("GET");
+  // console.log(payload);
 
   const handlePayload = (e) => {
-    const { value, name } = e.target;
-    setPayload({
-      ...payload,
-      [name]: value,
-    });
+    setPayload(e.target.value);
+  };
+
+  // const getCollectionList = useCallback(async () => {
+  //   await axios({
+  //     method: "GET",
+  //     url: "/api/collections/" + current.seq,
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       console.log(res.data.response.collectionList);
+  //       dispatch(collectionAction.setCollections(res.data.response.collectionList));
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
+  useEffect(() => {
     dispatch(apiActions.setPayloadState(payload));
-  };
-  const [uri, setUri] = useState("");
-  const handleUriChange = (e) => {
-    setUri(e.target.value);
-    dispatch(apiActions.setUriState(uri));
-  };
-  // useEffect(() => {
-  //     console.log(selector)
-  //   });
+    dispatch(ctabActions.setHttpMethods(payload));
+    dispatch(ctabActions.setCurl(inputUri));
+    dispatch(apiActions.setUriState(inputUri));
+  }, [inputUri, payload]);
   if (ctab !== undefined) {
     return (
-      <div>
-        <div className="grid grid-cols-2 text-gray-500 pb-[10px] border-b border-gray-200 pl-[15px] pr-[15px] pt-[10px]">
+      <div className="w-full  ">
+        <div className="flex justify-between text-gray-500 pb-[10px] border-b border-gray-200  pt-[10px]">
           <div className="flex">
-            <FaCaretRight />
-            <span className="text-xs font-normal ml-[10px]">{ctab.name}</span>
+            <FaCaretRight className="mt-[1px]" />
+            <span className="text-xs font-normal ml-[10px]">
+              {ctab.path ? ctab.path : "UNTITLED"}
+            </span>
           </div>
           <div className=" inline-flex ml-[45%]">
             <p
@@ -82,7 +95,7 @@ const RequestInput = (props) => {
             </p>
           </div>
         </div>
-        <div className="m-[10px]">
+        <div className="mt-3">
           <div className="flex">
             <select
               onChange={handlePayload}
@@ -99,25 +112,31 @@ const RequestInput = (props) => {
             <input
               type="text"
               placeholder=""
-              value={inputUrl || ""}
-              onChange={handleURLChange}
-              className="border-r border-b border-gray-300 bg-gray-200 p-[8px] w-[60%] border-t rounded-sm"
+              value={url}
+              className="border-r border-b border-gray-300 bg-gray-200 p-[8px] w-[243px] border-t rounded-sm"
+              disabled
+            />
+            <input
+              type="text"
+              placeholder="Type Query here !"
+              className="border-r border-b border-gray-300 bg-gray-200 p-[8px] w-[722px]  border-t rounded-sm pl-3"
+              onKeyUp={handleUriChange}
             />
 
             <button
-              className="flex bg-blue-500 text-white p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm "
+              className="flex bg-blue-500 text-white p-[14px] ml-[8px] rounded pl-[15px] pr-[18px] cursor-pointer text-sm "
               onClick={handleSubmit}
             >
               SEND
               <FaCaretDown className="ml-[10px] mt-[2px]" />
             </button>
-            <button
-              className="flex bg-gray-300 border-0 p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm"
-              onClick={props.clickSaveBtn}
+            {/* <button
+              className="flex bg-gray-300 border-0 p-[14px] ml-[8px] rounded pl-[15px] pr-[18px] cursor-pointer text-sm"
+              onClick={() => props.clickSaveBtn}
             >
               SAVE
               <FaCaretDown className="ml-[10px] mt-[2px]" />
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

@@ -5,15 +5,7 @@ const initialState = {
     payload: {
       httpMethod: "GET",
     },
-    params: [
-      {
-        seq: 0,
-        paramKey: "",
-        paramValue: "",
-        paramDescription: "",
-        saved: false,
-      },
-    ],
+    params: [],
     authorization: {},
     headers: [
       {
@@ -35,13 +27,16 @@ const requestSlice = createSlice({
   name: "api",
   initialState,
   reducers: {
-    setApiLists: (state, action) => {
-      state.list = [...state.list, action.payload];
-    },
     setPayloadState: (state, action) => {
       const payload = action.payload;
 
       state.request.payload.httpMethod = payload.httpMethod;
+    },
+    deleteAllParams: (state, action) => {
+      state.request.params = action.payload;
+    },
+    resetParamDatas: (state, action) => {
+      state.request.params = [action.payload];
     },
     setParamsState: (state, action) => {
       state.request.params = [...state.request.params, action.payload];
@@ -95,7 +90,6 @@ const requestSlice = createSlice({
 });
 
 export const {
-  setApiLists,
   setPayloadState,
   setParamsState,
   setAuthorizationState,
@@ -110,5 +104,7 @@ export const {
   setHeaderDatas,
   saveHeaderDatas,
   deleteHeaderDatas,
+  resetParamDatas,
+  deleteAllParams,
 } = requestSlice.actions;
 export default requestSlice.reducer;

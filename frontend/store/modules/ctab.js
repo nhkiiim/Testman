@@ -28,10 +28,23 @@ const ctabSlice = createSlice({
         (state.workspaceSeq = workspaceSeq);
     },
     setCurl: (state, action) => {
+      state.path = action.payload;
+    },
+    setHttpMethods: (state, action) => {
+      state.httpMethod = action.payload;
+    },
+    setAddress: (state, action) => {
       state.address = action.payload;
+    },
+    setHeaders: (state, action) => {
+      state.headers = action.payload;
+    },
+    setParams: (state, action) => {
+      state.params = action.payload;
     },
   },
 });
 
-export const { setCtabs, setCurl } = ctabSlice.actions;
+export const { setCtabs, setCurl, setHttpMethods, setAddress, setHeaders, setParams } =
+  ctabSlice.actions;
 export default ctabSlice.reducer;

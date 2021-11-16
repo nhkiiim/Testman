@@ -33,7 +33,7 @@ public class LoadResultServiceImpl implements LoadResultService {
     private final HistoryRepository historyRepository;
 
     private final TabRepository tabRepository;
-    
+
     @Resource
     private LoadTestAsync loadTestAsync;
 
@@ -59,7 +59,7 @@ public class LoadResultServiceImpl implements LoadResultService {
                 historyRepository.save(new History(loadInsertReq));
 
                 Future<LoadResult> future = loadTestAsync.work(loadInsertReq);
-                return Optional.of(future.get());
+                return Optional.of(loadResultRepository.save(future.get()));
             } else {
                 logger.debug("Exceeded number of threads");
                 throw new TaskRejectedException("스레드 개수 초과");

@@ -15,9 +15,11 @@ Backend :
 - java version : 8
 - jmeter version : 5.4.1
 - gradle : 7.1.1
-<!-- - prometheous -->
-<!-- - grafana -->
 ```
+<!-- ```
+- prometheous
+- grafana
+``` -->
 
 Frontend :
 ```

@@ -9,7 +9,7 @@ public interface LoadResultService {
 
     Optional<LoadResult> insertLoad(LoadInsertReq loadInsertReq);
 
-    List<LoadResult> selectLoadByTabSeq(Long tabSeq);
+    List<LoadResultListDto> selectLoadByTabSeq(Long tabSeq);
 
     Optional<LoadResult> selectLoad(Long seq);
 

@@ -16,7 +16,7 @@ const initialState = {
         saved: false,
       },
     ],
-    body: {},
+    body: [],
     settings: {},
     uri: "",
     loop: 0,
@@ -81,9 +81,7 @@ const requestSlice = createSlice({
       state.request.headers = headers;
     },
     setBodyState: (state, action) => {
-      const body = action.payload;
-
-      state.request.body = body;
+      state.request.body = [...state.request.body, action.payload];
     },
     setSettingsState: (state, action) => {
       const settings = action.payload;

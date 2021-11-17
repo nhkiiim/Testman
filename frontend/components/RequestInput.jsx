@@ -13,7 +13,8 @@ const RequestInput = (props) => {
   // console.log(ctab);
   const selector = useSelector((state) => state.api);
   // console.log(selector);
-
+  const uri = useSelector((state) => state.api.request.uri)
+  console.log(selector)
   const handleUriChange = (e) => {
     setInputUri(e.target.value);
     dispatch(ctabActions.setCurl(inputUri));
@@ -181,6 +182,7 @@ const RequestInput = (props) => {
               placeholder="Type Query here !"
               className="border-r border-b border-gray-300 bg-gray-50 p-[8px] w-[722px]  border-t rounded-sm pl-3"
               onKeyUp={handleUriChange}
+              value={uri}
             />
 
             <button

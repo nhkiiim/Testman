@@ -26,7 +26,10 @@ const Content = ({ current }) => {
   const [currentTab, setCurrentTab] = useState(0);
   const [selectTabSeq, setSelectTabSeq] = useState(0);
   const [parsingHeaders, setParsingHeaders] = useState({});
-  const [parsingParams, setParsingPrams] = useState({});
+  const [parsingParams, setParsingParams] = useState('');
+  const [parsingBodies, setParsingBodies] = useState({});
+  const [payloadParams, setPayloadParams] = useState({})
+  const [newUri, setNewUri] = useState('')
   // console.log(ctab);
   // console.log(tabs);
 
@@ -108,10 +111,20 @@ const Content = ({ current }) => {
   const handleSubmit = async () => {
     const paramsJson = request.params;
     if (paramsJson.constructor === Array) {
-      paramsJson.forEach((array) => {
-        const copied = parsingParams;
-        copied[array.paramKey] = array.paramValue;
-        setParsingPrams(copied);
+      const copied = "?"
+      paramsJson.forEach((array, idx) => {
+        console.log(array, idx)
+        if (idx >0) {
+          copied += "&"
+        }
+        copied += array.paramKey;
+        copied += "=" 
+        copied += array.paramValue;
+        setParsingParams(copied);
+        console.log(parsingParams)
+        console.log(copied)
+        dispatch(ctabActions.setCurl(copied));
+        dispatch(apiActions.setUriState(copied));
       });
     }
 
@@ -124,17 +137,34 @@ const Content = ({ current }) => {
       });
     }
 
+    const bodyJson = request.body;
+    if (bodyJson.constructor === Array) {
+      bodyJson.forEach((array) => {
+        const copied = parsingBodies;
+        copied[array.paramKey] = array.paramValue;
+        setParsingBodies(copied);
+      })
+    }
+
+    // switch (ctab.httpMethod) {
+    //   case "GET" :
+    //     setPayloadParams(parsingParams)
+    //   case "POST":
+    //     setPayloadParams(parsingHeaders)
+    // }
+
     if (tstat === "api") {
       const payload = {
         address: current.url,
         httpMethod: ctab.httpMethod,
         headers: {},
-        params: parsingParams,
-        path: request.uri,
+        body: parsingBodies,
+        // path: request.uri,
+        path: parsingParams,
         tabSeq: ctab.seq,
         workspaceSeq: current.seq,
       };
-      // console.log("payload", payload);
+      console.log("payload", payload);
 
       await axios({
         method: "POST",
@@ -148,12 +178,12 @@ const Content = ({ current }) => {
           // console.log(res);
           // console.log(res.data.response);
           let a = JSON.parse(res.data.response.body);
-          dispatch(resultActions.setResultState(a));
+          dispatch(resultActions.setResultState(a));   
           // console.log(a);
         })
         .catch((error) => {
           // console.log(payload);
-          // console.error(error);
+          console.error(error);
           // console.log(error.response.data.error);
         });
     } else {
@@ -161,7 +191,7 @@ const Content = ({ current }) => {
         address: current.url,
         httpMethod: ctab.httpMethod,
         headers: {},
-        params: parsingParams,
+        body: parsingParams,
         path: request.uri,
         tabSeq: ctab.seq,
         workspaceSeq: current.seq,
@@ -272,6 +302,9 @@ const Content = ({ current }) => {
   //   console.log(item);
   //   setSelectItem(item);
   // };
+  useEffect(() => {
+
+  }, [parsingParams])
 
   return (
     <div className="flex">

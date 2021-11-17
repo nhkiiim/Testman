@@ -13,9 +13,9 @@ import seq from "./seq";
 import current from "./current";
 import process from "./process";
 import collections from "./collections";
-import ctab from "./ctab";
-import history from "./history";
-import apiresult from "./apiresult";
+import ctab from "./ctab"
+import history from "./history"
+import apiresult from "./apiresult"
 
 const rootReducer = (state, action) => {
   switch (action.type) {

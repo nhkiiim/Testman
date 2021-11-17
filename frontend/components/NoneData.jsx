@@ -3,7 +3,7 @@ import Image from "next/image";
 import img from "../img/404.png";
 const NoneData = () => {
   return (
-    <div className="h-[100%] mt-32">
+    <div className="h-[100%] mt-32 bg-custom-100">
       <div className="relative h-80 mx-auto justify-center">
         <Image src={img} layout="fill" objectFit="contain" />
       </div>

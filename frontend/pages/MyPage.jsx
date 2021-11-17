@@ -18,6 +18,8 @@ import NoneData from "../components/NoneData";
 import withAuth from "../HOC/withAuth";
 import * as pageAction from "../store/modules/page";
 import * as processAction from "../store/modules/process";
+import { ViewGridAddIcon } from "@heroicons/react/solid";
+import { CogIcon } from "@heroicons/react/solid";
 import Footer from "../components/Footer";
 
 const MyPage = () => {
@@ -28,6 +30,7 @@ const MyPage = () => {
     description: "",
     img: null,
   });
+  const [file, setFile] = useState(null);
 
   const { title, url, description, img } = addObj;
   const [workspaces, setWorkSpaces] = useState([]);
@@ -44,6 +47,7 @@ const MyPage = () => {
     dispatch(pageAction.setPageState(0));
     dispatch(processAction.setProcessData({}));
     await getFetchData();
+    // console.log(workspaces);
     Aos.init({ duration: 1000 });
   }, [dataNone, tempSeq]);
   const getFetchData = async () => {
@@ -79,7 +83,7 @@ const MyPage = () => {
   });
 
   const handlerStart = (e) => {
-    console.log("START");
+    // console.log("START");
   };
 
   const handlerClickNHold = (seq) => {
@@ -90,8 +94,8 @@ const MyPage = () => {
   };
 
   const handlerEnd = (seq, enough) => {
-    console.log("END");
-    console.log(enough ? "click released after enough time" : "click released too soon");
+    // console.log("END");
+    // console.log(enough ? "click released after enough time" : "click released too soon");
   };
 
   const fetchDeletePjt = async (value) => {
@@ -103,9 +107,9 @@ const MyPage = () => {
       },
     })
       .then(() => {
-        console.log("삭제완료");
+        // console.log("삭제완료");
         setTempSeq();
-        console.log(tempSeq);
+        // console.log(tempSeq);
         // window.location.reload();
       })
       .catch((error) => {
@@ -126,23 +130,39 @@ const MyPage = () => {
     setShowAddModal(true);
   };
 
+  const handleFile = (e) => {
+    setFile(e.target.files[0]);
+  };
+
   const handlerAddSubmit = useCallback(async (e) => {
     e.preventDefault();
+    let formData = new FormData();
+    const header = {
+      "content-type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    };
+    const data = {
+      title: title,
+      url: url,
+      description: description,
+    };
+
+    formData.append("img", file);
+    formData.append("title", title);
+    formData.append("url", url);
+    formData.append("description", description);
+    // console.log(formData);
     await axios({
       method: "post",
       url: "/api/workspaces",
+      data: formData,
       headers: {
+        "content-type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
-      },
-      data: {
-        title: title,
-        url: url,
-        description: description,
-        img: null,
       },
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setShowAddModal(false);
         window.location.reload();
       })
@@ -152,44 +172,62 @@ const MyPage = () => {
   });
 
   return (
-    <div className="bg-custom-100 ">
+    <div className=" h-[100%] bg-white" data-theme="dark">
       {/* <Header /> */}
       <Header2 />
-      <main className="max-w-7xl mx-auto px-16 sm:px-32">
+      <main className="mx-auto px-16 sm:px-40">
         <section className="mt-5">
           <div className="flex justify-between">
-            <h2 className="text-2xl font-semibold py-8 items-center md:mx-2 ">
-              {uid}'s Project List
-            </h2>
-            <button
+            <div>
+              <h2 className="text-2xl font-semibold py-8 items-center md:mx-2 ">
+                {uid}'s Project List
+              </h2>
+            </div>
+            <div className="flex py-9 mx-2">
+              <div onClick={handlerAdd} className="cursor-pointer">
+                <ViewGridAddIcon className="h-7 mr-3" />
+              </div>
+              <div className="cursor-pointer">
+                <CogIcon className="h-7" />
+              </div>
+            </div>
+
+            {/* <button
               className="bg-indigo-600  text-white  rounded  md:mx-3 h-[45px] w-[80px] cursor-pointer mt-7"
               onClick={handlerAdd}
             >
               ADD
-            </button>
+            </button> */}
           </div>
           {dataNone ? (
             <NoneData />
           ) : (
-            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8 ">
+            <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-7 ">
               <>
-                {workspaces?.map(({ seq, title, url, description, img, createDate }) => (
-                  <ClickNHold
-                    time={1.5}
-                    onStart={handlerStart}
-                    onClickNHold={() => handlerClickNHold(seq)}
-                    onEnd={handlerEnd}
+                {workspaces?.map(({ seq, title, url, description, img, createDate }, index) => (
+                  <div
+                    key={seq}
+                    className="hover:scale-105 transform transition duration-500 ease-out"
                   >
-                    <MediumCard
-                      key={seq}
-                      seq={seq}
-                      title={title}
-                      url={url}
-                      description={description}
-                      img={img}
-                      createDate={createDate}
-                    />
-                  </ClickNHold>
+                    <ClickNHold
+                      time={1.5}
+                      onStart={handlerStart}
+                      onClickNHold={() => handlerClickNHold(seq)}
+                      onEnd={handlerEnd}
+                    >
+                      <MediumCard
+                        key={seq}
+                        seq={seq}
+                        title={title}
+                        url={url}
+                        description={description}
+                        img={img}
+                        createDate={createDate}
+                        length={workspaces.length}
+                        index={index}
+                      />
+                    </ClickNHold>
+                  </div>
                 ))}
               </>
             </div>
@@ -204,10 +242,10 @@ const MyPage = () => {
           >
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none h-[400px]">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none h-[400px] ">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
-                  <h3 className="text-3xl font-semibold">I'm Ready For Delete !</h3>
+                  <h3 className="text-2xl font-semibold">Ready for Delete ! </h3>
                   <button
                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-3 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                     onClick={handlerCloseBtn}
@@ -323,6 +361,15 @@ const MyPage = () => {
                         onChange={changeHandler}
                       />
                     </div>
+                    <div>
+                      <label
+                        className="block text-gray-700 text-sm font-bold mb-0 ml-3"
+                        htmlFor="Pic"
+                      >
+                        Pic
+                        <input type="file" name="file" onChange={(e) => handleFile(e)} />
+                      </label>
+                    </div>
                   </form>
                 </div>
                 {/*footer*/}
@@ -349,7 +396,7 @@ const MyPage = () => {
         </>
       ) : null}
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

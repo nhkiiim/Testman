@@ -28,20 +28,16 @@ const Login = () => {
     }));
   };
   const router = useRouter();
-  const loginHandler = (e) => {
+  const loginHandler = async (e) => {
     e.preventDefault();
     const data = {
       userId: inputObj.userId,
       password: inputObj.password,
     };
-    axios
+    await axios
       .post("/api/users/login", data)
       .then((res) => {
-        setCookie("token", res.data.response.token, {
-          path: "/",
-          secure: true,
-          sameSite: "none",
-        });
+        setCookie("token", res.data.response.token);
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.response.token}`;
 

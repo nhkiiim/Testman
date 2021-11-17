@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 import static com.henh.testman.common.utils.ApiUtils.success;
 
 
@@ -29,7 +27,7 @@ public class WorkspaceRestController {
     }
 
     @PostMapping
-    public ApiResult<WorkspaceDto> insertWorkspace(@Valid @RequestBody WorkspaceInsertReq workspaceInsertReq, Authentication authentication) {
+    public ApiResult<WorkspaceDto> insertWorkspace(WorkspaceInsertReq workspaceInsertReq, Authentication authentication) {
         return success(
                 workspaceService.insertWorkspace(workspaceInsertReq, authentication.getName())
                         .map(WorkspaceDto::new)
@@ -65,9 +63,9 @@ public class WorkspaceRestController {
     }
 
     @PatchMapping
-    public ApiResult<WorkspaceDto> updateWorkspace(@Valid @RequestBody WorkspaceUpdateReq workspaceUpdateReq) {
+    public ApiResult<WorkspaceDto> updateWorkspace(WorkspaceUpdateReq workspaceUpdateReq, Authentication authentication) {
         return success(
-                workspaceService.updateWorkspace(workspaceUpdateReq)
+                workspaceService.updateWorkspace(workspaceUpdateReq, authentication.getName())
                         .map(WorkspaceDto::new)
                         .orElseThrow(() -> new NotFoundException("Could not found workspace seq "+ workspaceUpdateReq.getSeq()))
         );

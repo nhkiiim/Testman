@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 const ProjectLists = ({ name, select }) => {
   useEffect(() => {
-    console.log(name);
+    // console.log(name);
   });
 
   return (

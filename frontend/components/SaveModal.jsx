@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-
-
 const SaveModal = (modal) => {
   const [showModal, setShowModal] = useState(modal);
 
   const [btnDescription, setBtnDescription] = useState(false);
 
   useEffect(() => {
-        console.log(btnDescription)
-      }); 
+    // console.log(btnDescription)
+  });
 
-
-    return (
-        <>
+  return (
+    <>
       <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
         <div className="relative w-auto my-6 mx-auto max-w-3xl">
           {/*content*/}
@@ -35,25 +32,29 @@ const SaveModal = (modal) => {
                     className="bg-gray-200 rounded w-full focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
                   />
                 </div>
-                {!btnDescription ?
-                <div>
-                <button className="block text-gray-700 text-sm font-bold mb-3 ml-3 text-left underline" onClick={() => {
-                  setBtnDescription(true)
-                }}>Add description</button>
-                </div>
-                :
-                <div className="mb-6 pt-3 rounded">
-                  <label className="block text-sm font-bold mb-0 ml-3" for="description">
-                    Description
-                  </label>
-                  <textarea
-                    type="text"
-                    id="description"
-                    className=" resize-none overflow-auto bg-gray-200 rounded w-full h-40 text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
-                  />
-                </div>
-                  
-              }
+                {!btnDescription ? (
+                  <div>
+                    <button
+                      className="block text-gray-700 text-sm font-bold mb-3 ml-3 text-left underline"
+                      onClick={() => {
+                        setBtnDescription(true);
+                      }}
+                    >
+                      Add description
+                    </button>
+                  </div>
+                ) : (
+                  <div className="mb-6 pt-3 rounded">
+                    <label className="block text-sm font-bold mb-0 ml-3" for="description">
+                      Description
+                    </label>
+                    <textarea
+                      type="text"
+                      id="description"
+                      className=" resize-none overflow-auto bg-gray-200 rounded w-full h-40 text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
+                    />
+                  </div>
+                )}
 
                 <div className="mb-6 pt-3 rounded">
                   <label className="block text-sm font-bold mb-0 ml-3" for="URL">
@@ -87,7 +88,7 @@ const SaveModal = (modal) => {
       </div>
       <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
     </>
-    );
+  );
 };
 
 export default SaveModal;

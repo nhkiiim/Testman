@@ -1,67 +1,167 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCaretRight, FaCaretDown, FaToggleOn, FaToggleOff } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { InformationCircleIcon } from "@heroicons/react/outline";
+import * as apiActions from "../store/modules/api";
+import * as ctabActions from "../store/modules/ctab";
+import * as statActions from "../store/modules/teststat";
+import { LightBulbIcon } from "@heroicons/react/solid";
+
 const RequestInput = (props) => {
-  const { tabs, handleURLChange, handleSubmit, url } = props;
-  const [testBtn, setTestBtn] = useState(false);
+  const dispatch = useDispatch();
+  const ctab = useSelector((state) => state.ctab);
+  // console.log(ctab);
+  const selector = useSelector((state) => state.api);
+  // console.log(selector);
+
+  const handleUriChange = (e) => {
+    setInputUri(e.target.value);
+    dispatch(ctabActions.setCurl(inputUri));
+    dispatch(apiActions.setUriState(inputUri));
+  };
+  const [loopVal, setLoopVal] = useState(0);
+  const [threadVal, setThreadVal] = useState(0);
+
+  const { tabs, handleSubmit, url } = props;
+  // console.log(selector.request);
+  const [inputUri, setInputUri] = useState(ctab.address);
+  const [testBtn, setTestBtn] = useState("api");
+  const handleThreadChange = (e) => {
+    setThreadVal(e.target.value);
+  };
+  const handleLoopChange = (e) => {
+    setLoopVal(e.target.value);
+  };
   const clickTestBtn = () => {
-    console.log(testBtn);
-    if (testBtn) {
-      return setTestBtn(false);
+    // console.log(testBtn);
+    if (testBtn === "api") {
+      setTestBtn("load");
+      dispatch(statActions.setStat("load"));
     } else {
-      return setTestBtn(true);
+      setTestBtn("api");
+      dispatch(statActions.setStat("api"));
     }
   };
+  const [payload, setPayload] = useState("GET");
+  // console.log(payload);
+
   const handlePayload = (e) => {
-    const { value, name } = e.target;
-    setPayload({
-      ...payload,
-      [name]: value,
-    });
-    return useDispatch(setPayloadState(payload));
+    setPayload(e.target.value);
   };
-  if (tabs !== undefined) {
+
+  useEffect(() => {
+    dispatch(apiActions.setPayloadState(payload));
+    dispatch(ctabActions.setHttpMethods(payload));
+    dispatch(ctabActions.setCurl(inputUri));
+    dispatch(apiActions.setUriState(inputUri));
+    dispatch(apiActions.setLoopState(loopVal));
+    dispatch(apiActions.setThreadState(threadVal));
+  }, [inputUri, payload, loopVal, threadVal]);
+  if (ctab !== undefined) {
     return (
-      <div>
-        <div className="grid grid-cols-2 text-gray-500 pb-[10px] border-b border-gray-200 pl-[15px] pr-[15px] pt-[10px]">
-          <div className="flex">
-            <FaCaretRight />
-            <span className="text-xs font-normal ml-[10px]">{tabs.name}</span>
+      <div className="">
+        <div className=" text-gray-500 pb-[10px] border-b border-gray-200  pt-[10px]">
+          <div className="flex justify-between">
+            <div className="flex mt-1">
+              <FaCaretRight className="mt-[1px]" />
+              <span className="text-xs font-normal ml-[10px]">
+                {ctab.path ? ctab.path : "UNTITLED"}
+              </span>
+            </div>
+            <div className="inline-flex shadow-md">
+              <button
+                className={
+                  testBtn === "load"
+                    ? "w-20 h-7  transition-colors duration-1000 bg-gray-200 mr-[-1px] rounded-sm"
+                    : "w-20 h-7   transition-colors duration-1000 bg-yellow-400 text-white mr-[-1px] rounded-sm cursor-default"
+                }
+                onClick={clickTestBtn}
+              >
+                API
+              </button>
+              <button
+                className={
+                  testBtn === "api"
+                    ? "w-20 h-7  transition-colors duration-1000 bg-gray-200 mr-[-1px] rounded-sm"
+                    : "w-20 h-7   transition-colors duration-1000 bg-yellow-400 text-white mr-[-1px] rounded-sm cursor-default"
+                }
+                onClick={clickTestBtn}
+              >
+                LOAD
+              </button>
+            </div>
           </div>
-          <div className=" inline-flex ml-[45%]">
-            <p
-              className={
-                !testBtn
-                  ? "text-xs font-normal mr-2  pt-1 border-b-2 border-indigo-500"
-                  : "text-xs font-normal mr-2  pt-1"
-              }
-            >
-              API TEST
-            </p>
-            <button onClick={clickTestBtn} className=" mt-[-1px]">
-              {testBtn ? (
-                <FaToggleOn className="h-6 w-10 text-indigo-400" />
-              ) : (
-                <FaToggleOff className="h-6 w-10 text-indigo-400  " />
-              )}
-            </button>
-            <p
-              className={
-                testBtn
-                  ? "text-xs font-normal ml-2  pt-1 border-b-2 border-indigo-500"
-                  : "text-xs font-normal ml-2 pt-1 "
-              }
-            >
-              LOAD TEST
-            </p>
+
+          <div className={testBtn === "api" ? "hidden" : "mt-3 ml-1"}>
+            <hr className="mt-3 mb-3" />
+            <div className="mt-2">
+              <div className="flex">
+                <LightBulbIcon className="h-6 text-yellow-400" />
+                <p className="text-sm pt-1 ml-2">
+                  쓰레드를 {threadVal}을 {loopVal}번 반복 어쩌구..저쩌구... 하는거에요
+                </p>
+              </div>
+            </div>
+            <div className="flex mt-3">
+              <div>
+                <div className="flex">
+                  <p className="mr-3">Thread</p>
+                  <div
+                    data-tip={`이건 ${threadVal}번 ...?  쓰레드에요`}
+                    className="tooltip tooltip-right mb-3"
+                  >
+                    <InformationCircleIcon className="h-5 mt-[2px]" />
+                  </div>
+                </div>
+                <div className="flex mt-[-10px]">
+                  <progress
+                    className="progress progress-error w-[400px] mt-4 mr-2"
+                    value={threadVal}
+                    max="200"
+                  />
+                  <input
+                    type="text"
+                    placeholder="25"
+                    className="input input-bordered bg-gray-50 h-6 mt-2 w-16 pl-[17px] pt-1"
+                    onChange={handleThreadChange}
+                  />
+                </div>
+              </div>
+              <div className="ml-16">
+                <div className="flex">
+                  <p className="mr-3">Loop</p>
+                  <div
+                    data-tip={`이건 ${loopVal}번 ...?  루프에요`}
+                    className="tooltip tooltip-right mb-3"
+                  >
+                    <InformationCircleIcon className="h-5 mt-[2px]" />
+                  </div>
+                </div>
+
+                <div className="flex mt-[-10px]">
+                  <progress
+                    className="progress progress-error w-[400px] mt-4 mr-2"
+                    value={loopVal}
+                    max="200"
+                  />
+                  <input
+                    type="text"
+                    placeholder="25"
+                    className="input input-bordered bg-gray-50 h-6 mt-2 w-16 pl-[17px] pt-1"
+                    onChange={handleLoopChange}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="m-[10px]">
+        <div className="mt-3">
           <div className="flex">
             <select
               onChange={handlePayload}
               defaultValue="GET"
-              className="bg-gray-200 border border-gray-300 p-[12px] pr-[50px] rounded-sm"
+              className="bg-gray-50 border border-gray-300 p-[12px] pr-[50px] rounded-sm"
+              name="httpMethod"
             >
               <option value="GET">GET</option>
               <option value="POST">POST</option>
@@ -72,16 +172,22 @@ const RequestInput = (props) => {
             <input
               type="text"
               placeholder=""
-              value={`${url}` + "/"}
-              onChange={handleURLChange}
-              className="border-r border-b border-gray-300 bg-gray-200 p-[8px] w-[60%] border-t rounded-sm"
+              value={url}
+              className="border-r border-b border-gray-300 bg-gray-50 p-[8px] w-[243px] border-t rounded-sm"
+              disabled
             />
-            <button className="flex bg-blue-500 text-white p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm ">
+            <input
+              type="text"
+              placeholder="Type Query here !"
+              className="border-r border-b border-gray-300 bg-gray-50 p-[8px] w-[722px]  border-t rounded-sm pl-3"
+              onKeyUp={handleUriChange}
+            />
+
+            <button
+              className="flex bg-blue-500 text-white p-[14px] ml-[8px] rounded pl-[15px] pr-[18px] cursor-pointer text-sm "
+              onClick={handleSubmit}
+            >
               SEND
-              <FaCaretDown className="ml-[10px] mt-[2px]" />
-            </button>
-            <button className="flex bg-gray-300 border-0 p-[12px] ml-[10px] rounded pl-[15px] pr-[20px] cursor-pointer text-sm">
-              SAVE
               <FaCaretDown className="ml-[10px] mt-[2px]" />
             </button>
           </div>

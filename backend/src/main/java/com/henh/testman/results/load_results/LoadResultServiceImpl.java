@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -79,9 +80,11 @@ public class LoadResultServiceImpl implements LoadResultService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<LoadResult> selectLoadByTabSeq(Long tabSeq) {
+    public List<LoadResultListDto> selectLoadByTabSeq(Long tabSeq) {
         checkNotNull(tabSeq, "tabSeq must be provided");
-        return loadResultRepository.findByTabSeq(tabSeq);
+        return loadResultRepository.findByTabSeq(tabSeq).stream()
+                .map(LoadResultListDto::new)
+                .collect(Collectors.toList());
     }
 
     @Override

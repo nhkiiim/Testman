@@ -23,7 +23,7 @@ public class TabUpdateReq {
 
     private String httpMethod;
 
-    private Map<String, Object> params;
+    private Map<String, Object> body;
 
     private Map<String, String> headers;
 

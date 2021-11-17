@@ -26,7 +26,7 @@ public class TabDto {
 
     private final String httpMethod;
 
-    private final Map<?, ?> params;
+    private final Map<?, ?> body;
 
     private final Map<?, ?> headers;
 
@@ -41,7 +41,7 @@ public class TabDto {
         this.httpMethod = tab.getHttpMethod();
 
         try {
-            this.params = tab.getParams() != null ? mapper.readValue(tab.getParams(), Map.class) : null;
+            this.body = tab.getBody() != null ? mapper.readValue(tab.getBody(), Map.class) : null;
             this.headers = tab.getHeaders() != null ? mapper.readValue(tab.getHeaders(), Map.class) : null;
         } catch (JsonProcessingException e) {
             throw new InvalidMapperException("Mapping failed");

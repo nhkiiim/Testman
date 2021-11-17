@@ -11,13 +11,13 @@ public class CollectionDto {
 
     private final Long seq;
 
-    private final Long tabSep;
+    private final Long tabSeq;
 
     private final String name;
 
     CollectionDto(Collection collection) {
         this.seq = collection.getSeq();
-        this.tabSep = collection.getWorkspaceSeq();
+        this.tabSeq = collection.getWorkspaceSeq();
         this.name = collection.getName();
     }
 

@@ -3,6 +3,7 @@ package com.henh.testman.workspaces.request;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 
@@ -19,5 +20,7 @@ public class WorkspaceUpdateReq {
     private String url;
 
     private String description;
+
+    private MultipartFile img;
 
 }

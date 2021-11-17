@@ -11,7 +11,10 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 
 // import { useSelector } from "react-redux";
-const MediumCard = ({ seq, title, url, description, img, createDate, index, length }) => {
+const MediumCard = ({ seq, title, url, description, img, createDate, index, length, userId }) => {
+  const myLoader = ({ src, width, height }) => {
+    return `https://testsman.s3.ap-northeast-2.amazonaws.com/images/${userId}/${src}?w=${width}&h=${height}`;
+  };
   const [showModal, setShowModal] = useState(false);
   const [date, setDate] = useState(createDate);
   const router = useRouter();
@@ -19,6 +22,7 @@ const MediumCard = ({ seq, title, url, description, img, createDate, index, leng
   const dispatch = useDispatch();
   const data = {
     seq: seq,
+    userId: userId,
     title: title,
     url: url,
     description: description,
@@ -40,13 +44,20 @@ const MediumCard = ({ seq, title, url, description, img, createDate, index, leng
     dispatch(currentActions.setCurrentProject(data));
     router.push("/TestPage");
   };
-
+  // console.log(img);
   return (
     <>
       <div data-aos="fade-zoom-in" className="mt-2 cursor-pointer " onClick={pageRouting}>
         <div className="card shadow-md rounded-2xl ">
-          <div className="relative min-h-[300px]">
-            <Image src={bg} layout="responsive" objectFit="contain" />
+          <div className="relative min-h-[300px] ">
+            <Image
+              loader={myLoader}
+              src={img}
+              layout="responsive"
+              objectFit="cover"
+              width={450}
+              height={300}
+            />
           </div>
           <div className="card-body">
             <h2 className="card-title">
@@ -58,7 +69,9 @@ const MediumCard = ({ seq, title, url, description, img, createDate, index, leng
             <h3 className="mt-[-2px]">{url}</h3>
             <p className="h-[57px]">{description}</p>
             <div className="justify-end card-actions">
-              <button className="btn btn-secondary ">created at {date}</button>
+              <button className="btn glass bg-secondary hover:bg-secondary ">
+                created at {date}
+              </button>
             </div>
           </div>
         </div>

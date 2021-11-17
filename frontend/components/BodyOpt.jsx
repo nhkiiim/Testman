@@ -1,36 +1,38 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TrashIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
-import * as ctabActions from "../store/modules/ctab";
+import * as apiActions from "../store/modules/api";
 import { SaveAsIcon } from "@heroicons/react/solid";
 
-const ParamOpt = ({ seq, params, index, saved }) => {
-  const paramData = useSelector((state) => state.api.request.params);
-  const dataIndex = useSelector((state) => state.api.request.params[index]);
+const BodyOpt = ({ seq, body, index, saved }) => {
+  const bodyData = useSelector((state) => state.api.request.body);
+  const dataIndex = useSelector((state) => state.api.request.body[index]);
   const dispatch = useDispatch();
   const [inputObj, setInputObj] = useState(dataIndex);
-  const { paramKey, paramValue, paramDescription } = inputObj;
+  const { bodyKey, bodyValue, bodyDescription } = inputObj;
   const [save, setSave] = useState(false);
 
   const fetchData = (idx) => {
     setSave(true);
     let datas = {
       seq: seq,
-      paramKey: paramKey,
-      paramValue: paramValue,
-      paramDescription: paramDescription,
+      bodyKey: bodyKey,
+      bodyValue: bodyValue,
+      bodyDescription: bodyDescription,
       saved: true,
     };
 
-    let filtered = paramData.filter((data) => data.seq !== idx);
-    dispatch(apiActions.deleteParamDatas(filtered));
-    dispatch(apiActions.saveParamDatas(datas));
+    let filtered = bodyData.filter((data) => data.seq !== idx);
+    dispatch(apiActions.deleteBodyDatas(filtered));
+    dispatch(apiActions.saveBodyDatas(datas));
+    // window.location.reload();
   };
 
   // console.log(dataIndex);
   const handleDelete = (idx) => {
-    let filtered = paramData.filter((data) => data.seq !== idx);
-    dispatch(apiActions.deleteParamDatas(filtered));
+    let filtered = bodyData.filter((data) => data.seq !== idx);
+
+    dispatch(apiActions.deleteBodyDatas(filtered));
   };
 
   const handleKeyChange = (e) => {
@@ -60,17 +62,18 @@ const ParamOpt = ({ seq, params, index, saved }) => {
               />
             </div>
           </div>
+
           <div className="w-full overflow-hidden xl:my-2 xl:px-2 xl:w-[31%] border-r border-gray-300">
             <div className="mx-auto w-[360px] pl-2 ">
               <input
-                id="paramKey"
+                id="bodyKey"
                 className={
                   saved
                     ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
                     : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
                 }
                 placeholder="KEY"
-                value={paramKey}
+                value={bodyKey}
                 onChange={handleKeyChange}
               />
             </div>
@@ -80,14 +83,14 @@ const ParamOpt = ({ seq, params, index, saved }) => {
             <div className="mx-auto ">
               <div className="mx-auto w-[360px] pl-2 ">
                 <input
-                  id="paramValue"
+                  id="bodyValue"
                   className={
                     saved
                       ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
                       : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
                   }
                   placeholder="VALUE"
-                  value={paramValue}
+                  value={bodyValue}
                   onChange={handleKeyChange}
                 />
               </div>
@@ -98,14 +101,14 @@ const ParamOpt = ({ seq, params, index, saved }) => {
             <div className="mx-auto ">
               <div className="mx-auto w-[360px] pl-2 ">
                 <input
-                  id="paramDescription"
+                  id="bodyDescription"
                   className={
                     saved
                       ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
                       : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
                   }
                   placeholder="DESCRIPTION"
-                  value={paramDescription}
+                  value={bodyDescription}
                   onChange={handleKeyChange}
                 />
               </div>
@@ -122,4 +125,4 @@ const ParamOpt = ({ seq, params, index, saved }) => {
   );
 };
 
-export default ParamOpt;
+export default BodyOpt;

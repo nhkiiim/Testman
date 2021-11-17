@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import img from "../img/icon2.png";
 import load from "../img/loading.gif";
+import bgg from "../img/bggg.jpeg";
 import loadimg from "../img/loadimg.gif";
 import Typical from "react-typical";
 import SyncLoader from "react-spinners/SyncLoader";
@@ -13,21 +14,14 @@ const WaitSend = () => {
         <div className="flex mx-auto justify-center items-center mt-14 ">
           <h1 className="font-bold text-2xl">
             <Typical
-              steps={[
-                "아직 테스트를 해보지 않으셨다구요 ?",
-                2000,
-                "API 테스트 및 부하 테스트를 진행해주세요 ! ",
-                2000,
-                "Bee..Beeep.. ",
-                2000,
-              ]}
+              steps={["API 테스트 및 부하 테스트를 진행해주세요 ! ", 2000]}
               wrapper="p"
               loop={Infinity}
             />
           </h1>
         </div>
         <div className="relative h-[360px] mx-auto justify-center mt-12">
-          <Image src={loadimg} layout="fill" objectFit="contain" />
+          <Image src={bgg} layout="fill" objectFit="contain" />
         </div>
       </div>
     </div>

@@ -228,7 +228,7 @@ const Header2 = () => {
                         {pjtList?.map(({ seq, title }) => {
                           return (
                             <>
-                              <ProjectLists key={seq} name={title} select={project} />
+                              <ProjectLists key={seq} seq={seq} name={title} select={project} />
                             </>
                           );
                         })}
@@ -245,8 +245,18 @@ const Header2 = () => {
               <div className="border-t border-gray-300">
                 <div className="w-full flex items-center justify-between px-6 pt-2 pb-3">
                   <div className="flex items-center">
-                    <UserCircleIcon className="h-10 text-indigo-500" />
+                    <UserCircleIcon className="h-10 " />
                     <p className=" text-gray-800 text-base leading-4 ml-2">{uid}</p>
+                  </div>
+                  <div
+                    onClick={() => {
+                      sessionStorage.removeItem("persist:root");
+                      removeCookie("token");
+
+                      router.push("/Login");
+                    }}
+                  >
+                    <LogoutIcon className="h-4 ml-1" />
                   </div>
                 </div>
               </div>
@@ -392,8 +402,8 @@ const Header2 = () => {
                   onClick={() => setProfile(!profile)}
                 >
                   {profile ? (
-                    <ul className="p-2 w-40 border-r bg-white absolute rounded z-40 left-0 shadow mt-52 ">
-                      <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
+                    <ul className="p-2 w-40 border-r bg-white absolute rounded z-40 left-0 shadow mt-[109px]">
+                      {/* <li className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none">
                         <div className="flex items-center">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -432,7 +442,7 @@ const Header2 = () => {
                           <circle cx={12} cy={12} r={3} />
                         </svg>
                         <span className="ml-2">Account Settings</span>
-                      </li>
+                      </li> */}
                       <li
                         className="cursor-pointer text-gray-600 text-sm leading-3 tracking-normal mt-2 py-2 hover:text-indigo-700 focus:text-indigo-700 focus:outline-none flex items-center"
                         onClick={() => {

@@ -32,7 +32,7 @@ const ProjectListsDt = ({ title, seq }) => {
       className="flex items-center mb-2 border-b pb-2 w-[100%] text-gray-500 hover:text-indigo-700  cursor-pointer"
       onClick={handlerPjtList}
     >
-      <span className="ml-2  ">{title}</span>
+      <span className="ml-2">{title}</span>
     </div>
   );
 };

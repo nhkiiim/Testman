@@ -4,6 +4,7 @@ import BodyOption from "./BodyOption";
 import SettingsOption from "./SettingsOption";
 import Params from "./Params";
 import Headers from "./Headers";
+import Body from "./Body";
 
 const RequestOptions = (props) => {
   const { requestTabIndex } = props;
@@ -16,25 +17,25 @@ const RequestOptions = (props) => {
             <Params />
           </div>
         );
+      // case 1:
+      //   return (
+      //     <div>
+      //       <AuthKey />
+      //     </div>
+      //   );
       case 1:
-        return (
-          <div>
-            <AuthKey />
-          </div>
-        );
-      case 2:
         return (
           <div>
             <Headers />
           </div>
         );
-      case 3:
+      case 2:
         return (
           <div>
-            <BodyOption />
+            <Body />
           </div>
         );
-      case 4:
+      case 3:
         return <SettingsOption />;
     }
   };

@@ -60,13 +60,15 @@ const TestPage = () => {
   return (
     <div className="w-full h-full bg-white">
       <Header2 />
-      {/* <Sidebar current={current} /> */}
-      <Content current={current} />
-      <div className={cstat !== "api" || result.length === 0 ? "hidden" : ""}>
-        <Result />
-      </div>
-      <div className={result.length === 0 ? "" : "hidden"}>
-        <WaitSend />
+      <div className="pb-24">
+        {/* <Sidebar current={current} /> */}
+        <Content current={current} />
+        <div className={cstat !== "api" || result.length === 0 ? "hidden" : ""}>
+          <Result />
+        </div>
+        <div className={result.length === 0 ? "" : "hidden"}>
+          <WaitSend />
+        </div>
       </div>
     </div>
   );

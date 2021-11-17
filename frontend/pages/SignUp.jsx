@@ -122,7 +122,7 @@ const SignUp = () => {
   return (
     <div>
       {/* <body className="body-bg min-h-screen pb-6 px-2 md:px-0"> */}
-      <main className="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl mt-32">
+      <main className="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl  mt-[250px]">
         <section className="">
           {/* <h3 className="font-bold text-2xl">Welcome to Testman</h3> */}
 

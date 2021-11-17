@@ -172,11 +172,11 @@ const MyPage = () => {
   });
 
   return (
-    <div className=" h-[100%] bg-white" data-theme="dark">
+    <div className=" h-[100vh] bg-white">
       {/* <Header /> */}
       <Header2 />
       <main className="mx-auto px-16 sm:px-40">
-        <section className="mt-5">
+        <section className="mt-5 pb-24">
           <div className="flex justify-between">
             <div>
               <h2 className="text-2xl font-semibold py-8 items-center md:mx-2 ">

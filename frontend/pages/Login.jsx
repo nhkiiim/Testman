@@ -55,7 +55,7 @@ const Login = () => {
 
   return (
     <div>
-      <main className="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl mt-48">
+      <main className="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl mt-[250px]">
         <section className="">
           <div className="relative h-16 mx-auto justify-center w-40">
             <Image src={logo} layout="fill" objectFit="contain" objectPosition="left" />

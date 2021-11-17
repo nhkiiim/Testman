@@ -13,14 +13,7 @@ const WaitSend = () => {
         <div className="flex mx-auto justify-center items-center mt-14 ">
           <h1 className="font-bold text-2xl">
             <Typical
-              steps={[
-                "아직 테스트를 해보지 않으셨다구요 ?",
-                2000,
-                "API 테스트 및 부하 테스트를 진행해주세요 ! ",
-                2000,
-                "Bee..Beeep.. ",
-                2000,
-              ]}
+              steps={["API 테스트 및 부하 테스트를 진행해주세요 ! ", 2000]}
               wrapper="p"
               loop={Infinity}
             />

@@ -15,28 +15,26 @@ const Content = ({ current }) => {
   const tabs = useSelector((state) => state.tab.tabs);
   const request = useSelector((state) => state.api.request);
   const token = useSelector((state) => state.user.token);
-  const ctab = useSelector((state) => state.ctab);
+  const ctab = useSelector((state) => state.ctab.datas);
   const tstat = useSelector((state) => state.teststat.stat);
+  // console.log(ctab);
 
   // console.log(tstat);
 
   const dispatch = useDispatch();
-  const [requestTabs] = useState(["Params", "Authorization", "Headers", "Body", "Settings"]);
+  const [requestTabs] = useState(["Params", "Headers", "Body", "Settings"]);
   const [requestTabIndex, setRequestTabIndex] = useState(0);
   const [currentTab, setCurrentTab] = useState(0);
   const [selectTabSeq, setSelectTabSeq] = useState(0);
   const [parsingHeaders, setParsingHeaders] = useState({});
   const [parsingParams, setParsingPrams] = useState({});
-  // console.log(ctab);
-  // console.log(tabs);
-
-  // console.log("ctab", ctab);
-  // const [collectionList, setCollectionList] = useState([]);
-  // const collections = useSelector((state) => state.collections.list);
-  // const [showModal, setShowModal] = useState(false);
+  const [parsingBody, setParsingBody] = useState({});
 
   const handleTabChange = async (index) => {
     dispatch(apiActions.resetParamDatas([]));
+    dispatch(apiActions.resetHeaderDatas([]));
+    dispatch(apiActions.resetBodyDatas([]));
+    dispatch(apiActions.resetAllDatas({}));
     await axios({
       method: "GET",
       url: "/api/tabs/" + tabs[index].seq,
@@ -45,16 +43,23 @@ const Content = ({ current }) => {
       },
     })
       .then((res) => {
-        // console.log(res.data);
+        console.log(res.data);
         dispatch(resultActions.setResultState([]));
         if (res.data.response.tabDto.params === null) {
-          dispatch(apiActions.resetParamDatas([]));
+          dispatch(ctabActions.resetParamDatas([]));
         } else {
-          dispatch(apiActions.resetParamDatas(res.data.response.tabDto.params));
+          dispatch(ctabActions.resetParamDatas(res.data.response.tabDto.params));
         }
-
-        dispatch(ctabActions.setCtabs({}));
-        dispatch(ctabActions.setCtabs(res.data.response.tabDto));
+        if (res.data.response.tabDto.headers === null) {
+          dispatch(ctabActions.resetHeaderDatas([]));
+        } else {
+          dispatch(ctabActions.resetHeaderDatas(res.data.response.tabDto.headers));
+        }
+        if (res.data.response.tabDto.body === null) {
+          dispatch(ctabActions.resetBodyDatas([]));
+        } else {
+          dispatch(ctabActions.resetBodyDatas(res.data.response.tabDto.body));
+        }
         dispatch(ctabActions.setAddress(current.url));
       })
       .catch((error) => {
@@ -119,22 +124,35 @@ const Content = ({ current }) => {
     if (headersJson.constructor === Array) {
       headersJson.forEach((array) => {
         const copied = parsingHeaders;
-        copied[array.paramKey] = array.paramValue;
+        copied[array.headerKey] = array.headerValue;
         setParsingHeaders(copied);
+      });
+    }
+    const bodyJson = request.body;
+    if (bodyJson.constructor === Array) {
+      bodyJson.forEach((array) => {
+        const copied = parsingBody;
+        copied[array.bodyKey] = array.bodyValue;
+        setParsingBody(copied);
       });
     }
 
     if (tstat === "api") {
+      const ctype = {
+        "Content-Type": request.contentType,
+      };
+      const theaders = Object.assign(ctype, parsingHeaders);
       const payload = {
-        address: current.url,
-        httpMethod: ctab.httpMethod,
-        headers: {},
+        address: ctab.address,
+        httpMethod: request.httpMethod,
         params: parsingParams,
-        path: request.uri,
+        path: request.path,
+        body: parsingBody,
         tabSeq: ctab.seq,
         workspaceSeq: current.seq,
       };
-      // console.log("payload", payload);
+      payload.headers = theaders;
+      console.log("payload", payload);
 
       await axios({
         method: "POST",
@@ -145,30 +163,37 @@ const Content = ({ current }) => {
         data: payload,
       })
         .then((res) => {
-          // console.log(res);
+          console.log(res.data);
           // console.log(res.data.response);
-          let a = JSON.parse(res.data.response.body);
-          dispatch(resultActions.setResultState(a));
+          // let a = JSON.parse(res.data);
+          let b = res.data;
+          dispatch(resultActions.setResultState(b));
           // console.log(a);
         })
         .catch((error) => {
           // console.log(payload);
-          // console.error(error);
+          console.error(error);
           // console.log(error.response.data.error);
         });
     } else {
+      const ctype = {
+        "Content-Type": request.contentType,
+      };
+      const theaders = Object.assign(ctype, parsingHeaders);
+
       const payload = {
-        address: current.url,
+        address: ctab.address,
         httpMethod: ctab.httpMethod,
-        headers: {},
         params: parsingParams,
-        path: request.uri,
+        path: ctab.path,
+        body: parsingBody,
         tabSeq: ctab.seq,
         workspaceSeq: current.seq,
-        loop: request.loop,
-        thread: request.thread,
+        loop: ctab.loop,
+        thread: ctab.thread,
       };
-      // console.log("payload", payload);
+      payload.headers = theaders;
+      console.log("payload", payload);
 
       await axios({
         method: "POST",
@@ -186,103 +211,14 @@ const Content = ({ current }) => {
         });
     }
   };
-
-  const [btnDescription, setBtnDescription] = useState(false);
-
-  const [newBtn, setNewBtn] = useState(false);
-  const [newCollection, setNewCollection] = useState("");
-
-  // const handleNewCollection = (e) => {
-  //   setNewCollection(e.target.value);
-  // };
-  // const clickSaveCollections = () => {
-  //   const paramsJson = request.params;
-  //   // console.log(paramsJson.constructor)
-  //   // console.log(Object.keys(paramsJson).length)
-  //   // console.log(paramsJson)
-  //   if (paramsJson.constructor === Array) {
-  //     paramsJson.forEach((array) => {
-  //       const copied = parsingParams;
-  //       copied[array.paramKey] = array.paramValue;
-  //       setParsingPrams(copied);
-  //     });
-  //   }
-
-  //   const headersJson = request.headers;
-  //   if (headersJson.constructor === Array) {
-  //     headersJson.forEach((array) => {
-  //       const copied = parsingHeaders;
-  //       copied[array.paramKey] = array.paramValue;
-  //       setParsingHeaders(copied);
-  //     });
-  //   }
-  //   const payload = {
-  //     address: current.url,
-  //     collectionSeq: selectItem.seq,
-  //     headers: parsingHeaders,
-  //     httpMethod: request.payload.httpMethod,
-  //     params: parsingParams,
-  //     path: request.uri,
-  //     seq: selectItem.tabSeq,
-  //   };
-  //   console.log("payload", payload);
-  //   axios({
-  //     method: "PATCH",
-  //     url: "/api/tabs",
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     data: payload,
-  //   })
-  //     .then((res) => {
-  //       console.log("success", res.data.response);
-  //       setShowModal(false);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setShowModal(false);
-  //     });
-  // };
-
-  // const handleCollectionEnter = async (e) => {
-  //   e.preventDefault();
-  //   if (e.key === "Enter") {
-  //     await axios({
-  //       method: "POST",
-  //       url: "/api/collections",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       data: {
-  //         name: newCollection,
-  //         workspaceSeq: seq,
-  //       },
-  //     })
-  //       .then((res) => {
-  //         getCollectionList();
-  //         setNewCollection("");
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // };
-
-  // const clickItem = (item) => {
-  //   console.log(item);
-  //   setSelectItem(item);
-  // };
-
   return (
     <div className="flex">
       <div className="mx-auto mt-8">
         <div>
-          <p className=" font-bold text-3xl">
-            {title} ({url})
-          </p>
+          <p className=" font-bold text-3xl">{title} </p>
         </div>
         <div className="mt-1">
-          <p className=" text-gray-400 text-sm">{description}</p>
+          <p className=" text-gray-400 text-sm">{url}</p>
         </div>
 
         <TabBar

@@ -90,8 +90,8 @@ public class ApiResultServiceImpl implements ApiResultService {
             }
 
             JSONObject request = new JSONObject();
-            if(apiInsertReq.getParams() != null){
-                for(Map.Entry<String,Object> map : apiInsertReq.getParams().entrySet()){
+            if(apiInsertReq.getBody() != null){
+                for(Map.Entry<String,Object> map : apiInsertReq.getBody().entrySet()){
                    request.put(map.getKey(),map.getValue());
                 }
             }

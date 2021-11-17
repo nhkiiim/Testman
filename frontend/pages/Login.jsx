@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import * as userActions from "../store/modules/user";
 import * as pageAction from "../store/modules/page";
 import { useCookies } from "react-cookie";
+import { useAlert } from "react-alert";
 
 const Login = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
@@ -14,6 +15,7 @@ const Login = () => {
     userId: "",
     password: "",
   });
+  const alert = useAlert();
 
   const { userId, password } = inputObj;
   const dispatch = useDispatch();
@@ -49,13 +51,17 @@ const Login = () => {
         });
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response.status === 404) {
+          alert.error("회원 정보가 존재하지 않습니다.");
+        } else if (error.response.status === 401) {
+          alert.error("비밀번호가 일치하지 않습니다.");
+        }
       });
   };
 
   return (
     <div>
-      <main className="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl mt-48">
+      <main className="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl mt-[250px] h-[430px]">
         <section className="">
           <div className="relative h-16 mx-auto justify-center w-40">
             <Image src={logo} layout="fill" objectFit="contain" objectPosition="left" />
@@ -100,7 +106,7 @@ const Login = () => {
               </p>
             </div>
             <button
-              className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
+              className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200 mt-16 h-10"
               type="submit"
               onClick={loginHandler}
             >

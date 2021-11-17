@@ -5,8 +5,10 @@ import logo from "../img/logo.png";
 import Image from "next/image";
 import { rootReducer } from "../store/configureStore";
 import axios from "axios";
+import { useAlert } from "react-alert";
 
 const SignUp = () => {
+  const alert = useAlert();
   const router = useRouter();
   const [authObj, setAuthObj] = useState({
     userId: "",
@@ -112,17 +114,20 @@ const SignUp = () => {
       .post("/api/users/regist", data)
       .then((res) => {
         // console.log(res.data);
+        alert.success("Welcome to Testsman :)");
+        router.push("/Login");
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response.status === 409) {
+          alert.error("이미 사용중인 아이디입니다.");
+        }
       });
-    router.push("/Login");
   });
 
   return (
     <div>
       {/* <body className="body-bg min-h-screen pb-6 px-2 md:px-0"> */}
-      <main className="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl mt-32">
+      <main className="bg-white max-w-lg mx-auto p-8 md:p-12 my-10 rounded-lg shadow-2xl  mt-[200px]">
         <section className="">
           {/* <h3 className="font-bold text-2xl">Welcome to Testman</h3> */}
 
@@ -240,8 +245,8 @@ const SignUp = () => {
             <button
               className={
                 idCheck && pwCheck && emailCheck && pwValidation
-                  ? "bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
-                  : "bg-purple-300  text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200 disabled:opacity-50 cursor-default"
+                  ? "bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200 mt-16 h-10"
+                  : "bg-purple-300  text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200 disabled:opacity-50 cursor-default mt-16 h-10"
               }
               // className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 rounded shadow-lg hover:shadow-xl transition duration-200"
               type="submit"

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TrashIcon } from "@heroicons/react/solid";
+import { PlusIcon, TrashIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import * as apiActions from "../store/modules/api";
 import { SaveAsIcon } from "@heroicons/react/solid";
@@ -25,13 +25,11 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
     let filtered = headerData.filter((data) => data.seq !== idx);
     dispatch(apiActions.deleteHeaderDatas(filtered));
     dispatch(apiActions.saveHeaderDatas(datas));
-    // window.location.reload();
   };
 
   // console.log(dataIndex);
   const handleDelete = (idx) => {
-    let filtered = headerData.filter((data) => data.seq !== idx);
-
+    let filtered = headerData.filter((data) => data.seq != idx);
     dispatch(apiActions.deleteHeaderDatas(filtered));
   };
 
@@ -47,7 +45,13 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
 
   return (
     <div className="">
-      <div className="border-t border-gray-200  w-[100%] bg-gray-100">
+      <div
+        className={
+          saved
+            ? "border-t border-gray-200  w-[100%] bg-gray-100"
+            : "border-t border-gray-200  w-[100%] bg-gray-50"
+        }
+      >
         <div className="flex flex-wrap overflow-hidden ">
           <div className="overflow-hidden my-2 px-2 w-[4%] border-r border-gray-300">
             <div onClick={() => fetchData(seq)}>
@@ -61,7 +65,11 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
             <div className="mx-auto w-[360px] pl-2 ">
               <input
                 id="headerKey"
-                className="h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                className={
+                  saved
+                    ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                    : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
+                }
                 placeholder="KEY"
                 value={headerKey}
                 onChange={handleKeyChange}
@@ -74,7 +82,11 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
               <div className="mx-auto w-[360px] pl-2 ">
                 <input
                   id="headerValue"
-                  className="h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                  className={
+                    saved
+                      ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                      : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
+                  }
                   placeholder="VALUE"
                   value={headerValue}
                   onChange={handleKeyChange}
@@ -88,7 +100,11 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
               <div className="mx-auto w-[360px] pl-2 ">
                 <input
                   id="headerDescription"
-                  className="h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                  className={
+                    saved
+                      ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
+                      : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
+                  }
                   placeholder="DESCRIPTION"
                   value={headerDescription}
                   onChange={handleKeyChange}

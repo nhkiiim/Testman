@@ -9,34 +9,34 @@ import * as tabActions from "../store/modules/tab";
 import * as ctabActions from "../store/modules/ctab";
 import * as apiActions from "../store/modules/api";
 import apiresult, * as resultActions from "../store/modules/apiresult";
+import { useAlert } from "react-alert";
 
 const Content = ({ current }) => {
+  const alert = useAlert();
   const { title, description, seq, url, userId, img } = current;
   const tabs = useSelector((state) => state.tab.tabs);
   const request = useSelector((state) => state.api.request);
   const token = useSelector((state) => state.user.token);
-  const ctab = useSelector((state) => state.ctab);
+  const ctab = useSelector((state) => state.ctab.datas);
   const tstat = useSelector((state) => state.teststat.stat);
+  // console.log(ctab);
 
   // console.log(tstat);
 
   const dispatch = useDispatch();
-  const [requestTabs] = useState(["Params", "Authorization", "Headers", "Body", "Settings"]);
+  const [requestTabs] = useState(["Params", "Headers", "Body", "Settings"]);
   const [requestTabIndex, setRequestTabIndex] = useState(0);
   const [currentTab, setCurrentTab] = useState(0);
   const [selectTabSeq, setSelectTabSeq] = useState(0);
   const [parsingHeaders, setParsingHeaders] = useState({});
   const [parsingParams, setParsingPrams] = useState({});
-  // console.log(ctab);
-  // console.log(tabs);
-
-  // console.log("ctab", ctab);
-  // const [collectionList, setCollectionList] = useState([]);
-  // const collections = useSelector((state) => state.collections.list);
-  // const [showModal, setShowModal] = useState(false);
+  const [parsingBody, setParsingBody] = useState({});
 
   const handleTabChange = async (index) => {
     dispatch(apiActions.resetParamDatas([]));
+    dispatch(apiActions.resetHeaderDatas([]));
+    dispatch(apiActions.resetBodyDatas([]));
+    dispatch(apiActions.resetAllDatas({}));
     await axios({
       method: "GET",
       url: "/api/tabs/" + tabs[index].seq,
@@ -48,17 +48,28 @@ const Content = ({ current }) => {
         // console.log(res.data);
         dispatch(resultActions.setResultState([]));
         if (res.data.response.tabDto.params === null) {
-          dispatch(apiActions.resetParamDatas([]));
+          dispatch(ctabActions.resetParamDatas([]));
         } else {
-          dispatch(apiActions.resetParamDatas(res.data.response.tabDto.params));
+          dispatch(ctabActions.resetParamDatas(res.data.response.tabDto.params));
         }
-
-        dispatch(ctabActions.setCtabs({}));
-        dispatch(ctabActions.setCtabs(res.data.response.tabDto));
+        if (res.data.response.tabDto.headers === null) {
+          dispatch(ctabActions.resetHeaderDatas([]));
+        } else {
+          dispatch(ctabActions.resetHeaderDatas(res.data.response.tabDto.headers));
+        }
+        if (res.data.response.tabDto.body === null) {
+          dispatch(ctabActions.resetBodyDatas([]));
+        } else {
+          dispatch(ctabActions.resetBodyDatas(res.data.response.tabDto.body));
+        }
+        dispatch(ctabActions.setcTabSeq(res.data.response.tabDto.seq));
         dispatch(ctabActions.setAddress(current.url));
+        dispatch(ctabActions.setcTabWorkspaceSeq(res.data.response.tabDto.workspaceSeq));
       })
       .catch((error) => {
-        console.error(error);
+        if (error.response.status === 500) {
+          alert.error("Tab 데이터를 불러오는 것에 실패했습니다. 다시 시도해주세요.");
+        }
       });
     setSelectTabSeq(tabs[index].seq);
     setCurrentTab(index);
@@ -69,7 +80,7 @@ const Content = ({ current }) => {
   };
   const handleNewTab = async () => {
     if (tabs.length >= 5) {
-      alert("Tabs already fulls... delete another tabs..");
+      alert.info("Tabs already fulls... delete another tabs..");
       return;
     }
     await axios({
@@ -86,7 +97,11 @@ const Content = ({ current }) => {
         // console.log(res.data);
         dispatch(tabActions.setTabs(res.data.response.tab));
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        if (error.response.status === 500) {
+          alert.error("Tab 생성에 실패했습니다.");
+        }
+      });
   };
 
   const handleRemoveTab = async (selectTab) => {
@@ -102,7 +117,11 @@ const Content = ({ current }) => {
         // console.log(res.data);
       })
 
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        if (error.response.status === 500) {
+          alert.error("Tab 생성에 실패했습니다.");
+        }
+      });
   };
 
   const handleSubmit = async () => {
@@ -119,21 +138,34 @@ const Content = ({ current }) => {
     if (headersJson.constructor === Array) {
       headersJson.forEach((array) => {
         const copied = parsingHeaders;
-        copied[array.paramKey] = array.paramValue;
+        copied[array.headerKey] = array.headerValue;
         setParsingHeaders(copied);
+      });
+    }
+    const bodyJson = request.body;
+    if (bodyJson.constructor === Array) {
+      bodyJson.forEach((array) => {
+        const copied = parsingBody;
+        copied[array.bodyKey] = array.bodyValue;
+        setParsingBody(copied);
       });
     }
 
     if (tstat === "api") {
+      const ctype = {
+        "Content-Type": request.contentType,
+      };
+      const theaders = Object.assign(ctype, parsingHeaders);
       const payload = {
-        address: current.url,
-        httpMethod: ctab.httpMethod,
-        headers: {},
+        address: ctab.address,
+        httpMethod: request.httpMethod,
         params: parsingParams,
-        path: request.uri,
+        path: request.path,
+        body: parsingBody,
         tabSeq: ctab.seq,
         workspaceSeq: current.seq,
       };
+      payload.headers = theaders;
       // console.log("payload", payload);
 
       await axios({
@@ -145,29 +177,41 @@ const Content = ({ current }) => {
         data: payload,
       })
         .then((res) => {
-          // console.log(res);
+          // console.log(res.data);
           // console.log(res.data.response);
-          let a = JSON.parse(res.data.response.body);
-          dispatch(resultActions.setResultState(a));
+          // let a = JSON.parse(res.data);
+          let b = res.data;
+          dispatch(resultActions.setResultState(b));
           // console.log(a);
         })
         .catch((error) => {
           // console.log(payload);
-          // console.error(error);
+          if (error.response.status === 500) {
+            alert.error("서버오류로 인해 데이터를 불러오는 데에 실패했습니다.");
+          }
+          if (error.response.status === 404) {
+            alert.error("API 테스트를 위한 입력값이 올바르지 않습니다.");
+          }
           // console.log(error.response.data.error);
         });
     } else {
+      const ctype = {
+        "Content-Type": request.contentType,
+      };
+      const theaders = Object.assign(ctype, parsingHeaders);
+
       const payload = {
-        address: current.url,
-        httpMethod: ctab.httpMethod,
-        headers: {},
+        address: ctab.address,
+        httpMethod: request.httpMethod,
         params: parsingParams,
-        path: request.uri,
+        path: request.path,
+        body: parsingBody,
         tabSeq: ctab.seq,
         workspaceSeq: current.seq,
         loop: request.loop,
         thread: request.thread,
       };
+      payload.headers = theaders;
       // console.log("payload", payload);
 
       await axios({
@@ -179,110 +223,30 @@ const Content = ({ current }) => {
         data: payload,
       })
         .then((res) => {
-          console.log(res);
+          // console.log(res.data.response);
         })
         .catch((error) => {
-          console.error(error);
+          // console.log(error);
+          if (error.response.status === 500) {
+            alert.error("서버오류로 인해 데이터를 불러오는 데에 실패했습니다.");
+          } else if (error.response.status === 404) {
+            alert.error("부하테스트를 위한 입력값이 올바르지 않습니다.");
+          } else if (error.response.status === 400) {
+            alert.error(
+              "부하테스트 결과를 불러오는 도중 예상치 못한 에러가 발생했습니다.입력값을 확인해주세요. "
+            );
+          }
         });
     }
   };
-
-  const [btnDescription, setBtnDescription] = useState(false);
-
-  const [newBtn, setNewBtn] = useState(false);
-  const [newCollection, setNewCollection] = useState("");
-
-  // const handleNewCollection = (e) => {
-  //   setNewCollection(e.target.value);
-  // };
-  // const clickSaveCollections = () => {
-  //   const paramsJson = request.params;
-  //   // console.log(paramsJson.constructor)
-  //   // console.log(Object.keys(paramsJson).length)
-  //   // console.log(paramsJson)
-  //   if (paramsJson.constructor === Array) {
-  //     paramsJson.forEach((array) => {
-  //       const copied = parsingParams;
-  //       copied[array.paramKey] = array.paramValue;
-  //       setParsingPrams(copied);
-  //     });
-  //   }
-
-  //   const headersJson = request.headers;
-  //   if (headersJson.constructor === Array) {
-  //     headersJson.forEach((array) => {
-  //       const copied = parsingHeaders;
-  //       copied[array.paramKey] = array.paramValue;
-  //       setParsingHeaders(copied);
-  //     });
-  //   }
-  //   const payload = {
-  //     address: current.url,
-  //     collectionSeq: selectItem.seq,
-  //     headers: parsingHeaders,
-  //     httpMethod: request.payload.httpMethod,
-  //     params: parsingParams,
-  //     path: request.uri,
-  //     seq: selectItem.tabSeq,
-  //   };
-  //   console.log("payload", payload);
-  //   axios({
-  //     method: "PATCH",
-  //     url: "/api/tabs",
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //     data: payload,
-  //   })
-  //     .then((res) => {
-  //       console.log("success", res.data.response);
-  //       setShowModal(false);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       setShowModal(false);
-  //     });
-  // };
-
-  // const handleCollectionEnter = async (e) => {
-  //   e.preventDefault();
-  //   if (e.key === "Enter") {
-  //     await axios({
-  //       method: "POST",
-  //       url: "/api/collections",
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       data: {
-  //         name: newCollection,
-  //         workspaceSeq: seq,
-  //       },
-  //     })
-  //       .then((res) => {
-  //         getCollectionList();
-  //         setNewCollection("");
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   }
-  // };
-
-  // const clickItem = (item) => {
-  //   console.log(item);
-  //   setSelectItem(item);
-  // };
-
   return (
     <div className="flex">
       <div className="mx-auto mt-8">
         <div>
-          <p className=" font-bold text-3xl">
-            {title} ({url})
-          </p>
+          <p className=" font-bold text-3xl">{title} </p>
         </div>
         <div className="mt-1">
-          <p className=" text-gray-400 text-sm">{description}</p>
+          <p className=" text-gray-400 text-sm">{url}</p>
         </div>
 
         <TabBar

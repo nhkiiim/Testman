@@ -15,12 +15,12 @@ const Body = () => {
   const [bodyOption, setBodyOption] = useState("none");
   useEffect(() => {
     // console.log(bodyOption);
-    console.log(ctype);
+    // console.log(ctype);
   });
 
   const handleBodyOption = (e) => {
     setBodyOption(e.target.value);
-    console.log(e.target.value);
+    // console.log(e.target.value);
     switch (e.target.value) {
       case "none":
         return dispatch(apiActions.setContentType(null));

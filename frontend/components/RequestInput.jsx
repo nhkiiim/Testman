@@ -61,9 +61,22 @@ const RequestInput = (props) => {
           <div className="flex justify-between">
             <div className="flex mt-1">
               <LightBulbIcon className="h-6 text-yellow-400" />
-              <p className="text-sm pt-1 ml-2">
-                쓰레드를 {threadVal}을 {loopVal}번 반복 어쩌구..저쩌구... 하는거에요
-              </p>
+              {testBtn === "api" ? (
+                <>
+                  <p className="text-sm pt-1 ml-2">REST API를 이곳에서 테스트해보세요 !</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm pt-1 ml-2">
+                    {threadVal} 명의 사용자가 동시에 해당 API 호출을 {loopVal} 번 반복하면 어떤 일이
+                    일어날 지 알아볼까요 ?
+                  </p>
+                </>
+              )}
+              {/* <p className="text-sm pt-1 ml-2">
+                {threadVal} 명의 사용자가 동시에 해당 API 호출을 {loopVal} 번 반복하면 어떤 일이
+                일어날 지 알아볼까요 ?
+              </p> */}
             </div>
             <div className="inline-flex shadow-md">
               <button
@@ -168,7 +181,7 @@ const RequestInput = (props) => {
             />
             <input
               type="text"
-              placeholder="Type Query here !"
+              placeholder="Type Path here !"
               className="border-r border-b border-gray-300 bg-gray-50 p-[8px] w-[722px]  border-t rounded-sm pl-3"
               onKeyUp={handleUriChange}
             />

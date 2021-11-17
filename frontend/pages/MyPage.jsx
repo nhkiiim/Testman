@@ -20,10 +20,13 @@ import * as pageAction from "../store/modules/page";
 import * as processAction from "../store/modules/process";
 import { ViewGridAddIcon } from "@heroicons/react/solid";
 import { CogIcon } from "@heroicons/react/solid";
+import { CloudUploadIcon } from "@heroicons/react/solid";
 import Footer from "../components/Footer";
+import { useAlert } from "react-alert";
 
 const MyPage = () => {
   const router = useRouter();
+  const alert = useAlert();
   const [addObj, setAddObj] = useState({
     title: "",
     url: "",
@@ -67,7 +70,7 @@ const MyPage = () => {
         dispatch(projectActions.setProject(res.data.response.workspaceDtoList));
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         // console.log(dataNone);
       });
   };
@@ -113,7 +116,7 @@ const MyPage = () => {
         // window.location.reload();
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 
@@ -167,7 +170,11 @@ const MyPage = () => {
         window.location.reload();
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response.status === 500) {
+          alert.error("프로젝트 정보 (제목, URL, 설명, 사진)을 모두 입력해주세요.");
+        } else if (error.response.status === 409) {
+          alert.error("이미 사용중인 프로젝트 제목입니다.");
+        }
       });
   });
 
@@ -175,60 +182,54 @@ const MyPage = () => {
     <div className=" h-[100vh] bg-white">
       {/* <Header /> */}
       <Header2 />
-      <main className="mx-auto px-16 sm:px-40">
+      <main className="mx-auto px-16   xl:px-20 2xl:px-60">
         <section className="mt-5 pb-24">
           <div className="flex justify-between">
-            <div>
+            <div className="flex">
               <h2 className="text-2xl font-semibold py-8 items-center md:mx-2 ">
                 {uid}'s Project List
               </h2>
             </div>
-            <div className="flex py-9 mx-2">
-              <div onClick={handlerAdd} className="cursor-pointer">
-                <ViewGridAddIcon className="h-7 mr-3" />
-              </div>
-              <div className="cursor-pointer">
-                <CogIcon className="h-7" />
+            <div onClick={handlerAdd} className="cursor-pointer ml-3 py-[30px]">
+              <div className="flex">
+                <ViewGridAddIcon className="h-7 mr-2 " />
+                <p className="text-xl">Add</p>
               </div>
             </div>
-
-            {/* <button
-              className="bg-indigo-600  text-white  rounded  md:mx-3 h-[45px] w-[80px] cursor-pointer mt-7"
-              onClick={handlerAdd}
-            >
-              ADD
-            </button> */}
           </div>
           {dataNone ? (
             <NoneData />
           ) : (
             <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-7 ">
               <>
-                {workspaces?.map(({ seq, title, url, description, img, createDate }, index) => (
-                  <div
-                    key={seq}
-                    className="hover:scale-105 transform transition duration-500 ease-out"
-                  >
-                    <ClickNHold
-                      time={1.5}
-                      onStart={handlerStart}
-                      onClickNHold={() => handlerClickNHold(seq)}
-                      onEnd={handlerEnd}
+                {workspaces?.map(
+                  ({ seq, title, url, description, imgName, createDate, userId }, index) => (
+                    <div
+                      key={seq}
+                      className="hover:scale-105 transform transition duration-500 ease-out"
                     >
-                      <MediumCard
-                        key={seq}
-                        seq={seq}
-                        title={title}
-                        url={url}
-                        description={description}
-                        img={img}
-                        createDate={createDate}
-                        length={workspaces.length}
-                        index={index}
-                      />
-                    </ClickNHold>
-                  </div>
-                ))}
+                      <ClickNHold
+                        time={1.5}
+                        onStart={handlerStart}
+                        onClickNHold={() => handlerClickNHold(seq)}
+                        onEnd={handlerEnd}
+                      >
+                        <MediumCard
+                          key={seq}
+                          seq={seq}
+                          userId={userId}
+                          title={title}
+                          url={url}
+                          description={description}
+                          img={imgName}
+                          createDate={createDate}
+                          length={workspaces.length}
+                          index={index}
+                        />
+                      </ClickNHold>
+                    </div>
+                  )
+                )}
               </>
             </div>
           )}
@@ -240,9 +241,9 @@ const MyPage = () => {
             data-aos="fade-zoom-in"
             className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
           >
-            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+            <div className="relative w-auto my-6 mx-auto max-w-5xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none h-[400px] ">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-[520px] bg-white outline-none focus:outline-none h-[400px] ">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                   <h3 className="text-2xl font-semibold">Ready for Delete ! </h3>
@@ -274,9 +275,13 @@ const MyPage = () => {
                       }}
                     </AnimatedProgressProvider>
                   </div>
-                  <div className="ml-[130px] justify-center mt-10">
-                    <p className="text-gray-500 text-sm">삭제할 준비가 끝났어요.</p>
-                    <p className="text-gray-500 ml-4 text-sm">정말 삭제할까요 ?</p>
+                  <div className="justify-center mt-16">
+                    <div className="flex justify-center">
+                      <p className="text-gray-500 text-md">삭제할 준비가 끝났어요.</p>
+                    </div>
+                    <div className="flex justify-center mt-2">
+                      <p className="text-gray-500 text-md">정말 삭제할까요 ?</p>
+                    </div>
                   </div>
                   <div className="flex justify-between">
                     <button
@@ -305,7 +310,7 @@ const MyPage = () => {
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+              <div className="border-0 w-[450px] rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                   <h3 className="text-3xl font-semibold">Add Project</h3>
@@ -318,8 +323,8 @@ const MyPage = () => {
                 </div>
                 {/*body*/}
                 <div className="relative p-6 flex-auto">
-                  <form className="flex flex-col w-[350px]">
-                    <div className="mb-6 pt-3 rounded bg-gray-200">
+                  <form className="flex flex-col w-full justify-center">
+                    {/* <div className="mb-6 pt-3 rounded bg-gray-200">
                       <label
                         className="block text-gray-700 text-sm font-bold mb-0 ml-3"
                         htmlFor="Name"
@@ -332,8 +337,44 @@ const MyPage = () => {
                         className="bg-gray-200 rounded w-full text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
                         onChange={changeHandler}
                       />
+                    </div> */}
+                    <div class="form-control">
+                      <label class="input-group input-group-vertical input-group-lg">
+                        <span>Title</span>
+                        <input
+                          type="text"
+                          id="title"
+                          placeholder="My Awsome Project"
+                          class="input input-bordered input-lg"
+                          onChange={changeHandler}
+                        />
+                      </label>
                     </div>
-                    <div className="mb-6 pt-3 rounded bg-gray-200">
+                    <div class="form-control mt-8">
+                      <label class="input-group input-group-vertical input-group-lg">
+                        <span>URL</span>
+                        <input
+                          type="text"
+                          id="url"
+                          placeholder="test@test.com:8080"
+                          class="input input-bordered input-lg"
+                          onChange={changeHandler}
+                        />
+                      </label>
+                    </div>
+                    <div class="form-control mt-8">
+                      <label class="input-group input-group-vertical input-group-lg">
+                        <span>Description</span>
+                        <input
+                          type="text"
+                          id="description"
+                          placeholder="프로젝트의 설명을 적어주세요 :)"
+                          class="input input-bordered input-lg h-24 pb-8"
+                          onChange={changeHandler}
+                        />
+                      </label>
+                    </div>
+                    {/* <div className="mb-6 pt-3 rounded bg-gray-200">
                       <label
                         className="block text-gray-700 text-sm font-bold mb-0 ml-3"
                         htmlFor="URL"
@@ -360,14 +401,30 @@ const MyPage = () => {
                         className=" resize-none overflow-auto bg-gray-200 rounded w-full h-40 text-gray-700 focus:outline-none border-b-4 border-gray-300 focus:border-purple-600 transition duration-500 px-3 pb-3"
                         onChange={changeHandler}
                       />
-                    </div>
-                    <div>
-                      <label
+                    </div> */}
+                    <div className="mt-8">
+                      {/* <label
                         className="block text-gray-700 text-sm font-bold mb-0 ml-3"
                         htmlFor="Pic"
                       >
-                        Pic
-                        <input type="file" name="file" onChange={(e) => handleFile(e)} />
+                        <p className="text-lg">Pic</p>
+                        <input
+                          className="w-[335px]"
+                          type="file"
+                          name="file"
+                          onChange={(e) => handleFile(e)}
+                        />
+                      </label> */}
+
+                      <label className=" w-full h-[88px] flex flex-col items-center px-4 py-6 bg-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-purple-600 hover:text-white text-purple-600 transition-all duration-150">
+                        <CloudUploadIcon className="h-10 " />
+                        <span className="mt-2 text-base leading-normal">Select Image file</span>
+                        <input
+                          type="file"
+                          className="hidden"
+                          id="file"
+                          onChange={(e) => handleFile(e)}
+                        />
                       </label>
                     </div>
                   </form>

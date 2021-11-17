@@ -53,12 +53,12 @@ const TestPage = () => {
         dispatch(tabAction.getAllTabs(res.data.response.tabList));
       })
       .catch((error) => {
-        console.error(error);
+        alert.error("저장된 Tab 정보를 불러오는 것에 실패했습니다.");
       });
   };
 
   return (
-    <div className="w-full h-full bg-white">
+    <div className="w-full h-full bg-white overflow-auto">
       <Header2 />
       <div className="pb-24">
         {/* <Sidebar current={current} /> */}

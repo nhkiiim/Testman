@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import img from "../img/icon2.png";
 import load from "../img/loading.gif";
+import bgg from "../img/bggg.jpeg";
 import loadimg from "../img/loadimg.gif";
 import Typical from "react-typical";
 import SyncLoader from "react-spinners/SyncLoader";
@@ -20,7 +21,7 @@ const WaitSend = () => {
           </h1>
         </div>
         <div className="relative h-[360px] mx-auto justify-center mt-12">
-          <Image src={loadimg} layout="fill" objectFit="contain" />
+          <Image src={bgg} layout="fill" objectFit="contain" />
         </div>
       </div>
     </div>

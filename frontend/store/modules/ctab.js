@@ -20,6 +20,12 @@ const ctabSlice = createSlice({
   name: "ctab",
   initialState,
   reducers: {
+    setcTabWorkspaceSeq: (state, action) => {
+      state.datas.workspaceSeq = action.payload;
+    },
+    setcTabSeq: (state, action) => {
+      state.datas.seq = action.payload;
+    },
     resetParamDatas: (state, action) => {
       state.datas.params = [action.payload];
     },
@@ -104,5 +110,7 @@ export const {
   setLoopState,
   setThreadState,
   deleteParamDatas,
+  setcTabSeq,
+  setcTabWorkspaceSeq,
 } = ctabSlice.actions;
 export default ctabSlice.reducer;

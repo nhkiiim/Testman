@@ -28,7 +28,7 @@ public class ApiInsertReq {
     @NotBlank(message = "httpMethod must be provided")
     private String httpMethod;
 
-    private Map<String, Object> params;
+    private Map<String, Object> body;
 
     private Map<String, String> headers;
 

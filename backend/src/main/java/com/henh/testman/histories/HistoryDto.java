@@ -24,7 +24,7 @@ public class HistoryDto {
 
     private final String httpMethod;
 
-    private final Map<String, Object> params;
+    private final Map<String, Object> body;
 
     private final Map<String, String> headers;
 
@@ -37,7 +37,7 @@ public class HistoryDto {
         this.address = history.getAddress();
         this.path = history.getPath();
         this.httpMethod = history.getHttpMethod();
-        this.params = history.getParams();
+        this.body = history.getBody();
         this.headers = history.getHeaders();
         this.createAt = history.getCreateAt();
     }

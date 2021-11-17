@@ -32,7 +32,7 @@ public class History {
 
     private String httpMethod;
 
-    private Map<String, Object> params;
+    private Map<String, Object> body;
 
     private Map<String, String> headers;
 
@@ -44,7 +44,7 @@ public class History {
         this.address = loadInsertReq.getAddress();
         this.path = loadInsertReq.getPath();
         this.httpMethod = loadInsertReq.getHttpMethod();
-        this.params = loadInsertReq.getParams();
+        this.body = loadInsertReq.getBody();
         this.headers = loadInsertReq.getHeaders();
         this.createAt = loadInsertReq.getCreateAt();
     }
@@ -55,7 +55,7 @@ public class History {
         this.address = apiInsertReqReq.getAddress();
         this.path = apiInsertReqReq.getPath();
         this.httpMethod = apiInsertReqReq.getHttpMethod();
-        this.params = apiInsertReqReq.getParams();
+        this.body = apiInsertReqReq.getBody();
         this.headers = apiInsertReqReq.getHeaders();
         this.createAt = LocalDateTime.now();
     }

@@ -30,7 +30,7 @@ public class Tab extends BaseEntity {
 
     private String httpMethod;
 
-    private String params;
+    private String body;
 
     private String headers;
 
@@ -42,7 +42,7 @@ public class Tab extends BaseEntity {
         this.httpMethod = apiInsertReq.getHttpMethod();
 
         try {
-            this.params = mapper.writeValueAsString(apiInsertReq.getParams());
+            this.body = mapper.writeValueAsString(apiInsertReq.getBody());
             this.headers = mapper.writeValueAsString(apiInsertReq.getHeaders());
         } catch (JsonProcessingException e) {
             throw new InvalidMapperException("Mapping failed");
@@ -57,7 +57,7 @@ public class Tab extends BaseEntity {
         this.httpMethod = loadInsertReq.getHttpMethod();
 
         try {
-            this.params = mapper.writeValueAsString(loadInsertReq.getParams());
+            this.body = mapper.writeValueAsString(loadInsertReq.getBody());
             this.headers = mapper.writeValueAsString(loadInsertReq.getHeaders());
         } catch (JsonProcessingException e) {
             throw new InvalidMapperException("Mapping failed");
@@ -73,7 +73,7 @@ public class Tab extends BaseEntity {
         this.collectionSeq = tabUpdateReq.getCollectionSeq();
 
         try {
-            this.params = mapper.writeValueAsString(tabUpdateReq.getParams());
+            this.body = mapper.writeValueAsString(tabUpdateReq.getBody());
             this.headers = mapper.writeValueAsString(tabUpdateReq.getHeaders());
         } catch (JsonProcessingException e) {
             throw new InvalidMapperException("Mapping failed");

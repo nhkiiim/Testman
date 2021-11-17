@@ -51,9 +51,9 @@ const MediumCard = ({ seq, title, url, description, img, createDate, index, leng
           <div className="card-body">
             <h2 className="card-title">
               {title}
-              <div className={index === length - 1 ? "badge mx-2 badge-secondary" : "hidden"}>
+              {/* <div className={index === length - 1 ? "badge mx-2 badge-secondary" : "hidden"}>
                 NEW
-              </div>
+              </div> */}
             </h2>
             <h3 className="mt-[-2px]">{url}</h3>
             <p className="h-[57px]">{description}</p>

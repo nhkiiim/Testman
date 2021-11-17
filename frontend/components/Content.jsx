@@ -179,7 +179,7 @@ const Content = ({ current }) => {
         data: payload,
       })
         .then((res) => {
-          // console.log(res);
+          console.log(res);
         })
         .catch((error) => {
           console.error(error);

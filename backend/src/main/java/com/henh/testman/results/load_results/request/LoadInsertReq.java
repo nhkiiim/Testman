@@ -38,7 +38,7 @@ public class LoadInsertReq {
     @NotNull(message = "thread must be provided")
     private Integer thread;
 
-    private Map<String, Object> params;
+    private Map<String, Object> body;
 
     private Map<String, String> headers;
 

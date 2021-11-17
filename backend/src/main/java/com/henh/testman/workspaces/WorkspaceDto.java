@@ -21,7 +21,7 @@ public class WorkspaceDto {
 
     private String description;
 
-    private String img;
+    private String imgName;
 
     private LocalDateTime createDate;
 
@@ -31,17 +31,17 @@ public class WorkspaceDto {
         this.title = workspace.getTitle();
         this.url = workspace.getUrl();
         this.description = workspace.getDescription();
-        this.img = workspace.getImg();
+        this.imgName = workspace.getImgName();
         this.createDate = workspace.getCreateDate();
     }
 
-    public WorkspaceDto(Long seq, String id, String title, String url, String description, String img, LocalDateTime createDate) {
+    public WorkspaceDto(Long seq, String id, String title, String url, String description, String imgName, LocalDateTime createDate) {
         this.seq = seq;
         this.userId = id;
         this.title = title;
         this.url = url;
         this.description = description;
-        this.img = img;
+        this.imgName = imgName;
         this.createDate = createDate;
     }
 

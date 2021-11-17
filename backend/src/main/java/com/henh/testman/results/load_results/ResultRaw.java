@@ -8,6 +8,7 @@ import org.apache.jmeter.samplers.SampleResult;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
 @Getter
@@ -16,7 +17,7 @@ import java.util.TimeZone;
 @NoArgsConstructor
 public class ResultRaw {
 
-    private LocalDateTime dateTime;
+    private String dateTime;
 
     private Long elapsed;
 
@@ -52,11 +53,11 @@ public class ResultRaw {
         this.dateTime = LocalDateTime.ofInstant(
                 Instant.ofEpochMilli(result.getTimeStamp()),
                 TimeZone.getDefault().toZoneId()
-        );
+        ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.elapsed = result.getTime();
         this.responseCode = result.getResponseCode();
         this.responseMessage = result.getResponseMessage();
-        this.threadName = result.getThreadName();
+        this.threadName = result.getThreadName().substring(result.getThreadName().length()-1);
         this.dataType = result.getDataType();
         this.success = result.isSuccessful();
         this.failureMessage = result.getFirstAssertionFailureMessage();

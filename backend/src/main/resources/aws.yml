@@ -1,0 +1,11 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAYL5LSBK4F2I2C5XM
+      secretKey: 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
+    s3:
+      bucket: testsman
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

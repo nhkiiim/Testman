@@ -31,11 +31,11 @@ const persistor = persistStore(store);
 function MyApp({ Component, pageProps }) {
   return (
     <CookiesProvider>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <Component {...pageProps} />
-      </PersistGate>
-    </Provider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <Component {...pageProps} />
+        </PersistGate>
+      </Provider>
     </CookiesProvider>
   );
 }

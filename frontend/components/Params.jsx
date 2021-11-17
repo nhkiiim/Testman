@@ -9,7 +9,7 @@ import * as apiActions from "../store/modules/api";
 const Params = () => {
   const dispatch = useDispatch();
   const paramData = useSelector((state) => state.api.request.params);
-  console.log("paramData", paramData);
+  // console.log("paramData", paramData);
 
   const rawData = {
     seq: Math.random(0, 10) * 10,

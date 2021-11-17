@@ -28,7 +28,7 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
     // window.location.reload();
   };
 
-  console.log(dataIndex);
+  // console.log(dataIndex);
   const handleDelete = (idx) => {
     let filtered = headerData.filter((data) => data.seq !== idx);
 

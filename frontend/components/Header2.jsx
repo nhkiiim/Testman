@@ -438,7 +438,8 @@ const Header2 = () => {
                         onClick={() => {
                           sessionStorage.removeItem("persist:root");
                           removeCookie("token");
-                          document.location.href = "/Login";
+
+                          router.push("/Login");
                         }}
                       >
                         <LogoutIcon className="h-4 ml-1" />

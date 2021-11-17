@@ -12,18 +12,10 @@ import * as processAction from "../store/modules/process";
 import dynamic from "next/dynamic";
 import * as tabAction from "../store/modules/tab";
 import * as currentAction from "../store/modules/current";
-import ReactJson from "react-json-view";
 import Result from "../components/Result";
 import TestLoading from "../components/TestLoading";
-
-const DynamicComponent = dynamic(import("../components/Result"), {
-  loading: () => (
-    <div>
-      <TestLoading />
-    </div>
-  ),
-  ssr: false,
-});
+import * as statActions from "../store/modules/teststat";
+import WaitSend from "../components/WaitSend";
 
 const TestPage = () => {
   const router = useRouter();
@@ -36,11 +28,15 @@ const TestPage = () => {
   const cc = useSelector((state) => state.collections);
   const allTab = useSelector((state) => state.tab);
   const cseq = useSelector((state) => state.current.seq);
-  console.log(cseq);
+  const cstat = useSelector((state) => state.teststat.stat);
+  // console.log(cstat);
+  // console.log(cseq);
+  // console.log(result);
   useEffect(() => {
     // console.log(cc);
     dispatch(pageAction.setPageState(1));
     dispatch(processAction.setProcessData({}));
+    dispatch(statActions.setStat("api"));
 
     getAllTabs();
   }, [cseq]);
@@ -53,7 +49,7 @@ const TestPage = () => {
       },
     })
       .then((res) => {
-        console.log(res.data.response.tabList);
+        // console.log(res.data.response.tabList);
         dispatch(tabAction.getAllTabs(res.data.response.tabList));
       })
       .catch((error) => {
@@ -62,11 +58,16 @@ const TestPage = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full bg-white">
       <Header2 />
       {/* <Sidebar current={current} /> */}
       <Content current={current} />
-      {result ? <DynamicComponent /> : <div>none</div>}
+      <div className={cstat !== "api" || result.length === 0 ? "hidden" : ""}>
+        <Result />
+      </div>
+      <div className={result.length === 0 ? "" : "hidden"}>
+        <WaitSend />
+      </div>
     </div>
   );
 };

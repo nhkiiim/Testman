@@ -29,5 +29,6 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("tailwindcss-easing"), require("daisyui")],
+  daisyui: {},
 };

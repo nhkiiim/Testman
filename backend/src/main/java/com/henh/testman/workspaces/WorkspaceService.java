@@ -16,7 +16,7 @@ public interface WorkspaceService {
 
     Integer countWorkspaceByUserId(String userId);
 
-    Optional<Workspace> updateWorkspace(WorkspaceUpdateReq workspaceUpdateReq);
+    Optional<Workspace> updateWorkspace(WorkspaceUpdateReq workspaceUpdateReq, String userId);
 
     Optional<String> deleteWorkspace(Long seq);
 

@@ -48,11 +48,11 @@ const Performance = () => {
   };
 
   useEffect(() => {
-    console.log(pData);
+    // console.log(pData);
 
-    console.log(realData);
-    console.log(realDataSec);
-    console.log(data);
+    // console.log(realData);
+    // console.log(realDataSec);
+    // console.log(data);
 
     setStyle("good");
   }, [data, realData, firstStat, speed, largest, inter, block, layout]);
@@ -60,7 +60,7 @@ const Performance = () => {
   const setUpQuery = () => {
     let query = `${API_URL}?`;
     query += `url=${pageUrl}&key=${API_KEY}`;
-    console.log(query);
+    // console.log(query);
 
     return query;
   };
@@ -74,9 +74,9 @@ const Performance = () => {
     const processData = await fetch(url).then((res) => res.json());
     const parseData = processData.lighthouseResult.audits.metrics.details.items[0];
     setData(processData.lighthouseResult.audits.metrics.details.items[0]);
-    console.log(data);
+    // console.log(data);
     dispatch(processAction.setProcessData(parseData));
-    console.log("done");
+    // console.log("done");
     getRate(parseData);
     setSended(true);
     setOnLoading(false);
@@ -100,65 +100,65 @@ const Performance = () => {
     });
 
     const a = 0;
-    console.log(a);
-    console.log(props.observedFirstContentfulPaint);
+    // console.log(a);
+    // console.log(props.observedFirstContentfulPaint);
     if (props.observedFirstContentfulPaint <= 740) {
       a = 10;
-      console.log(a);
+      // console.log(a);
     } else if (
       740 < props.observedFirstContentfulPaint &&
       props.observedFirstContentfulPaint <= 1000
     ) {
       a = 9;
-      console.log(a);
+      // console.log(a);
     } else if (
       1100 < props.observedFirstContentfulPaint &&
       props.observedFirstContentfulPaint <= 1180
     ) {
       a = 8;
-      console.log(a);
+      // console.log(a);
     } else if (
       1180 < props.observedFirstContentfulPaint &&
       props.observedFirstContentfulPaint <= 1330
     ) {
       a = 7;
-      console.log(a);
+      // console.log(a);
     } else if (
       1330 < props.observedFirstContentfulPaint &&
       props.observedFirstContentfulPaint <= 1490
     ) {
       a = 6;
-      console.log(a);
+      // console.log(a);
     } else if (
       1490 < props.observedFirstContentfulPaint &&
       props.observedFirstContentfulPaint <= 1660
     ) {
       a = 5;
-      console.log(a);
+      // console.log(a);
     } else if (
       1660 < props.observedFirstContentfulPaint &&
       props.observedFirstContentfulPaint <= 1840
     ) {
       a = 4;
-      console.log(a);
+      // console.log(a);
     } else if (
       1840 < props.observedFirstContentfulPaint &&
       props.observedFirstContentfulPaint <= 2080
     ) {
       a = 3;
-      console.log(a);
+      // console.log(a);
     } else if (
       2080 < props.observedFirstContentfulPaint &&
       props.observedFirstContentfulPaint <= 2400
     ) {
       a = 2;
-      console.log(a);
+      // console.log(a);
     } else if (
       2400 < props.observedFirstContentfulPaint &&
       props.observedFirstContentfulPaint <= 3040
     ) {
       a = 1;
-      console.log(a);
+      // console.log(a);
     } else if (3040 < props.observedFirstContentfulPaint) {
       a = 0;
     }
@@ -470,22 +470,22 @@ const Performance = () => {
       f = 0;
     }
     const sum = 3 + a + b + c + d + e + f;
-    console.log(
-      "a : " +
-        a +
-        " b : " +
-        b +
-        " c : " +
-        c +
-        " d : " +
-        d +
-        " e : " +
-        e +
-        " f : " +
-        f +
-        " sum : " +
-        sum
-    );
+    // console.log(
+    //   "a : " +
+    //     a +
+    //     " b : " +
+    //     b +
+    //     " c : " +
+    //     c +
+    //     " d : " +
+    //     d +
+    //     " e : " +
+    //     e +
+    //     " f : " +
+    //     f +
+    //     " sum : " +
+    //     sum
+    // );
 
     setTotalRate(sum);
 
@@ -729,7 +729,7 @@ const Performance = () => {
                         </div>
                         <div className="">
                           <p className="text-lg font-bold text-green-500">
-                            {realDataSec.firstPaint} 초
+                            {realDataSec.firstPaint} s
                           </p>
                         </div>
                       </div>
@@ -751,7 +751,7 @@ const Performance = () => {
                             </div>
                             <div className="flex">
                               <p className="text-lg font-bold text-yellow-500">
-                                {realDataSec.firstPaint} 초
+                                {realDataSec.firstPaint} s
                               </p>
                             </div>
                           </div>
@@ -771,7 +771,7 @@ const Performance = () => {
                             </div>
                             <div className="flex">
                               <p className="text-lg font-bold text-red-500">
-                                {realDataSec.firstPaint} 초
+                                {realDataSec.firstPaint} s
                               </p>
                             </div>
                           </div>
@@ -798,7 +798,7 @@ const Performance = () => {
                         </div>
                         <div>
                           <p className="text-lg font-bold text-green-500">
-                            {realDataSec.interactive} 초
+                            {realDataSec.interactive} s
                           </p>
                         </div>
                       </div>
@@ -820,7 +820,7 @@ const Performance = () => {
                             </div>
                             <div>
                               <p className="text-lg font-bold text-yellow-500">
-                                {realDataSec.interactive} 초
+                                {realDataSec.interactive} s
                               </p>
                             </div>
                           </div>
@@ -840,7 +840,7 @@ const Performance = () => {
                             </div>
                             <div>
                               <p className="text-lg font-bold text-red-500">
-                                {realDataSec.interactive} 초
+                                {realDataSec.interactive} s
                               </p>
                             </div>
                           </div>
@@ -866,7 +866,7 @@ const Performance = () => {
                         </div>
                         <div>
                           <p className="text-lg font-bold text-green-500">
-                            {realDataSec.speedIndex} 초
+                            {realDataSec.speedIndex} s
                           </p>
                         </div>
                       </div>
@@ -885,7 +885,7 @@ const Performance = () => {
                             </div>
                             <div>
                               <p className="text-lg font-bold text-yellow-500">
-                                {realDataSec.speedIndex} 초
+                                {realDataSec.speedIndex} s
                               </p>
                             </div>
                           </div>
@@ -902,7 +902,7 @@ const Performance = () => {
                             </div>
                             <div>
                               <p className="text-lg font-bold text-red-500">
-                                {realDataSec.speedIndex} 초
+                                {realDataSec.speedIndex} s
                               </p>
                             </div>
                           </div>
@@ -925,14 +925,14 @@ const Performance = () => {
                         </div>
                         <div>
                           <p className="text-lg font-bold text-green-500">
-                            {realDataSec.blockingTime} 밀리초
+                            {realDataSec.blockingTime} ms
                           </p>
                         </div>
                       </div>
                       <div className="w-[228px] ml-9 mt-2">
                         <p>
                           FCP와 상호작용 시간 사이의 모든 시간의 합으로 작업 지속 시간이 50ms를
-                          넘으면 밀리초 단위로 표현됩니다.
+                          넘으면 밀리초(ms) 단위로 표현됩니다.
                         </p>
                       </div>
                     </>
@@ -947,14 +947,14 @@ const Performance = () => {
                             </div>
                             <div>
                               <p className="text-lg font-bold text-yellow-500">
-                                {realDataSec.blockingTime} 밀리초
+                                {realDataSec.blockingTime} ms
                               </p>
                             </div>
                           </div>
                           <div className="w-[228px] ml-9 mt-2">
                             <p>
                               FCP와 상호작용 시간 사이의 모든 시간의 합으로 작업 지속 시간이 50ms를
-                              넘으면 밀리초 단위로 표현됩니다.
+                              넘으면 밀리초(ms) 단위로 표현됩니다.
                             </p>
                           </div>
                         </>
@@ -967,14 +967,14 @@ const Performance = () => {
                             </div>
                             <div>
                               <p className="text-lg font-bold text-red-500">
-                                {realDataSec.blockingTime} 밀리초
+                                {realDataSec.blockingTime} ms
                               </p>
                             </div>
                           </div>
                           <div className="w-[228px] ml-9 mt-2">
                             <p>
                               FCP와 상호작용 시간 사이의 모든 시간의 합으로 작업 지속 시간이 50ms를
-                              넘으면 밀리초 단위로 표현됩니다.
+                              넘으면 밀리초(ms) 단위로 표현됩니다.
                             </p>
                           </div>
                         </>
@@ -993,7 +993,7 @@ const Performance = () => {
                         </div>
                         <div>
                           <p className="text-lg font-bold text-green-500">
-                            {realDataSec.largestPaint} 초
+                            {realDataSec.largestPaint} s
                           </p>
                         </div>
                       </div>
@@ -1015,7 +1015,7 @@ const Performance = () => {
                             </div>
                             <div>
                               <p className="text-lg font-bold text-yellow-500">
-                                {realDataSec.largestPaint} 초
+                                {realDataSec.largestPaint} s
                               </p>
                             </div>
                           </div>
@@ -1035,7 +1035,7 @@ const Performance = () => {
                             </div>
                             <div>
                               <p className="text-lg font-bold text-red-500">
-                                {realDataSec.largestPaint} 초
+                                {realDataSec.largestPaint} s
                               </p>
                             </div>
                           </div>

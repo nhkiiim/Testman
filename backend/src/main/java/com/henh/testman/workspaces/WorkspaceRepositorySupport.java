@@ -19,14 +19,13 @@ public class WorkspaceRepositorySupport {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-    List<WorkspaceDto> findByUserId(String id){
-        List<WorkspaceDto> workspaceDtoList = jpaQueryFactory
-                .select(Projections.constructor(WorkspaceDto.class,qWorkspace.seq, qWorkspace.user.userId, qWorkspace.title,
-                        qWorkspace.url, qWorkspace.description, qWorkspace.img, qWorkspace.createDate))
+    List<WorkspaceDto> findByUserId(String userId){
+        return jpaQueryFactory
+                .select(Projections.constructor(WorkspaceDto.class, qWorkspace.seq, qWorkspace.user.userId, qWorkspace.title,
+                        qWorkspace.url, qWorkspace.description, qWorkspace.imgName, qWorkspace.createDate))
                 .from(qWorkspace)
-                .where(qWorkspace.user.userId.eq(id))
+                .where(qWorkspace.user.userId.eq(userId))
                 .fetch();
-        return workspaceDtoList;
     }
 
 }

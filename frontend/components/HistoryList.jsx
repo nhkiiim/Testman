@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 const HistoryList = ({ data }) => {
   const token = useSelector((state) => state.user.token);
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
   });
   const getColor = {
     GET: "text-green-600 mr-[24px] text-sm",
@@ -23,10 +23,10 @@ const HistoryList = ({ data }) => {
       },
     })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
   return (

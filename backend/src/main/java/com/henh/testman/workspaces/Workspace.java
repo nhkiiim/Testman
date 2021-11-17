@@ -2,6 +2,7 @@ package com.henh.testman.workspaces;
 
 import com.henh.testman.common.utils.BaseEntity;
 import com.henh.testman.users.User;
+import com.henh.testman.workspaces.request.WorkspaceUpdateReq;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -27,14 +28,17 @@ public class Workspace extends BaseEntity {
 
     private String description;
 
-    private String img;
+    private String imgName;
 
     private LocalDateTime createDate;
 
-    public void update(String title, String url, String description){
-        this.title = title;
-        this.url = url;
-        this.description = description;
+    public void update(WorkspaceUpdateReq workspaceUpdateReq, String imgName){
+        this.title = workspaceUpdateReq.getTitle();
+        this.url = workspaceUpdateReq.getUrl();
+        this.description = workspaceUpdateReq.getDescription();
+        if (imgName != null) {
+            this.imgName = imgName;
+        }
     }
 
 }

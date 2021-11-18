@@ -34,7 +34,7 @@ const CollectionsList = ({ data, current }) => {
         Authorization: `Bearer ${token}`,
       },
     }).then((res) => {
-      dispatch(tabActions.pushTabs(tabInfo)).catch((error) => console.error(error));
+      // dispatch(tabActions.pushTabs(tabInfo)).catch((error) => console.error(error));
     });
     // dispatch(tabActions.setTabIndexState(tabs.length));
   };

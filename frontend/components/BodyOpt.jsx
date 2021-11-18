@@ -1,36 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { PlusIcon, TrashIcon } from "@heroicons/react/solid";
+import { TrashIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import * as apiActions from "../store/modules/api";
 import { SaveAsIcon } from "@heroicons/react/solid";
 
-const HeaderOpt = ({ seq, headers, index, saved }) => {
-  const headerData = useSelector((state) => state.api.request.headers);
-  const dataIndex = useSelector((state) => state.api.request.headers[index]);
+const BodyOpt = ({ seq, body, index, saved }) => {
+  const bodyData = useSelector((state) => state.api.request.body);
+  const dataIndex = useSelector((state) => state.api.request.body[index]);
   const dispatch = useDispatch();
   const [inputObj, setInputObj] = useState(dataIndex);
-  const { headerKey, headerValue, headerDescription } = inputObj;
+  const { bodyKey, bodyValue, bodyDescription } = inputObj;
   const [save, setSave] = useState(false);
 
   const fetchData = (idx) => {
     setSave(true);
     let datas = {
       seq: seq,
-      headerKey: headerKey,
-      headerValue: headerValue,
-      headerDescription: headerDescription,
+      bodyKey: bodyKey,
+      bodyValue: bodyValue,
+      bodyDescription: bodyDescription,
       saved: true,
     };
 
-    let filtered = headerData.filter((data) => data.seq !== idx);
-    dispatch(apiActions.deleteHeaderDatas(filtered));
-    dispatch(apiActions.saveHeaderDatas(datas));
+    let filtered = bodyData.filter((data) => data.seq !== idx);
+    dispatch(apiActions.deleteBodyDatas(filtered));
+    dispatch(apiActions.saveBodyDatas(datas));
+    // window.location.reload();
   };
 
   // console.log(dataIndex);
   const handleDelete = (idx) => {
-    let filtered = headerData.filter((data) => data.seq != idx);
-    dispatch(apiActions.deleteHeaderDatas(filtered));
+    let filtered = bodyData.filter((data) => data.seq !== idx);
+
+    dispatch(apiActions.deleteBodyDatas(filtered));
   };
 
   const handleKeyChange = (e) => {
@@ -64,14 +66,14 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
           <div className="w-full overflow-hidden xl:my-2 xl:px-2 xl:w-[31%] border-r border-gray-300">
             <div className="mx-auto w-[360px] pl-2 ">
               <input
-                id="headerKey"
+                id="bodyKey"
                 className={
                   saved
                     ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
                     : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
                 }
                 placeholder="KEY"
-                value={headerKey}
+                value={bodyKey}
                 onChange={handleKeyChange}
               />
             </div>
@@ -81,14 +83,14 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
             <div className="mx-auto ">
               <div className="mx-auto w-[360px] pl-2 ">
                 <input
-                  id="headerValue"
+                  id="bodyValue"
                   className={
                     saved
                       ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
                       : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
                   }
                   placeholder="VALUE"
-                  value={headerValue}
+                  value={bodyValue}
                   onChange={handleKeyChange}
                 />
               </div>
@@ -99,14 +101,14 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
             <div className="mx-auto ">
               <div className="mx-auto w-[360px] pl-2 ">
                 <input
-                  id="headerDescription"
+                  id="bodyDescription"
                   className={
                     saved
                       ? "h-[20px] w-[100%] mb-1 pt-2 bg-gray-100 outline-none"
                       : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
                   }
                   placeholder="DESCRIPTION"
-                  value={headerDescription}
+                  value={bodyDescription}
                   onChange={handleKeyChange}
                 />
               </div>
@@ -123,4 +125,4 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
   );
 };
 
-export default HeaderOpt;
+export default BodyOpt;

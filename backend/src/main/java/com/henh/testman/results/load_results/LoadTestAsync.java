@@ -102,7 +102,7 @@ public class LoadTestAsync {
         if (httpMethod.equals("POST") || httpMethod.equals("PATCH")) {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                String body = mapper.writeValueAsString(loadInsertReq.getParams());
+                String body = mapper.writeValueAsString(loadInsertReq.getBody());
                 sampler.addNonEncodedArgument("body", body, "");
                 sampler.setPostBodyRaw(true);
             } catch (JsonProcessingException e) {

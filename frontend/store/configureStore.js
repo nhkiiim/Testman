@@ -9,11 +9,11 @@ const createStore = () => {
   const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
-    devTools: isDev,
+    devTools: !isDev,
   });
   return store;
 };
 
 export const wrapper = createWrapper(createStore, {
-  debug: isDev,
+  debug: !isDev,
 });

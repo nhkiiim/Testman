@@ -1,14 +1,17 @@
 import { PlusCircleIcon } from "@heroicons/react/solid";
 import { PlusIcon } from "@heroicons/react/solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import ParamOpt from "./ParamOpt";
+import * as ctabActions from "../store/modules/ctab";
 import * as apiActions from "../store/modules/api";
+import ParamOpt from "./ParamOpt";
 
 const Params = () => {
   const dispatch = useDispatch();
   const paramData = useSelector((state) => state.api.request.params);
+  const ctabData = useSelector((state) => state.ctab.datas.params);
+  // console.log(ctb);
   // console.log("paramData", paramData);
   console.log(paramData)
 

@@ -2,37 +2,38 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   request: {
-    payload: {
-      httpMethod: "GET",
-    },
+    address: null,
+    httpMethod: "GET",
     params: [],
     authorization: {},
-    headers: [
-      {
-        seq: 0,
-        headerKey: "",
-        headerValue: "",
-        headerDescription: "",
-        saved: false,
-      },
-    ],
+    headers: [],
     body: [],
     settings: {},
-    uri: "",
+    path: null,
     loop: 0,
     thread: 0,
+    contentType: "",
   },
   list: [],
+  subPath: "",
+  mergePath: "",
 };
 
 const requestSlice = createSlice({
   name: "api",
   initialState,
   reducers: {
-    setPayloadState: (state, action) => {
-      const payload = action.payload;
-
-      state.request.payload.httpMethod = payload.httpMethod;
+    resetAllDatas: (state, action) => {
+      state = action.payload;
+    },
+    setContentType: (state, action) => {
+      state.request.contentType = action.payload;
+    },
+    setHttpMethods: (state, action) => {
+      state.request.httpMethod = action.payload;
+    },
+    setAddress: (state, action) => {
+      state.request.address = action.payload;
     },
     setLoopState: (state, action) => {
       state.request.loop = action.payload;
@@ -70,6 +71,21 @@ const requestSlice = createSlice({
     deleteHeaderDatas: (state, action) => {
       state.request.headers = action.payload;
     },
+    resetHeaderDatas: (state, action) => {
+      state.request.headers = [action.payload];
+    },
+    setBodyDatas: (state, action) => {
+      [...state.request.body, state.request.body.push(action.payload)];
+    },
+    saveBodyDatas: (state, action) => {
+      [...state.request.body, state.request.body.unshift(action.payload)];
+    },
+    deleteBodyDatas: (state, action) => {
+      state.request.body = action.payload;
+    },
+    resetBodyDatas: (state, action) => {
+      state.request.body = [action.payload];
+    },
     setAuthorizationState: (state, action) => {
       const authorization = action.payload;
 
@@ -80,27 +96,29 @@ const requestSlice = createSlice({
 
       state.request.headers = headers;
     },
-    setBodyState: (state, action) => {
-      state.request.body = [...state.request.body, action.payload];
-    },
     setSettingsState: (state, action) => {
       const settings = action.payload;
 
       state.request.settings = settings;
     },
-    setUriState: (state, action) => {
-      const uri = action.payload;
-      state.request.uri = action.payload;
+    setPathState: (state, action) => {
+      state.request.path = action.payload;
     },
+    setSubPathState: (state, action) => {
+      state.subPath = action.payload;
+    },
+    setMergePathState: (state, action) => {
+      state.mergePath = action.payload;
+    }
   },
 });
 
 export const {
+  resetAllDatas,
+  setPathState,
   setPayloadState,
   setParamsState,
   setAuthorizationState,
-  setHeadersState,
-  setBodyState,
   setSettingsState,
   setUriState,
   setParamDatas,
@@ -114,5 +132,15 @@ export const {
   deleteAllParams,
   setLoopState,
   setThreadState,
+  resetHeaderDatas,
+  setBodyDatas,
+  saveBodyDatas,
+  deleteBodyDatas,
+  resetBodyDatas,
+  setHttpMethods,
+  setAddress,
+  setContentType,
+  setSubPathState,
+  setMergePathState,
 } = requestSlice.actions;
 export default requestSlice.reducer;

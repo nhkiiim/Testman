@@ -11,27 +11,7 @@ const ParamOpt = ({ seq, params, index, saved }) => {
   const [inputObj, setInputObj] = useState(dataIndex);
   const { paramKey, paramValue, paramDescription } = inputObj;
   const [save, setSave] = useState(false);
-  const [d, setD] = useState([]);
-  useEffect(() => {
-    cals();
-  }, []);
-  // console.log(Object.keys(params));
-  // console.log(params);
-  const hasValue = Object.values(params);
-  const hasKey = Object.keys(params);
-  // console.log(hasKey[0], hasValue[0]);
 
-  const cals = () => {
-    let tmp = [];
-    for (let i = 0; i < hasKey.length; i++) {
-      tmp.push({
-        key: hasKey[i],
-        value: hasValue[i],
-      });
-    }
-    return setD(tmp);
-  };
-  // console.log(d);
   const fetchData = (idx) => {
     setSave(true);
     let datas = {
@@ -45,13 +25,11 @@ const ParamOpt = ({ seq, params, index, saved }) => {
     let filtered = paramData.filter((data) => data.seq !== idx);
     dispatch(apiActions.deleteParamDatas(filtered));
     dispatch(apiActions.saveParamDatas(datas));
-    // window.location.reload();
   };
 
   // console.log(dataIndex);
   const handleDelete = (idx) => {
     let filtered = paramData.filter((data) => data.seq !== idx);
-
     dispatch(apiActions.deleteParamDatas(filtered));
   };
 
@@ -92,6 +70,7 @@ const ParamOpt = ({ seq, params, index, saved }) => {
                     : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
                 }
                 placeholder="KEY"
+                value={paramKey}
                 onChange={handleKeyChange}
               />
             </div>
@@ -108,6 +87,7 @@ const ParamOpt = ({ seq, params, index, saved }) => {
                       : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
                   }
                   placeholder="VALUE"
+                  value={paramValue}
                   onChange={handleKeyChange}
                 />
               </div>
@@ -125,6 +105,7 @@ const ParamOpt = ({ seq, params, index, saved }) => {
                       : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
                   }
                   placeholder="DESCRIPTION"
+                  value={paramDescription}
                   onChange={handleKeyChange}
                 />
               </div>

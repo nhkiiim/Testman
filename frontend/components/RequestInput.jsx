@@ -14,11 +14,11 @@ const RequestInput = (props) => {
   const selector = useSelector((state) => state.api);
   // console.log(selector);
   const uri = useSelector((state) => state.api.request.uri)
-  console.log(selector)
+  const subPath = useSelector((state) => state.api.subPath)
+  // console.log(selector)
   const handleUriChange = (e) => {
     setInputUri(e.target.value);
-    dispatch(ctabActions.setCurl(inputUri));
-    dispatch(apiActions.setUriState(inputUri));
+    dispatch(apiActions.setPathState(inputUri));
   };
   const [loopVal, setLoopVal] = useState(0);
   const [threadVal, setThreadVal] = useState(0);
@@ -51,10 +51,8 @@ const RequestInput = (props) => {
   };
 
   useEffect(() => {
-    dispatch(apiActions.setPayloadState(payload));
-    dispatch(ctabActions.setHttpMethods(payload));
-    dispatch(ctabActions.setCurl(inputUri));
-    dispatch(apiActions.setUriState(inputUri));
+    dispatch(apiActions.setHttpMethods(payload));
+    dispatch(apiActions.setPathState(inputUri));
     dispatch(apiActions.setLoopState(loopVal));
     dispatch(apiActions.setThreadState(threadVal));
   }, [inputUri, payload, loopVal, threadVal]);
@@ -64,10 +62,23 @@ const RequestInput = (props) => {
         <div className=" text-gray-500 pb-[10px] border-b border-gray-200  pt-[10px]">
           <div className="flex justify-between">
             <div className="flex mt-1">
-              <FaCaretRight className="mt-[1px]" />
-              <span className="text-xs font-normal ml-[10px]">
-                {ctab.path ? ctab.path : "UNTITLED"}
-              </span>
+              <LightBulbIcon className="h-6 text-yellow-400" />
+              {testBtn === "api" ? (
+                <>
+                  <p className="text-sm pt-1 ml-2">REST API를 이곳에서 테스트해보세요 !</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm pt-1 ml-2">
+                    {threadVal} 명의 사용자가 동시에 해당 API 호출을 {loopVal} 번 반복하면 어떤 일이
+                    일어날 지 알아볼까요 ?
+                  </p>
+                </>
+              )}
+              {/* <p className="text-sm pt-1 ml-2">
+                {threadVal} 명의 사용자가 동시에 해당 API 호출을 {loopVal} 번 반복하면 어떤 일이
+                일어날 지 알아볼까요 ?
+              </p> */}
             </div>
             <div className="inline-flex shadow-md">
               <button
@@ -95,14 +106,7 @@ const RequestInput = (props) => {
 
           <div className={testBtn === "api" ? "hidden" : "mt-3 ml-1"}>
             <hr className="mt-3 mb-3" />
-            <div className="mt-2">
-              <div className="flex">
-                <LightBulbIcon className="h-6 text-yellow-400" />
-                <p className="text-sm pt-1 ml-2">
-                  쓰레드를 {threadVal}을 {loopVal}번 반복 어쩌구..저쩌구... 하는거에요
-                </p>
-              </div>
-            </div>
+            <div className="mt-2"></div>
             <div className="flex mt-3">
               <div>
                 <div className="flex">
@@ -179,14 +183,17 @@ const RequestInput = (props) => {
             />
             <input
               type="text"
-              placeholder="Type Query here !"
+              placeholder="Type Path here !"
               className="border-r border-b border-gray-300 bg-gray-50 p-[8px] w-[722px]  border-t rounded-sm pl-3"
               onKeyUp={handleUriChange}
               value={uri}
             />
+            <span className="border-r border-b border-gray-300 bg-gray-50 p-[8px] border-t rounded-sm pl-3">
+              {subPath}
+            </span>
 
             <button
-              className="flex bg-blue-500 text-white p-[14px] ml-[8px] rounded pl-[15px] pr-[18px] cursor-pointer text-sm "
+              className="flex bg-purple-500 bg-opacity-80 text-white p-[14px] ml-[8px] rounded pl-[15px] pr-[18px] cursor-pointer text-sm "
               onClick={handleSubmit}
             >
               SEND

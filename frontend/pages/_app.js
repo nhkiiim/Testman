@@ -8,10 +8,14 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { createStore } from "redux";
 import rootReducer from "../store/modules";
-import { useEffect, useState } from "react";
-import { getCookie } from "../util/cookie";
-import NeedAuth from "./NeedAuth";
 import { CookiesProvider } from "react-cookie";
+import { positions, Provider as AlertProvider } from "react-alert";
+import AlertTemplate from "react-alert-template-basic";
+
+const options = {
+  timeout: 5000,
+  position: positions.BOTTOM_LEFT,
+};
 
 axios.defaults.baseURL = "http://15.165.250.204:8080";
 axios.defaults.withCredentials = true;
@@ -19,7 +23,7 @@ const progress = new ProgressBar({
   size: 4,
   color: "#5e00a3",
   className: "z-50",
-  delay: 150,
+  delay: 250,
 });
 
 Router.events.on("routeChangeStart", progress.start);
@@ -33,7 +37,9 @@ function MyApp({ Component, pageProps }) {
     <CookiesProvider>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <Component {...pageProps} />
+          <AlertProvider template={AlertTemplate} {...options}>
+            <Component {...pageProps} />
+          </AlertProvider>
         </PersistGate>
       </Provider>
     </CookiesProvider>

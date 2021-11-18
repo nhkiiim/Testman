@@ -28,6 +28,8 @@ const Body = () => {
         return dispatch(apiActions.setContentType("multipart/form-data"));
       case "formUrlencoded":
         return dispatch(apiActions.setContentType("application/x-www-form-urlencoded"));
+      case "raw":
+        return dispatch(apiActions.setContentType("application/json"));
     }
   };
 
@@ -62,12 +64,23 @@ const Body = () => {
               <input
                 type="radio"
                 name="bodyOption"
+                value="raw"
+                onChange={handleBodyOption}
+                checked={bodyOption == "raw"}
+                className="mt-1 mr-1"
+              />
+              <p className="text-sm text-gray-600">raw-form (application/json)</p>
+            </label>
+            <label className="mr-5 inline-flex">
+              <input
+                type="radio"
+                name="bodyOption"
                 value="formData"
                 onChange={handleBodyOption}
                 checked={bodyOption == "formData"}
                 className="mt-1 mr-1"
               />
-              <p className="text-sm text-gray-600">form-data</p>
+              <p className="text-sm text-gray-600">form-data (multipart/form-data)</p>
             </label>
             <label className="mr-5 inline-flex">
               <input
@@ -78,7 +91,9 @@ const Body = () => {
                 checked={bodyOption == "formUrlencoded"}
                 className="mt-1 mr-1"
               />
-              <p className="text-sm text-gray-600">x-www-form-urlencoded</p>
+              <p className="text-sm text-gray-600">
+                x-www-form-urlencoded (application/x-www-form-urlencoded)
+              </p>
             </label>
           </fieldset>
         </form>

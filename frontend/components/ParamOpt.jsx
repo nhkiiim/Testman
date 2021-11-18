@@ -9,11 +9,16 @@ const ParamOpt = ({ seq, params, index, saved }) => {
   const paramData = useSelector((state) => state.api.request.params);
   const dataIndex = useSelector((state) => state.api.request.params[index]);
   const dispatch = useDispatch();
-  const [inputObj, setInputObj] = useState(dataIndex);
+  const [inputObj, setInputObj] = useState({});
   const { paramKey, paramValue, paramDescription } = inputObj;
   const [save, setSave] = useState(false);
   const request = useSelector((state) => state.api.request);
   const [parsingParams, setParsingParams] = useState({});
+
+  useEffect(() => {
+    setInputObj(dataIndex);
+  }, [dataIndex]);
+
   const fetchData = (idx) => {
     setSave(true);
     let datas = {
@@ -70,6 +75,8 @@ const ParamOpt = ({ seq, params, index, saved }) => {
       [id]: value,
     }));
   };
+
+  useEffect(() => {}, [inputObj]);
 
   return (
     <div className="">

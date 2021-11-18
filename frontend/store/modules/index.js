@@ -17,6 +17,7 @@ import ctab from "./ctab";
 import history from "./history";
 import apiresult from "./apiresult";
 import teststat from "./teststat";
+import load from "./load";
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -37,6 +38,7 @@ const rootReducer = (state, action) => {
         history,
         apiresult,
         teststat,
+        load,
       });
       return combineReducer(state, action);
     }

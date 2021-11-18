@@ -10,6 +10,8 @@ import * as ctabActions from "../store/modules/ctab";
 import * as apiActions from "../store/modules/api";
 import apiresult, * as resultActions from "../store/modules/apiresult";
 import { useAlert } from "react-alert";
+import * as loadActions from "../store/modules/load";
+import * as statActions from "../store/modules/teststat";
 
 const Content = ({ current }) => {
   const alert = useAlert();
@@ -33,6 +35,7 @@ const Content = ({ current }) => {
   const [parsingBody, setParsingBody] = useState({});
 
   const handleTabChange = async (index) => {
+    dispatch(statActions.setStat("api"));
     dispatch(apiActions.resetParamDatas([]));
     dispatch(apiActions.resetHeaderDatas([]));
     dispatch(apiActions.resetBodyDatas([]));
@@ -180,7 +183,7 @@ const Content = ({ current }) => {
           // console.log(res.data);
           // console.log(res.data.response);
           // let a = JSON.parse(res.data);
-          let b = res.data;
+          let b = JSON.parse(res.data.response.body);
           dispatch(resultActions.setResultState(b));
           // console.log(a);
         })
@@ -223,6 +226,7 @@ const Content = ({ current }) => {
         data: payload,
       })
         .then((res) => {
+          dispatch(loadActions.addLoadResults(res.data.response.loadResult));
           // console.log(res.data.response);
         })
         .catch((error) => {

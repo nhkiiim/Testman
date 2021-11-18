@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { TrashIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
-import * as ctabActions from "../store/modules/ctab";
+import * as apiActions from "../store/modules/api";
 import { SaveAsIcon } from "@heroicons/react/solid";
 
 const ParamOpt = ({ seq, params, index, saved }) => {

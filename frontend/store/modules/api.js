@@ -15,8 +15,6 @@ const initialState = {
     contentType: "",
   },
   list: [],
-  subPath: "",
-  mergePath: "",
 };
 
 const requestSlice = createSlice({
@@ -53,18 +51,8 @@ const requestSlice = createSlice({
     setParamDatas: (state, action) => {
       [...state.request.params, state.request.params.push(action.payload)];
     },
-    // saveParamDatas: (state, action) => {
-    //   [...state.request.params, state.request.params.unshift(action.payload)];
-    // },
     saveParamDatas: (state, action) => {
-      state.request.params.map(param =>
-        param.seq === action.payload.seq ? {...param,
-          seq: action.payload.seq,
-          paramKey: action.payload.paramKey,
-          paramValue: action.payload.paramValue,
-          paramDescription: action.payload.paramDescription,
-          saved: action.payload.saved 
-        }:state.request.params.push(action.payload))
+      [...state.request.params, state.request.params.unshift(action.payload)];
     },
     deleteParamDatas: (state, action) => {
       state.request.params = action.payload;
@@ -114,12 +102,6 @@ const requestSlice = createSlice({
     setPathState: (state, action) => {
       state.request.path = action.payload;
     },
-    setSubPathState: (state, action) => {
-      state.subPath = action.payload;
-    },
-    setMergePathState: (state, action) => {
-      state.mergePath = action.payload;
-    }
   },
 });
 
@@ -150,7 +132,5 @@ export const {
   setHttpMethods,
   setAddress,
   setContentType,
-  setSubPathState,
-  setMergePathState,
 } = requestSlice.actions;
 export default requestSlice.reducer;

@@ -8,13 +8,9 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
   const headerData = useSelector((state) => state.api.request.headers);
   const dataIndex = useSelector((state) => state.api.request.headers[index]);
   const dispatch = useDispatch();
-  const [inputObj, setInputObj] = useState({});
+  const [inputObj, setInputObj] = useState(dataIndex);
   const { headerKey, headerValue, headerDescription } = inputObj;
   const [save, setSave] = useState(false);
-
-  useEffect(() => {
-    setInputObj(dataIndex);
-  }, [dataIndex]);
 
   const fetchData = (idx) => {
     setSave(true);
@@ -25,26 +21,15 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
       headerDescription: headerDescription,
       saved: true,
     };
-    const updataData = headerData.map((data) => data.seq === datas.seq ? 
-    {...data,
-      seq: datas.seq,
-      headerKey: datas.headerKey,
-      headerValue: datas.headerValue,
-      headerDescription: datas.headerDescription,
-      saved: datas.saved
-    }
-    :data)
 
-    // let filtered = headerData.filter((data) => data.seq !== idx);
-    dispatch(apiActions.deleteHeaderDatas(updataData));
-    // dispatch(apiActions.saveHeaderDatas(datas));
+    let filtered = headerData.filter((data) => data.seq !== idx);
+    dispatch(apiActions.deleteHeaderDatas(filtered));
+    dispatch(apiActions.saveHeaderDatas(datas));
   };
 
   // console.log(dataIndex);
   const handleDelete = (idx) => {
-    console.log(idx);
     let filtered = headerData.filter((data) => data.seq != idx);
-    console.log(filtered);
     dispatch(apiActions.deleteHeaderDatas(filtered));
   };
 
@@ -57,8 +42,6 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
       [id]: value,
     }));
   };
-
-  useEffect(() => {}, [inputObj]);
 
   return (
     <div className="">

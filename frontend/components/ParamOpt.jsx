@@ -3,6 +3,7 @@ import { TrashIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import * as apiActions from "../store/modules/api";
 import { SaveAsIcon } from "@heroicons/react/solid";
+import * as ctabActions from "../store/modules/ctab";
 
 const ParamOpt = ({ seq, params, index, saved }) => {
   const paramData = useSelector((state) => state.api.request.params);
@@ -11,7 +12,8 @@ const ParamOpt = ({ seq, params, index, saved }) => {
   const [inputObj, setInputObj] = useState(dataIndex);
   const { paramKey, paramValue, paramDescription } = inputObj;
   const [save, setSave] = useState(false);
-
+  const request = useSelector((state) => state.api.request);
+  const [parsingParams, setParsingParams] = useState({});
   const fetchData = (idx) => {
     setSave(true);
     let datas = {
@@ -32,7 +34,31 @@ const ParamOpt = ({ seq, params, index, saved }) => {
     console.log('idx', idx)
     console.log('paramdata', paramData)
     let filtered = paramData.filter((data) => data.seq !== idx);
-    dispatch(apiActions.deleteParamDatas(filtered));
+    dispatch(apiActions.deleteParamDatas(filtered))
+    if (filtered) {
+      const copied = ""
+      filtered.forEach((array, idx) => {
+        console.log(array, idx)
+        if (array.saved) {
+          if (idx===0) {
+            copied += "?"
+          }
+          if (idx >0) {
+            copied += "&"
+          }
+          copied += array.paramKey;
+          copied += "=" 
+          copied += array.paramValue;
+        }
+      
+      });
+      const merged = request.path + copied
+      setParsingParams(copied);
+      console.log(copied)
+      dispatch(ctabActions.setCurl(copied));
+      dispatch(apiActions.setSubPathState(copied));
+      dispatch(apiActions.setMergePathState(merged));
+    }
   };
 
   const handleKeyChange = (e) => {

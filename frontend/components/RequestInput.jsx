@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FaCaretRight, FaCaretDown, FaToggleOn, FaToggleOff } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { InformationCircleIcon } from "@heroicons/react/outline";
@@ -53,7 +53,9 @@ const RequestInput = (props) => {
     dispatch(apiActions.setPathState(inputUri));
     dispatch(apiActions.setLoopState(loopVal));
     dispatch(apiActions.setThreadState(threadVal));
-  }, [inputUri, payload, loopVal, threadVal]);
+    console.log(loopVal, threadVal);
+    console.log(testBtn);
+  }, [inputUri, payload, loopVal, threadVal, testBtn]);
   if (ctab !== undefined) {
     return (
       <div className="">
@@ -78,14 +80,13 @@ const RequestInput = (props) => {
                 일어날 지 알아볼까요 ?
               </p> */}
             </div>
-            <div className="inline-flex shadow-md">
+            <div className="inline-flex shadow-md" onClick={clickTestBtn}>
               <button
                 className={
                   testBtn === "load"
                     ? "w-20 h-7  transition-colors duration-1000 bg-gray-200 mr-[-1px] rounded-sm"
                     : "w-20 h-7   transition-colors duration-1000 bg-yellow-400 text-white mr-[-1px] rounded-sm cursor-default"
                 }
-                onClick={clickTestBtn}
               >
                 API
               </button>
@@ -95,7 +96,6 @@ const RequestInput = (props) => {
                     ? "w-20 h-7  transition-colors duration-1000 bg-gray-200 mr-[-1px] rounded-sm"
                     : "w-20 h-7   transition-colors duration-1000 bg-yellow-400 text-white mr-[-1px] rounded-sm cursor-default"
                 }
-                onClick={clickTestBtn}
               >
                 LOAD
               </button>
@@ -120,11 +120,11 @@ const RequestInput = (props) => {
                   <progress
                     className="progress progress-error w-[400px] mt-4 mr-2"
                     value={threadVal}
-                    max="200"
+                    max="100"
                   />
                   <input
                     type="text"
-                    placeholder="25"
+                    placeholder="0"
                     className="input input-bordered bg-gray-50 h-6 mt-2 w-16 pl-[17px] pt-1"
                     onChange={handleThreadChange}
                   />
@@ -145,11 +145,11 @@ const RequestInput = (props) => {
                   <progress
                     className="progress progress-error w-[400px] mt-4 mr-2"
                     value={loopVal}
-                    max="200"
+                    max="100"
                   />
                   <input
                     type="text"
-                    placeholder="25"
+                    placeholder="0"
                     className="input input-bordered bg-gray-50 h-6 mt-2 w-16 pl-[17px] pt-1"
                     onChange={handleLoopChange}
                   />

@@ -24,7 +24,7 @@ export default function Home() {
       </Head>
       <section>
         <div>
-          <div data-aos="" className="relative h-full mt-[-50px]">
+          <div className="relative h-full mt-[-50px]">
             <Image src={m1} objectFit="cover" layout="responsive" />
             <div className="flex">
               <div className="animate-bounce flex z-50 mx-auto mt-[-7%] align-middle justify-center">
@@ -32,10 +32,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="relative w-full mt-[30px]">
+          <div data-aos="fade-up" data-aos-duration="3000" className="relative w-full mt-[30px]">
             <Image src={m2} objectFit="fill" layout="responsive" />
           </div>
-          <div className="relative h-full mt-[25px] ">
+          <div data-aos="fade-up" data-aos-duration="3000" className="relative h-full mt-[25px] ">
             <Image src={m3} objectFit="fill" layout="responsive" />
             <div className="flex mb-[30px] z-50">
               <div className="mx-auto mb-[35px]">

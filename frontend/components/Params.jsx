@@ -25,6 +25,7 @@ const Params = () => {
 
   useEffect(() => {
     setPdata(paramData);
+    console.log('paramData', paramData)
   }, [paramData]);
 
 

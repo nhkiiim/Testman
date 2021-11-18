@@ -53,8 +53,18 @@ const requestSlice = createSlice({
     setParamDatas: (state, action) => {
       [...state.request.params, state.request.params.push(action.payload)];
     },
+    // saveParamDatas: (state, action) => {
+    //   [...state.request.params, state.request.params.unshift(action.payload)];
+    // },
     saveParamDatas: (state, action) => {
-      [...state.request.params, state.request.params.unshift(action.payload)];
+      state.request.params.map(param =>
+        param.seq === action.payload.seq ? {...param,
+          seq: action.payload.seq,
+          paramKey: action.payload.paramKey,
+          paramValue: action.payload.paramValue,
+          paramDescription: action.payload.paramDescription,
+          saved: action.payload.saved 
+        }:state.request.params.push(action.payload))
     },
     deleteParamDatas: (state, action) => {
       state.request.params = action.payload;

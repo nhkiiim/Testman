@@ -28,10 +28,22 @@ const ParamOpt = ({ seq, params, index, saved }) => {
       paramDescription: paramDescription,
       saved: true,
     };
-
-    let filtered = paramData.filter((data) => data.seq !== idx);
-    dispatch(apiActions.deleteParamDatas(filtered));
-    dispatch(apiActions.saveParamDatas(datas));
+    // console.log('datas', datas)
+    const updataData = paramData.map((data) => data.seq === datas.seq ? 
+    {...data,
+      seq: datas.seq,
+      paramKey: datas.paramKey,
+      paramValue: datas.paramValue,
+      paramDescription: datas.paramDescription,
+      saved: datas.saved
+    }
+    :data)
+    // console.log(updataData)
+    // let filtered = paramData.filter((data) => data.seq === idx);
+    // console.log(filtered)
+    // dispatch(apiActions.deleteParamDatas(filtered));
+    // dispatch(apiActions.saveParamDatas(datas));
+    dispatch(apiActions.deleteParamDatas(updataData));
   };
 
   // console.log(dataIndex);

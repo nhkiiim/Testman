@@ -59,7 +59,7 @@ const TestPage = () => {
         dispatch(tabAction.getAllTabs(res.data.response.tabList));
       })
       .catch((error) => {
-        alert.error("저장된 Tab 정보를 불러오는 것에 실패했습니다.");
+        // alert.error("저장된 Tab 정보를 불러오는 것에 실패했습니다.");
       });
   };
 
@@ -75,7 +75,7 @@ const TestPage = () => {
               <>
                 <Result />
               </>
-            ) : sumdata.length > 0 === "load" ? (
+            ) : sumdata.length > 0 && cstat === "load" ? (
               <>
                 <LoadResult />
               </>

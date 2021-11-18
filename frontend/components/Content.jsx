@@ -77,9 +77,7 @@ const Content = ({ current }) => {
         dispatch(ctabActions.setcTabWorkspaceSeq(res.data.response.tabDto.workspaceSeq));
       })
       .catch((error) => {
-        if (error.response.status === 500) {
-          alert.error("Tab 데이터를 불러오는 것에 실패했습니다. 다시 시도해주세요.");
-        }
+        alert.error("Tab 데이터를 불러오는 것에 실패했습니다. 다시 시도해주세요.");
       });
 
     await axios({
@@ -94,8 +92,8 @@ const Content = ({ current }) => {
         dispatch(loadActions.setLoadResults(res.data.response.loadResultList));
       })
       .catch((error) => {
-        console.error(error);
-        alert.error("문제가 발생했습니다.");
+        // console.error(error);
+        // alert.error("문제가 발생했습니다.");
       });
     setSelectTabSeq(tabs[index].seq);
     setCurrentTab(index);
@@ -124,9 +122,7 @@ const Content = ({ current }) => {
         dispatch(tabActions.setTabs(res.data.response.tab));
       })
       .catch((error) => {
-        if (error.response.status === 500) {
-          alert.error("Tab 생성에 실패했습니다.");
-        }
+        alert.error("Tab 생성에 실패했습니다.");
       });
   };
 
@@ -234,15 +230,8 @@ const Content = ({ current }) => {
         })
         .catch((error) => {
           console.error(error);
-          // if (error.response.status === 500) {
-          //   alert.error("서버오류로 인해 데이터를 불러오는 데에 실패했습니다.");
-          // }
-          // if (error.response.status === 404) {
-          //   alert.error("API 테스트를 위한 입력값이 올바르지 않습니다.");
-          // } else {
-          //   console.error(error);
-          // }
-          // console.log(error.response.data.error);
+
+          alert.error("서버오류로 인해 데이터를 불러오는 데에 실패했습니다.");
         });
     } else {
       dispatch(loadActions.countLoop(request.loop));
@@ -316,16 +305,7 @@ const Content = ({ current }) => {
           dispatch(loadActions.setSummaryGraphData(tdata));
         })
         .catch((error) => {
-          console.log(error);
-          // if (error.response.status === 500) {
-          //   alert.error("서버오류로 인해 데이터를 불러오는 데에 실패했습니다.");
-          // } else if (error.response.status === 404) {
-          //   alert.error("부하테스트를 위한 입력값이 올바르지 않습니다.");
-          // } else if (error.response.status === 400) {
-          //   alert.error(
-          //     "부하테스트 결과를 불러오는 도중 예상치 못한 에러가 발생했습니다.입력값을 확인해주세요. "
-          //   );
-          // }
+          alert.error("서버오류로 인해 데이터를 불러오는 데에 실패했습니다.");
         });
     }
   };

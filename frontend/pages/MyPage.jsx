@@ -170,11 +170,11 @@ const MyPage = () => {
         window.location.reload();
       })
       .catch((error) => {
-        if (error.response.status === 500) {
-          alert.error("프로젝트 정보 (제목, URL, 설명, 사진)을 모두 입력해주세요.");
-        } else if (error.response.status === 409) {
-          alert.error("이미 사용중인 프로젝트 제목입니다.");
-        }
+        // if (error.response.status === 500) {
+        //   alert.error("프로젝트 정보 (제목, URL, 설명, 사진)을 모두 입력해주세요.");
+        // } else if (error.response.status === 409) {
+        //   alert.error("이미 사용중인 프로젝트 제목입니다.");
+        // }
       });
   });
 

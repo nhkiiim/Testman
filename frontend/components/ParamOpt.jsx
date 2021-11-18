@@ -38,11 +38,6 @@ const ParamOpt = ({ seq, params, index, saved }) => {
       saved: datas.saved
     }
     :data)
-    // console.log(updataData)
-    // let filtered = paramData.filter((data) => data.seq === idx);
-    // console.log(filtered)
-    // dispatch(apiActions.deleteParamDatas(filtered));
-    // dispatch(apiActions.saveParamDatas(datas));
     dispatch(apiActions.deleteParamDatas(updataData));
   };
 

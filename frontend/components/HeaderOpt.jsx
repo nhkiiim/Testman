@@ -25,10 +25,19 @@ const HeaderOpt = ({ seq, headers, index, saved }) => {
       headerDescription: headerDescription,
       saved: true,
     };
+    const updataData = headerData.map((data) => data.seq === datas.seq ? 
+    {...data,
+      seq: datas.seq,
+      headerKey: datas.headerKey,
+      headerValue: datas.headerValue,
+      headerDescription: datas.headerDescription,
+      saved: datas.saved
+    }
+    :data)
 
-    let filtered = headerData.filter((data) => data.seq !== idx);
-    dispatch(apiActions.deleteHeaderDatas(filtered));
-    dispatch(apiActions.saveHeaderDatas(datas));
+    // let filtered = headerData.filter((data) => data.seq !== idx);
+    dispatch(apiActions.deleteHeaderDatas(updataData));
+    // dispatch(apiActions.saveHeaderDatas(datas));
   };
 
   // console.log(dataIndex);

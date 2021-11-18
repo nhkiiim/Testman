@@ -13,7 +13,9 @@ const RequestInput = (props) => {
   // console.log(ctab);
   const selector = useSelector((state) => state.api);
   // console.log(selector);
-
+  const uri = useSelector((state) => state.api.request.uri)
+  const subPath = useSelector((state) => state.api.subPath)
+  // console.log(selector)
   const handleUriChange = (e) => {
     setInputUri(e.target.value);
     dispatch(apiActions.setPathState(inputUri));
@@ -184,7 +186,11 @@ const RequestInput = (props) => {
               placeholder="Type Path here !"
               className="border-r border-b border-gray-300 bg-gray-50 p-[8px] w-[722px]  border-t rounded-sm pl-3"
               onKeyUp={handleUriChange}
+              value={uri}
             />
+            <span className="border-r border-b border-gray-300 bg-gray-50 p-[8px] border-t rounded-sm pl-3">
+              {subPath}
+            </span>
 
             <button
               className="flex bg-purple-500 bg-opacity-80 text-white p-[14px] ml-[8px] rounded pl-[15px] pr-[18px] cursor-pointer text-sm "

@@ -19,8 +19,9 @@ const Headers = () => {
     headerValue: "",
     headerDescription: "",
   };
-
+  console.log(rawData)
   const handleAddRow = () => {
+
     dispatch(apiActions.setHeaderDatas(rawData));
   };
   const handleDelete = (idx) => {

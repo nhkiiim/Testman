@@ -22,6 +22,8 @@ const Content = ({ current }) => {
   const tstat = useSelector((state) => state.teststat.stat);
   const loaded = useSelector((state) => state.load);
   const sgd = useSelector((state) => state.load.summaryGraphData);
+  const subPath = useSelector((state) => state.api.subPath);
+  const mergePath = useSelector((state) => state.api.mergePath);
   // console.log(ctab);
 
   console.log(loaded);
@@ -34,7 +36,7 @@ const Content = ({ current }) => {
   const [currentTab, setCurrentTab] = useState(0);
   const [selectTabSeq, setSelectTabSeq] = useState(0);
   const [parsingHeaders, setParsingHeaders] = useState({});
-  const [parsingParams, setParsingPrams] = useState({});
+  const [parsingParams, setParsingParams] = useState({});
   const [parsingBody, setParsingBody] = useState({});
 
   const handleTabChange = async (index) => {
@@ -150,15 +152,32 @@ const Content = ({ current }) => {
 
   const handleSubmit = async () => {
     const paramsJson = request.params;
-    if (paramsJson.constructor === Array) {
-      paramsJson.forEach((array) => {
-        const copied = parsingParams;
-        copied[array.paramKey] = array.paramValue;
-        setParsingPrams(copied);
+    if (paramsJson) {
+      const copied = "";
+      paramsJson.forEach((array, idx) => {
+        console.log(array, idx);
+        if (array.saved) {
+          if (idx === 0) {
+            copied += "?";
+          }
+          if (idx > 0) {
+            copied += "&";
+          }
+          copied += array.paramKey;
+          copied += "=";
+          copied += array.paramValue;
+        }
       });
+      const merged = request.path + copied;
+      setParsingParams(copied);
+      console.log(copied);
+      dispatch(ctabActions.setCurl(copied));
+      dispatch(apiActions.setSubPathState(copied));
+      dispatch(apiActions.setMergePathState(merged));
     }
 
     const headersJson = request.headers;
+    console.log("headers", request.headers);
     if (headersJson.constructor === Array) {
       headersJson.forEach((array) => {
         const copied = parsingHeaders;
@@ -181,10 +200,10 @@ const Content = ({ current }) => {
       };
       const theaders = Object.assign(ctype, parsingHeaders);
       const payload = {
-        address: ctab.address,
+        address: current.url,
         httpMethod: request.httpMethod,
-        params: parsingParams,
-        path: request.path,
+        // path: request.path + subPath,
+        path: mergePath,
         body: parsingBody,
         tabSeq: ctab.seq,
         workspaceSeq: current.seq,
@@ -234,10 +253,9 @@ const Content = ({ current }) => {
       const theaders = Object.assign(ctype, parsingHeaders);
 
       const payload = {
-        address: ctab.address,
+        address: current.url,
         httpMethod: request.httpMethod,
-        params: parsingParams,
-        path: request.path,
+        path: request.path + subPath,
         body: parsingBody,
         tabSeq: ctab.seq,
         workspaceSeq: current.seq,

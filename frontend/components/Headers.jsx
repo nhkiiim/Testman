@@ -11,6 +11,7 @@ const Headers = () => {
   const dispatch = useDispatch();
   const headerData = useSelector((state) => state.api.request.headers);
   const ctabData = useSelector((state) => state.ctab.datas.headers);
+  const [hData, setHdata] = useState([]);
   console.log(headerData);
   const rawData = {
     seq: Math.random(0, 10) * 10,
@@ -29,6 +30,9 @@ const Headers = () => {
     dispatch(apiActions.deleteHeaderDatas(filtered));
     // window.location.reload();
   };
+  useEffect(() => {
+    setHdata(headerData);
+  }, [headerData]);
   return (
     <div className="mt-5 ">
       Headers
@@ -93,8 +97,8 @@ const Headers = () => {
               </div>
             </div>
           ))} */}
-        {headerData ? (
-          headerData.map((rows, index) => (
+        {hData ? (
+          hData.map((rows, index) => (
             <HeaderOpt key={index} seq={rows.seq} headers={rows} index={index} saved={rows.saved} />
           ))
         ) : (

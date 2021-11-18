@@ -8,8 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import * as tabActions from "../store/modules/tab";
 import * as ctabActions from "../store/modules/ctab";
 import * as apiActions from "../store/modules/api";
-import apiresult, * as resultActions from "../store/modules/apiresult";
+import * as resultActions from "../store/modules/apiresult";
 import { useAlert } from "react-alert";
+import * as loadActions from "../store/modules/load";
 
 const Content = ({ current }) => {
   const alert = useAlert();
@@ -19,9 +20,13 @@ const Content = ({ current }) => {
   const token = useSelector((state) => state.user.token);
   const ctab = useSelector((state) => state.ctab.datas);
   const tstat = useSelector((state) => state.teststat.stat);
+  const loaded = useSelector((state) => state.load);
+  const sgd = useSelector((state) => state.load.summaryGraphData);
   // console.log(ctab);
 
+  console.log(loaded);
   // console.log(tstat);
+  console.log(tabs);
 
   const dispatch = useDispatch();
   const [requestTabs] = useState(["Params", "Headers", "Body", "Settings"]);
@@ -33,10 +38,13 @@ const Content = ({ current }) => {
   const [parsingBody, setParsingBody] = useState({});
 
   const handleTabChange = async (index) => {
+    dispatch(resultActions.setResultState({}));
+    dispatch(loadActions.setLoadResults([]));
     dispatch(apiActions.resetParamDatas([]));
     dispatch(apiActions.resetHeaderDatas([]));
     dispatch(apiActions.resetBodyDatas([]));
     dispatch(apiActions.resetAllDatas({}));
+
     await axios({
       method: "GET",
       url: "/api/tabs/" + tabs[index].seq,
@@ -46,7 +54,7 @@ const Content = ({ current }) => {
     })
       .then((res) => {
         // console.log(res.data);
-        dispatch(resultActions.setResultState([]));
+        // dispatch(resultActions.setResultState([]));
         if (res.data.response.tabDto.params === null) {
           dispatch(ctabActions.resetParamDatas([]));
         } else {
@@ -70,6 +78,22 @@ const Content = ({ current }) => {
         if (error.response.status === 500) {
           alert.error("Tab 데이터를 불러오는 것에 실패했습니다. 다시 시도해주세요.");
         }
+      });
+
+    await axios({
+      method: "get",
+      url: "/api/load-result/list/" + tabs[index].seq,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        dispatch(loadActions.setLoadResults(res.data.response.loadResultList));
+      })
+      .catch((error) => {
+        console.error(error);
+        alert.error("문제가 발생했습니다.");
       });
     setSelectTabSeq(tabs[index].seq);
     setCurrentTab(index);
@@ -166,7 +190,12 @@ const Content = ({ current }) => {
         workspaceSeq: current.seq,
       };
       payload.headers = theaders;
-      // console.log("payload", payload);
+      // console.log(request.contentType);
+
+      if (request.contentType === null) {
+        delete payload.headers["Content-Type"];
+      }
+      console.log("payload", payload);
 
       await axios({
         method: "POST",
@@ -180,21 +209,25 @@ const Content = ({ current }) => {
           // console.log(res.data);
           // console.log(res.data.response);
           // let a = JSON.parse(res.data);
-          let b = res.data;
+          let b = JSON.parse(res.data.response.body);
           dispatch(resultActions.setResultState(b));
           // console.log(a);
         })
         .catch((error) => {
-          // console.log(payload);
-          if (error.response.status === 500) {
-            alert.error("서버오류로 인해 데이터를 불러오는 데에 실패했습니다.");
-          }
-          if (error.response.status === 404) {
-            alert.error("API 테스트를 위한 입력값이 올바르지 않습니다.");
-          }
+          console.error(error);
+          // if (error.response.status === 500) {
+          //   alert.error("서버오류로 인해 데이터를 불러오는 데에 실패했습니다.");
+          // }
+          // if (error.response.status === 404) {
+          //   alert.error("API 테스트를 위한 입력값이 올바르지 않습니다.");
+          // } else {
+          //   console.error(error);
+          // }
           // console.log(error.response.data.error);
         });
     } else {
+      dispatch(loadActions.countLoop(request.loop));
+      dispatch(loadActions.countThread(request.thread));
       const ctype = {
         "Content-Type": request.contentType,
       };
@@ -213,6 +246,9 @@ const Content = ({ current }) => {
       };
       payload.headers = theaders;
       // console.log("payload", payload);
+      if (request.contentType === null) {
+        delete payload.headers["Content-Type"];
+      }
 
       await axios({
         method: "POST",
@@ -223,19 +259,55 @@ const Content = ({ current }) => {
         data: payload,
       })
         .then((res) => {
-          // console.log(res.data.response);
+          console.log(res.data.response.loadResult.resultSummary);
+          // dispatch(loadActions.addLoadResults(res.data.response.loadResult));
+          dispatch(loadActions.addLoadResults(res.data.response.loadResult));
+          const tdata = {
+            avgElapsedList: [
+              {
+                data: [
+                  {
+                    x: 0,
+                    y: 0,
+                  },
+                ],
+              },
+            ],
+            throughputList: [
+              {
+                data: [
+                  {
+                    x: 0,
+                    y: 0,
+                  },
+                ],
+              },
+            ],
+          };
+
+          tdata.avgElapsedList[0].data = tdata.avgElapsedList[0].data.concat({
+            x: tdata.avgElapsedList[0].data.length,
+            y: Number(res.data.response.loadResult.resultSummary.avgElapsed),
+          });
+          tdata.throughputList[0].data = tdata.throughputList[0].data.concat({
+            x: tdata.throughputList[0].data.length,
+            y: Number(res.data.response.loadResult.resultSummary.throughput),
+          });
+
+          console.log(tdata);
+          dispatch(loadActions.setSummaryGraphData(tdata));
         })
         .catch((error) => {
-          // console.log(error);
-          if (error.response.status === 500) {
-            alert.error("서버오류로 인해 데이터를 불러오는 데에 실패했습니다.");
-          } else if (error.response.status === 404) {
-            alert.error("부하테스트를 위한 입력값이 올바르지 않습니다.");
-          } else if (error.response.status === 400) {
-            alert.error(
-              "부하테스트 결과를 불러오는 도중 예상치 못한 에러가 발생했습니다.입력값을 확인해주세요. "
-            );
-          }
+          console.log(error);
+          // if (error.response.status === 500) {
+          //   alert.error("서버오류로 인해 데이터를 불러오는 데에 실패했습니다.");
+          // } else if (error.response.status === 404) {
+          //   alert.error("부하테스트를 위한 입력값이 올바르지 않습니다.");
+          // } else if (error.response.status === 400) {
+          //   alert.error(
+          //     "부하테스트 결과를 불러오는 도중 예상치 못한 에러가 발생했습니다.입력값을 확인해주세요. "
+          //   );
+          // }
         });
     }
   };

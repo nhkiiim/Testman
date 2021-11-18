@@ -29,6 +29,8 @@ const ParamOpt = ({ seq, params, index, saved }) => {
 
   // console.log(dataIndex);
   const handleDelete = (idx) => {
+    console.log('idx', idx)
+    console.log('paramdata', paramData)
     let filtered = paramData.filter((data) => data.seq !== idx);
     dispatch(apiActions.deleteParamDatas(filtered));
   };

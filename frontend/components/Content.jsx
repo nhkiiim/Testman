@@ -128,11 +128,14 @@ const Content = ({ current }) => {
 
   const handleSubmit = async () => {
     const paramsJson = request.params;
-    if (paramsJson.constructor === Array) {
-      const copied = "?"
+    if (paramsJson) {
+      const copied = ""
       paramsJson.forEach((array, idx) => {
         console.log(array, idx)
         if (array.saved) {
+          if (idx===0) {
+            copied += "?"
+          }
           if (idx >0) {
             copied += "&"
           }
@@ -218,7 +221,7 @@ const Content = ({ current }) => {
       const theaders = Object.assign(ctype, parsingHeaders);
 
       const payload = {
-        address: ctab.address,
+        address: current.url,
         httpMethod: request.httpMethod,
         path: request.path + subPath,
         body: parsingBody,

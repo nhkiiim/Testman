@@ -82,7 +82,7 @@ public class ApiResultServiceImpl implements ApiResultService {
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
 
             HttpHeaders headers = new HttpHeaders();
-            //headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setContentType(MediaType.APPLICATION_JSON);
             if(apiInsertReq.getHeaders() != null){
                 for(Map.Entry<String,String> map : apiInsertReq.getHeaders().entrySet()){
                     headers.add(map.getKey(),map.getValue());

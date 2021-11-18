@@ -16,10 +16,6 @@ public class LoadResultDto {
 
     private final Long tabSeq;
 
-    private final Integer loop;
-
-    private final Integer thread;
-
     private final ResultSummary resultSummary;
 
     private final List<ResultRaw> resultRawList;
@@ -29,8 +25,6 @@ public class LoadResultDto {
     public LoadResultDto(LoadResult loadResult) {
         this.seq = loadResult.getSeq();
         this.tabSeq = loadResult.getTabSeq();
-        this.loop = loadResult.getLoop();
-        this.thread = loadResult.getThread();
         this.resultSummary = loadResult.getResultSummary();
         this.resultRawList = loadResult.getResultRawList();
         this.createAt = loadResult.getCreateAt();

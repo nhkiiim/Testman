@@ -114,13 +114,13 @@ const SignUp = () => {
       .post("/api/users/regist", data)
       .then((res) => {
         // console.log(res.data);
-        // alert.success("Welcome to Testsman :)");
+        alert.success("Welcome to Testsman :)");
         router.push("/Login");
       })
       .catch((error) => {
-        // if (error.response.status === 409) {
-        //   alert.error("이미 사용중인 아이디입니다.");
-        // }
+        if (error.response.status === 409) {
+          alert.error("이미 사용중인 아이디입니다.");
+        }
       });
   });
 

@@ -16,8 +16,7 @@ import Result from "../components/Result";
 import TestLoading from "../components/TestLoading";
 import * as statActions from "../store/modules/teststat";
 import WaitSend from "../components/WaitSend";
-import LoadResult from "../components/LoadResult";
-import * as loadActions from "../store/modules/load";
+
 const TestPage = () => {
   const router = useRouter();
   const { no } = router.query;
@@ -30,22 +29,17 @@ const TestPage = () => {
   const allTab = useSelector((state) => state.tab);
   const cseq = useSelector((state) => state.current.seq);
   const cstat = useSelector((state) => state.teststat.stat);
-  const sumdata = useSelector((state) => state.load.loadResult);
-  const [stat, setStat] = useState(cstat);
-
   // console.log(cstat);
   // console.log(cseq);
   // console.log(result);
   useEffect(() => {
-    console.log(cstat);
-
     // console.log(cc);
     dispatch(pageAction.setPageState(1));
     dispatch(processAction.setProcessData({}));
-    dispatch(loadActions.setLoadResults([]));
+    dispatch(statActions.setStat("api"));
 
     getAllTabs();
-  }, [cstat]);
+  }, [cseq]);
   const getAllTabs = async () => {
     await axios({
       method: "GET",
@@ -59,7 +53,7 @@ const TestPage = () => {
         dispatch(tabAction.getAllTabs(res.data.response.tabList));
       })
       .catch((error) => {
-        // alert.error("저장된 Tab 정보를 불러오는 것에 실패했습니다.");
+        alert.error("저장된 Tab 정보를 불러오는 것에 실패했습니다.");
       });
   };
 
@@ -69,29 +63,12 @@ const TestPage = () => {
       <div className="pb-24">
         {/* <Sidebar current={current} /> */}
         <Content current={current} />
-        <div
-          className={
-            result.length !== 0 ? (
-              <>
-                <Result />
-              </>
-            ) : sumdata.length > 0 && cstat === "load" ? (
-              <>
-                <LoadResult />
-              </>
-            ) : (
-              <>
-                <WaitSend />
-              </>
-            )
-          }
-        ></div>
-        {/* <div className={result.length === 0 || sumdata.length === 0 ? "" : "hidden"}>
+        <div className={cstat !== "api" || result.length === 0 ? "hidden" : ""}>
+          <Result />
+        </div>
+        <div className={result.length === 0 ? "" : "hidden"}>
           <WaitSend />
         </div>
-        <div className={stat === "load" && sumdata.length !== 0 ? "" : "hidden"}>
-          <LoadResult />
-        </div> */}
       </div>
     </div>
   );

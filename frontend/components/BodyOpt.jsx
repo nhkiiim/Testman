@@ -73,7 +73,7 @@ const BodyOpt = ({ seq, body, index, saved }) => {
                     : "h-[20px] w-[100%] mb-1 pt-2 bg-gray-50 outline-none"
                 }
                 placeholder="KEY"
-                value={bodyKey ? bodyKey : ""}
+                value={bodyKey}
                 onChange={handleKeyChange}
               />
             </div>

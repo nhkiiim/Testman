@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -49,7 +50,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     public Optional<Workspace> insertWorkspace(WorkspaceInsertReq workspaceInsertReq, String userId) {
         checkNotNull(userId, "userId must be provided");
 
-        Optional<Workspace> checkWorkspace = workspaceRepository.findByTitleAndUserUserId(workspaceInsertReq.getTitle(), userId);
+        Optional<Workspace> checkWorkspace = workspaceRepository.findByTitle(workspaceInsertReq.getTitle());
         if(checkWorkspace.isPresent()) throw new ExistException("Exist title");
 
         User user = userRepository.findByUserId(userId)

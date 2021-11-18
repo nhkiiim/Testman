@@ -168,8 +168,6 @@ public class LoadTestAsync {
         jmeter.run();
 
         LoadResult result = collector.getResult();
-        result.setLoop(loadInsertReq.getLoop());
-        result.setThread(loadInsertReq.getThread());
         logger.info(result.getResultSummary().toString());
 
         return new AsyncResult<>(result);

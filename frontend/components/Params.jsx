@@ -11,10 +11,8 @@ const Params = () => {
   const dispatch = useDispatch();
   const paramData = useSelector((state) => state.api.request.params);
   const ctabData = useSelector((state) => state.ctab.datas.params);
-  const [pData, setPdata] = useState([]);
   // console.log(ctb);
   // console.log("paramData", paramData);
-  console.log(paramData)
 
   const rawData = {
     seq: Math.random(0, 10) * 10,
@@ -22,12 +20,6 @@ const Params = () => {
     paramValue: "",
     paramDescription: "",
   };
-
-  useEffect(() => {
-    setPdata(paramData);
-    console.log('paramData', paramData)
-  }, [paramData]);
-
 
   const handleAddRow = () => {
     dispatch(apiActions.setParamDatas(rawData));
@@ -61,8 +53,8 @@ const Params = () => {
             </div>
           </div>
         </div>
-        {pData ? (
-          pData.map((rows, index) => (
+        {paramData ? (
+          paramData.map((rows, index) => (
             <ParamOpt key={index} seq={rows.seq} params={rows} index={index} saved={rows.saved} />
           ))
         ) : (

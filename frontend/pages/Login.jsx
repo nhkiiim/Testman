@@ -39,7 +39,6 @@ const Login = () => {
     await axios
       .post("/api/users/login", data)
       .then((res) => {
-        console.log(res.data);
         setCookie("token", res.data.response.token);
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${res.data.response.token}`;
@@ -52,14 +51,11 @@ const Login = () => {
         });
       })
       .catch((error) => {
-        // console.log(error);
-        // if (error.response.status === 404) {
-        //   alert.error("회원 정보가 존재하지 않습니다.");
-        // } else if (error.response.status === 401) {
-        //   alert.error("비밀번호가 일치하지 않습니다.");
-        // } else {
-        //   console.error(error);
-        // }
+        if (error.response.status === 404) {
+          alert.error("회원 정보가 존재하지 않습니다.");
+        } else if (error.response.status === 401) {
+          alert.error("비밀번호가 일치하지 않습니다.");
+        }
       });
   };
 

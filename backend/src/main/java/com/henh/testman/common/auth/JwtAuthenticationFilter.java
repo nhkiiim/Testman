@@ -3,7 +3,6 @@ package com.henh.testman.common.auth;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.henh.testman.common.errors.NotFoundException;
-import com.henh.testman.common.errors.UnauthorizedException;
 import com.henh.testman.common.utils.JwtTokenUtil;
 import com.henh.testman.users.User;
 import com.henh.testman.users.UserService;
@@ -43,7 +42,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         if (header == null || !header.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
             filterChain.doFilter(request, response);
             return;
-        }
+        }    
         try {
             // If header is present, try grab user principal from database and perform authorization
             Authentication authentication = getAuthentication(request);
@@ -51,7 +50,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (Exception e) {
             log.warn("Jwt processing failed: {}", e.getMessage());
-            throw new UnauthorizedException("Jwt processing failed");
+            return;
         }
         filterChain.doFilter(request, response);
 	}

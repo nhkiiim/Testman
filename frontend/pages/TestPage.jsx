@@ -43,8 +43,8 @@ const TestPage = () => {
   }, []);
   useEffect(() => {
     setStat(cstat);
-    console.log("api ? load ?", cstat);
-    console.log("부하결과", sumdata);
+    // console.log("api ? load ?", cstat);
+    // console.log("부하결과", sumdata);
   }, [cstat, sumdata]);
   const getAllTabs = async () => {
     await axios({

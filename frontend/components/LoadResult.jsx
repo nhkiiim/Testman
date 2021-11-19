@@ -8,7 +8,7 @@ const LoadResult = () => {
   console.log(datas);
   useEffect(() => {
     setDatas(sumdata);
-  });
+  }, [sumdata, datas]);
 
   return (
     <div>

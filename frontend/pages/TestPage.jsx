@@ -39,9 +39,13 @@ const TestPage = () => {
     // console.log(cc);
     dispatch(pageAction.setPageState(1));
     dispatch(processAction.setProcessData({}));
-    // console.log(stat);
     getAllTabs();
-  }, [cseq, stat]);
+  }, []);
+  useEffect(() => {
+    setStat(cstat);
+    console.log("api ? load ?", cstat);
+    console.log("부하결과", sumdata);
+  }, [cstat, sumdata]);
   const getAllTabs = async () => {
     await axios({
       method: "GET",
@@ -68,7 +72,7 @@ const TestPage = () => {
         <div className={stat !== "api" || result.length === 0 ? "hidden" : ""}>
           <Result />
         </div>
-        <div className={stat === "api" && sumdata.length === 0 ? "hidden" : ""}>
+        <div className={stat === "api" || sumdata.length === 0 ? "hidden" : ""}>
           <LoadResult />
         </div>
         <div className={result.length === 0 && sumdata.length === 0 ? "" : "hidden"}>

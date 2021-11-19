@@ -22,15 +22,18 @@ const ParamOpt = ({ seq, params, index, saved }) => {
       saved: true,
     };
     // console.log('datas', datas)
-    const updataData = paramData.map((data) => data.seq === datas.seq ? 
-    {...data,
-      seq: datas.seq,
-      paramKey: datas.paramKey,
-      paramValue: datas.paramValue,
-      paramDescription: datas.paramDescription,
-      saved: datas.saved
-    }
-    :data)
+    const updataData = paramData.map((data) =>
+      data.seq === datas.seq
+        ? {
+            ...data,
+            seq: datas.seq,
+            paramKey: datas.paramKey,
+            paramValue: datas.paramValue,
+            paramDescription: datas.paramDescription,
+            saved: datas.saved,
+          }
+        : data
+    );
     dispatch(apiActions.deleteParamDatas(updataData));
   };
 

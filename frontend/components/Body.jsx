@@ -14,9 +14,8 @@ const Body = () => {
 
   const [bodyOption, setBodyOption] = useState("none");
   useEffect(() => {
-    // console.log(bodyOption);
-    // console.log(ctype);
-  });
+    setBodyOption("none");
+  }, []);
 
   const handleBodyOption = (e) => {
     setBodyOption(e.target.value);

@@ -13,6 +13,10 @@ const Params = () => {
   const ctabData = useSelector((state) => state.ctab.datas.params);
   // console.log(ctb);
   // console.log("paramData", paramData);
+  const [data, setData] = useState();
+  useEffect(() => {
+    console.log(paramData);
+  }, []);
 
   const rawData = {
     seq: Math.random(0, 10) * 10,

@@ -53,8 +53,8 @@ const RequestInput = (props) => {
     dispatch(apiActions.setPathState(inputUri));
     dispatch(apiActions.setLoopState(loopVal));
     dispatch(apiActions.setThreadState(threadVal));
-    console.log(loopVal, threadVal);
-    console.log(testBtn);
+    // console.log(loopVal, threadVal);
+    // console.log(testBtn);
   }, [inputUri, payload, loopVal, threadVal, testBtn]);
   if (ctab !== undefined) {
     return (
@@ -110,7 +110,7 @@ const RequestInput = (props) => {
                 <div className="flex">
                   <p className="mr-3">Thread</p>
                   <div
-                    data-tip={`이건 ${threadVal}번 ...?  쓰레드에요`}
+                    data-tip={`해당 API에 요청을 보낼 사용자의 수를 의미합니다.`}
                     className="tooltip tooltip-right mb-3"
                   >
                     <InformationCircleIcon className="h-5 mt-[2px]" />
@@ -134,7 +134,8 @@ const RequestInput = (props) => {
                 <div className="flex">
                   <p className="mr-3">Loop</p>
                   <div
-                    data-tip={`이건 ${loopVal}번 ...?  루프에요`}
+                    data-tip={`각 사용자가 요청을 보내는 횟수를 의미합니다.
+                    `}
                     className="tooltip tooltip-right mb-3"
                   >
                     <InformationCircleIcon className="h-5 mt-[2px]" />

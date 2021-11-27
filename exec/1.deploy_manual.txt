@@ -1,0 +1,43 @@
+1) 배포 및 실행환경
+
+Backend :
+- java version : 8
+- jmeter version : 5.4.1
+- gradle : 7.1.1
+
+Frontend :
+- yarn version : 1.22.10
+- npm version : 6.14.13
+- react version : 17.0.2
+- next version : 12.0.1
+
+Database :
+- mysql version : 8.0.26
+    - url : [k5d202.p.ssafy.io](http://k5d202.p.ssafy.io/):3306
+    - id : root
+    - pw : d202
+- redis version : alpine
+
+Docker:
+- Docker version 20.10.8
+- Docker-compose version 1.29.2
+
+
+2) 빌드 시 사용할 환경변수
+
+nothing special -> docker-compose up
+
+
+3) 배포 시 특이사항
+
+백엔드 실행시 mysql, redis를 도커로 실행 후 연결해야 합니다.
+
+
+4) 프로젝트(ERD) 주요 계정 및 프로퍼티
+- backend : http://www.testsman.com:8080/swagger-ui.html
+- frontend : http://www.testsman.com
+- database : http://k5d202.p.ssafy.io:3306
+            (ID: root, PW: d202)
+- jenkins : http://www.testsman.com:10001
+            (ID: ssafy, PW: ssafy)
+
